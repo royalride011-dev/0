@@ -1,0 +1,766 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom-font.woff2') format('woff2'),
+       url('/fonts/custom-font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Montserrat", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Premium Obsidian & Pitch Black Theme with Gold Accents */
+  --color-royal-navy-950: #000000; /* Pure Brand deep black background */
+  --color-royal-navy-900: #0A0A0A; /* Elegant charcoal-black canvas */
+  --color-royal-navy-850: #0E0E0E; /* Deep Obsidian */
+  --color-royal-navy-800: #141414; /* Luxury card / stand-out blocks context */
+  --color-royal-navy-700: #1F1F1F; /* Highlighted slate segments */
+  --color-royal-navy-600: #2E2E2E; /* Light decorative outlines */
+  
+  --color-champagne-gold-100: #FAF6ED;
+  --color-champagne-gold-200: #F4EAD4;
+  --color-champagne-gold-300: #EAD39E;
+  --color-champagne-gold-400: #D8BD7E;
+  --color-champagne-gold-450: #CEB46C;
+  --color-champagne-gold-500: #C5A85C; /* Base Brand Gold (#C6A467 equivalent) */
+  --color-champagne-gold-600: #A88640;
+  --color-champagne-gold-700: #85652E;
+  --color-champagne-gold-800: #624821;
+}
+
+/* لوحة الألوان المخصصة بتوجيه المستخدم */
+:root {
+  --primary-color: #000000;
+  --secondary-color: #C5A85C;
+  --text-color: #FFFFFF;
+  --accent-color: #EAD39E;
+  --light-color: #F5F5F5;
+}
+
+/* Base typography */
+body {
+  font-family: 'Montserrat', "Cairo", sans-serif;
+  color: #333333;
+  background-color: #ffffff;
+  font-size: 1em;
+}
+
+h1 {
+  font-family: 'Playfair Display', 'Cinzel', 'Cairo', serif;
+  color: #C5A85C;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+/* الروابط والأزرار بأسلوب مخصص */
+.custom-user-link, .custom-user-button {
+  color: var(--secondary-color);
+  transition: all 0.3s ease;
+}
+
+/* Navigation responsiveness */
+.menu {
+  display: flex;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 480px) {
+  .menu {
+    display: none;
+    flex-direction: column;
+  }
+  
+  .menu-toggle {
+    display: block;
+  }
+  
+  .menu.active {
+    display: flex;
+  }
+}
+
+.custom-user-link:hover, .custom-user-button:hover {
+  color: var(--light-color);
+  background-color: var(--secondary-color);
+}
+
+/* Custom premium styles */
+.text-luxury-gradient {
+  background: linear-gradient(135deg, #FAF6ED 10%, #D8BD7E 50%, #C5A85C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-dark-gold-gradient {
+  background: linear-gradient(135deg, #0A0A0A 0%, #85652E 50%, #4D3C18 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #F4EAD4 0%, #C5A85C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-gold-glow {
+  box-shadow: 0 0 15px rgba(197, 168, 92, 0.15);
+  border: 1px solid rgba(197, 168, 92, 0.25);
+}
+
+.bg-texture-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(197, 168, 92, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(197, 168, 92, 0.03) 1px, transparent 1px);
+}
+
+.bg-mesh-gradient {
+  background: radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.98) 0%, rgba(10, 10, 10, 1) 100%);
+}
+
+.gold-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.gold-scrollbar::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.gold-scrollbar::-webkit-scrollbar-thumb {
+  background: #A88640;
+  border-radius: 3px;
+}
+
+.gold-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #C5A85C;
+}
+
+/* Custom smooth transitions */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Luxury card shadow */
+.card-shadow {
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+}
+
+/* Tactile Human Touch & Artisan Styling Perks */
+.gold-tactile {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-tactile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(244, 234, 212, 0) 0%, rgba(197, 168, 92, 0.15) 50%, rgba(168, 134, 64, 0) 100%) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.gold-tactile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -10px rgba(197, 168, 92, 0.25);
+  background-color: rgba(10, 10, 10, 0.4);
+}
+
+.gold-tactile:hover::after {
+  opacity: 1;
+}
+
+.gold-tactile:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Warm human radial gold soft ambient glow */
+.gold-ambient-radial {
+  background: radial-gradient(circle at center, rgba(197, 168, 92, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.champagne-border-accent {
+  background: linear-gradient(to right, rgba(197,168,92,0) 0%, rgba(197,168,92,0.3) 50%, rgba(197,168,92,0) 100%);
+  height: 1px;
+  width: 100%;
+}
+
+/* Creamy soft charcoal background with tactile gold undertone for icons wrapper */
+.bg-creamy-charcoal {
+  background-color: #16171d !important;
+  background-image: radial-gradient(circle at top left, rgba(197, 168, 92, 0.07) 0%, transparent 65%);
+}
+
+/* Premium Arabic font weight and line height overrides */
+.font-arabic-adjust {
+  font-family: "Cairo", "Montserrat", "Inter", sans-serif !important;
+}
+
+.font-arabic-adjust h1,
+.font-arabic-adjust h2,
+.font-arabic-adjust h3,
+.font-arabic-adjust h4,
+.font-arabic-adjust .font-serif {
+  font-family: "Cairo", "Cormorant Garamond", "Playfair Display", serif !important;
+  line-height: 1.4 !important;
+}
+
+/* Gold Shimmer keyframe animation */
+@keyframes gold-shine-ani {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gold-shine-text {
+  background: linear-gradient(90deg, #A88640 0%, #FAF6ED 25%, #C5A85C 50%, #FAF6ED 75%, #A88640 100%);
+  background-size: 240% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shine-ani 5s ease infinite;
+}
+
+/* Elegant gold shine wrapper on hover */
+.hover-gold-gleam {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-gold-gleam::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(244, 234, 212, 0.35) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  transition: 0.75s;
+  pointer-events: none;
+}
+
+.hover-gold-gleam:hover::before {
+  left: 125%;
+}
+
+/* Rich gold border frame */
+.gold-lux-border {
+  border: 1px solid rgba(197, 168, 92, 0.22);
+  box-shadow: inset 0 0 15px rgba(197, 168, 92, 0.04), 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gold-lux-border:hover {
+  border-color: rgba(197, 168, 92, 0.55);
+  box-shadow: 0 0 25px rgba(197, 168, 92, 0.15), inset 0 0 20px rgba(197, 168, 92, 0.08);
+}
+
+/* Ultra rich gold button */
+.btn-metallic-gold {
+  background: linear-gradient(135deg, #85652E 0%, #C5A85C 30%, #F4EAD4 50%, #C5A85C 70%, #85652E 100%);
+  background-size: 200% 100%;
+  color: #000000 !important;
+  font-weight: 700;
+  border: 1px solid rgba(244, 234, 212, 0.45);
+  box-shadow: 0 4px 18px rgba(197, 168, 92, 0.25), 0 0 0 1px rgba(197, 168, 92, 0.15);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-metallic-gold:hover {
+  background-position: 100% center;
+  box-shadow: 0 6px 28px rgba(197, 168, 92, 0.45), 0 0 15px rgba(197, 168, 92, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Alternate Section Subtle Grid Overlay */
+.gold-texture-subtle {
+  background-image: radial-gradient(circle at 50% 50%, rgba(197, 168, 92, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Double fine gold lines scroll curve */
+.double-gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.double-gold-divider::before, .double-gold-divider::after {
+  content: '';
+  height: 1px;
+  width: 50px;
+  background: linear-gradient(to right, transparent, rgba(197, 168, 92, 0.5));
+}
+
+.double-gold-divider::after {
+  background: linear-gradient(to left, transparent, rgba(197, 168, 92, 0.5));
+}
+
+/* Services Section */
+.service {
+  border: 2px solid #C5A85C;
+  box-shadow: 0 0 10px rgba(197, 168, 92, 0.3);
+  padding: 20px;
+}
+
+/* Fleet Section */
+.fleet-item {
+  border: 2px solid #C5A85C;
+  box-shadow: 0 0 10px rgba(197, 168, 92, 0.3);
+  padding: 20px;
+}
+
+/* Contact Section */
+.contact-form {
+  border: 2px solid #C5A85C;
+  box-shadow: 0 0 10px rgba(197, 168, 92, 0.3);
+  padding: 20px;
+}
+
+/* Testimonials and Reviews are styled with the elegant dark theme */
+#testimonials, #reviews {
+  background-color: #000000 !important;
+}
+
+#fleet {
+  background-color: #000000 !important;
+}
+
+/* Base Fallbacks that work beautifully without overriding Tailwind's explicit classes (text-xs, text-sm, text-3xl, etc.) */
+h1:not([class*='text-']) {
+  font-size: 2.75rem; /* ~44px */
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2:not([class*='text-']) {
+  font-size: 2.25rem; /* ~36px */
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+h3:not([class*='text-']) {
+  font-size: 1.5rem; /* ~24px */
+  font-weight: 600;
+  color: #EAD39E; /* Champagne accent gold */
+}
+
+/* Base Paragraph Resets: comfortable relative size, line-height 1.6, soft off-white text color */
+p:not([class*='text-']) {
+  font-size: 1rem; /* Highly comfortable 16px font-size for copywriting */
+  line-height: 1.65;
+  color: #FAF6ED; /* Soft luxury reading white */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* الألوان الأساسية وثيم الألوان الفاخر */
+
+/* الروابط */
+a {
+  color: #C5A85C; /* لون ذهبي فاخر مرسيدس موحد */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #EAD39E; /* لون ذهبي رغيد */
+}
+
+/* الأزرار الفنية */
+.button {
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+  padding: 12px 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background-image: linear-gradient(to bottom, var(--secondary-color), #C5A028);
+  font-size: 18px;
+}
+
+.button:hover {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+/* الأيقونات */
+.icon {
+  color: var(--secondary-color);
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.icon:hover {
+  color: var(--accent-color);
+}
+
+/* شريط التنقل */
+nav {
+  background-color: var(--primary-color);
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+nav a {
+  color: var(--text-color);
+}
+
+nav a:hover {
+  color: var(--secondary-color);
+}
+
+/* التذييل */
+footer {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border-top: 1px solid var(--secondary-color);
+  padding: 20px;
+}
+
+/* براويز الصور والمعلومات بمظهر ملكي مذهل */
+.image-frame, .info-box {
+  border: 2px solid var(--secondary-color);
+  border-radius: 10px;
+  padding: 15px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.image-frame img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+/* لمسات فنية إضافية */
+.artistic-line {
+  border: none;
+  border-top: 1px solid var(--secondary-color);
+  margin: 40px auto;
+  width: 100px;
+}
+
+.artistic-shape {
+  width: 50px;
+  height: 50px;
+  background-color: var(--secondary-color);
+  transform: rotate(45deg);
+  margin: 20px auto;
+}
+
+/* فئات فرعية مخصصة للتصميم الرغيد */
+.subtitle {
+  font-size: 18px;
+  font-style: italic;
+}
+
+.highlight {
+  color: #C5A85C; /* لون ذهبي فاخر مرسيدس موحد */
+  font-weight: bold;
+}
+
+.quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-style: italic;
+  color: #EAD39E; /* لون ذهبي فاتح */
+  margin: 25px 0;
+  padding: 12px;
+  border-left: 4px solid #C5A85C; /* لون ذهبي فاخر مرسيدس موحد */
+}
+
+.testimonial {
+  font-size: 18px;
+  color: #E6E6E6;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.testimonial-author {
+  font-size: 16px;
+  color: #EAD39E; /* لون ذهبي فاتح */
+  font-weight: bold;
+}
+
+.golden-border {
+  border: 2px solid var(--secondary-color);
+}
+
+.golden-shadow {
+  box-shadow: 0 0 10px var(--secondary-color);
+}
+
+/* Artisan Golden Filigree Frame styling for VIP Vehicle Showcase of Royal Ride */
+.vehicle-card {
+  position: relative;
+  background: radial-gradient(circle at 50% 10%, rgba(14, 14, 14, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  border: 1px solid rgba(197, 168, 92, 0.25);
+  border-radius: 12px;
+  padding: 30px;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(197, 168, 92, 0.05);
+}
+
+/* Internal elegant double border resembling classic gold-stamping */
+.vehicle-card::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(197, 168, 92, 0.15);
+  border-radius: 8px;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vehicle-card::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed rgba(197, 168, 92, 0.08);
+  border-radius: 6px;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Subtle glowing pulse keyframes for the vehicle card border on hover */
+@keyframes gold-glow-pulse {
+  0% {
+    box-shadow: 0 15px 35px rgba(197, 168, 92, 0.1), 0 0 4px rgba(197, 168, 92, 0.12);
+    border-color: rgba(197, 168, 92, 0.35);
+  }
+  50% {
+    box-shadow: 0 20px 45px rgba(197, 168, 92, 0.24), 0 0 16px rgba(197, 168, 92, 0.45);
+    border-color: rgba(197, 168, 92, 0.85);
+  }
+  100% {
+    box-shadow: 0 15px 35px rgba(197, 168, 92, 0.1), 0 0 4px rgba(197, 168, 92, 0.12);
+    border-color: rgba(197, 168, 92, 0.35);
+  }
+}
+
+/* Intricate filigree corner ornaments on vehicle card hovers */
+.vehicle-card:hover {
+  animation: gold-glow-pulse 2.2s infinite ease-in-out;
+  transform: translateY(-6px) scale(1.015);
+}
+
+.vehicle-card:hover::before {
+  border-color: rgba(197, 168, 92, 0.35);
+  inset: 6px;
+}
+
+.vehicle-card:hover::after {
+  border-color: rgba(197, 168, 92, 0.18);
+  inset: 10px;
+}
+
+/* Class to inject gold corners dynamically or display solid filigree drawings */
+.vehicle-card-accent-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.vehicle-card-accent-totallink {
+  display: block;
+}
+
+/* Highly detailed gold filigree corner ornaments */
+.filigree-corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.65;
+  z-index: 30;
+}
+
+.vehicle-card:hover .filigree-corner,
+.group:hover .filigree-corner {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.filigree-corner.tl {
+  top: 10px;
+  left: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C5A85C' stroke-width='1'%3E%3Cpath d='M2 2h18M2 2v18'/%3E%3Cpath d='M5 5c4 0 7 3 7 7 M2 8c2 2 4 4 4 7 M8 2c2 2 4 4 7 4'/%3E%3Cpath d='M2 14c4 2 6 6 6 8'/%3E%3Cpath d='M14 2c2 4 6 6 8 6'/%3E%3Ccircle cx='4' cy='4' r='1.2' fill='%23C5A85C'/%3E%3C/svg%3E");
+}
+
+.filigree-corner.tr {
+  top: 10px;
+  right: 10px;
+  transform: scaleX(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C5A85C' stroke-width='1'%3E%3Cpath d='M2 2h18M2 2v18'/%3E%3Cpath d='M5 5c4 0 7 3 7 7 M2 8c2 2 4 4 4 7 M8 2c2 2 4 4 7 4'/%3E%3Cpath d='M2 14c4 2 6 6 6 8'/%3E%3Cpath d='M14 2c2 4 6 6 8 6'/%3E%3Ccircle cx='4' cy='4' r='1.2' fill='%23C5A85C'/%3E%3C/svg%3E");
+}
+
+.vehicle-card:hover .filigree-corner.tr,
+.group:hover .filigree-corner.tr {
+  transform: scaleX(-1) scale(1.08);
+}
+
+.filigree-corner.bl {
+  bottom: 10px;
+  left: 10px;
+  transform: scaleY(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C5A85C' stroke-width='1'%3E%3Cpath d='M2 2h18M2 2v18'/%3E%3Cpath d='M5 5c4 0 7 3 7 7 M2 8c2 2 4 4 4 7 M8 2c2 2 4 4 7 4'/%3E%3Cpath d='M2 14c4 2 6 6 6 8'/%3E%3Cpath d='M14 2c2 4 6 6 8 6'/%3E%3Ccircle cx='4' cy='4' r='1.2' fill='%23C5A85C'/%3E%3C/svg%3E");
+}
+
+.vehicle-card:hover .filigree-corner.bl,
+.group:hover .filigree-corner.bl {
+  transform: scaleY(-1) scale(1.08);
+}
+
+.filigree-corner.br {
+  bottom: 10px;
+  right: 10px;
+  transform: scale(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C5A85C' stroke-width='1'%3E%3Cpath d='M2 2h18M2 2v18'/%3E%3Cpath d='M5 5c4 0 7 3 7 7 M2 8c2 2 4 4 4 7 M8 2c2 2 4 4 7 4'/%3E%3Cpath d='M2 14c4 2 6 6 6 8'/%3E%3Cpath d='M14 2c2 4 6 6 8 6'/%3E%3Ccircle cx='4' cy='4' r='1.2' fill='%23C5A85C'/%3E%3C/svg%3E");
+}
+
+.vehicle-card:hover .filigree-corner.br,
+.group:hover .filigree-corner.br {
+  transform: scale(-1) scale(1.08);
+}
+
+/* تصميم لشاشات الهواتف */
+@media (max-width: 600px) {
+  .header {
+    padding: 10px;
+  }
+  
+  .nav {
+    flex-direction: column;
+  }
+  
+  .hero-section {
+    height: 40vh !important;
+  }
+  
+  .fleet-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* تصميم للتابلت */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .header {
+    padding: 20px;
+  }
+  
+  .hero-section {
+    height: 400px;
+  }
+}
+
+/* تخطيط سطح المكتب */
+@media screen and (min-width: 1024px) {
+  /* أنماط سطح المكتب */
+}
+
+/* تخطيط الأجهزة اللوحية */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* أنماط الأجهزة اللوحية */
+}
+
+/* تخطيط الهاتف المحمول */
+@media screen and (max-width: 767px) {
+  /* أنماط الهاتف المحمول */
+}
+
+/* Responsive Typography */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+}
+
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.1) brightness(1.1);
+}
+
+/* Custom User Requested Styling */
+.hero-section {
+  height: 50vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav a {
+  padding: 15px;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.btn {
+  padding: 12px 24px;
+  min-width: 64px;
+  min-height: 44px;
+}
+
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+
+
+
+
+
+
+

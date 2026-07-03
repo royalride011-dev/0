@@ -1,0 +1,139 @@
+// Centralized Image Registry for Royal Ride Jordan
+// This centralizes all local imports and static paths so they can be easily modified or added to in one place.
+
+// Importing assets using ESM to ensure webpack/vite resolve them correctly
+import luxuryCarsImg from './assets/images/regenerated_image_1782602686534.png';
+import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.png';
+import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
+import luxuryBookingsImg from './assets/images/regenerated_image_1782494179013.png';
+import vipSClassAmmanImg from './assets/images/images/vip_s_class_amman_1782232812410.jpg';
+import stariaVipAmmanImg from './assets/images/images/staria_vip_amman_1782232781113.jpg';
+import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
+import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
+import limousineServiceImg from './assets/images/regenerated_image_1782493917504.png';
+import petraTourImg from './assets/images/regenerated_image_1782516369460.png';
+const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
+import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.png';
+import deadSeaRegeneratedImg from './assets/images/regenerated_image_1782559795596.png';
+import fleetShowcaseRegeneratedImg from './assets/images/regenerated_image_1782524705621.png';
+import tourismShowcaseRegeneratedImg from './assets/images/regenerated_image_1782524952600.png';
+import ammanRegeneratedNewImg from './assets/images/regenerated_image_1782560873353.png';
+import damascusRegeneratedImg from './assets/images/regenerated_image_1782562221421.jpg';
+import beirutRegeneratedImg from './assets/images/regenerated_image_1782559795596.png';
+import aqabaRegeneratedImg from './assets/images/regenerated_image_1782561837164.png';
+import wadirumRegeneratedImg from './assets/images/regenerated_image_1782562449414.png';
+import ajlounRegeneratedImg from './assets/images/regenerated_image_1782560716241.png';
+import jerashRegeneratedImg from './assets/images/regenerated_image_1782560970591.png';
+import regeneratedImage from './assets/images/regenerated_image_1782566736051.png';
+import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.png';
+import luxuryVipImg from './assets/images/regenerated_image_1782603241397.png';
+import comfortClassImg from './assets/images/regenerated_image_1782645015213.png';
+import newStariaVipImg from './assets/images/regenerated_image_1783017095551.png';
+import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.png';
+import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.png';
+import newBlogImg from './assets/images/regenerated_image_1782668125071.png';
+import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.png';
+import newRegeneratedImg from './assets/images/regenerated_image_1783017095551.png';
+
+// Helper to allow live administrative image customization/addition from client-side overrides
+const getOverride = (keyPath: string, defaultValue: string): string => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem(`rr_img_override_${keyPath}`);
+    if (saved && saved.trim() && !saved.includes('regenerated_image_1782325973899')) {
+      // Clear stale override if code has a newer/different regenerated image
+      if (saved.includes('regenerated_image_') && defaultValue.includes('regenerated_image_')) {
+        const savedMatch = saved.match(/regenerated_image_(\d+)/);
+        const defaultMatch = defaultValue.match(/regenerated_image_(\d+)/);
+        if (savedMatch && defaultMatch && savedMatch[1] !== defaultMatch[1]) {
+          localStorage.removeItem(`rr_img_override_${keyPath}`);
+          return defaultValue;
+        }
+      }
+      
+      // Normalize backslashes to forward slashes
+      let cleaned = saved.replace(/\\+/g, '/');
+      
+      // Ensure it starts with a single slash if it references src/
+      if (cleaned.includes('src/') && !cleaned.startsWith('/')) {
+        cleaned = '/' + cleaned;
+      }
+
+      // If it contains /src/, check if we are in production.
+      if (cleaned.includes('/src/')) {
+        // In production, raw /src/ paths will fail, so we return the compiled defaultValue
+        const isProd = import.meta.env.PROD;
+        if (isProd) {
+          return defaultValue;
+        }
+      }
+      return cleaned;
+    }
+  }
+  return defaultValue;
+};
+
+export const images = {
+  // Hero Section
+  hero: {
+    bg: getOverride('hero_bg', '/images/royal_ride_hero_ultimate_v2_1781855232538.jpg'),
+  },
+
+  // Fleet / Vehicles (FleetCarousel and data.ts)
+  fleet: {
+    comfortClass: getOverride('fleet_comfortClass', comfortClassImg),
+    stariaVip: getOverride('fleet_stariaVip', newStariaVipImg),
+    toyotaHiace: getOverride('fleet_toyotaHiace', newToyotaHiaceImg),
+    toyotaCoaster: getOverride('fleet_toyotaCoaster', toyotaCoasterImg),
+    luxuryGmcYukon: getOverride('fleet_luxuryGmcYukon', luxuryGmcYukonImg),
+  },
+
+  // Services Page & Home Services lists
+  services: {
+    limousinePassenger: getOverride('services_limousinePassenger', limousineServiceImg),
+    hotelRestaurantBookings: getOverride('services_hotelRestaurantBookings', luxuryBookingsImg),
+    borderCrossingsJordan: getOverride('services_borderCrossingsJordan', crossBorderTransitImg),
+    internationalTransit: getOverride('services_internationalTransit', '/images/cross_border_transit_1782298169892.jpg'),
+    airportTransitJordan: getOverride('services_airportTransitJordan', airportTransitImg),
+    corporateTransportation: getOverride('services_corporateTransportation', '/images/corporate_vip_cabin_1782298274501.jpg'),
+    carVanRentals: getOverride('services_carVanRentals', '/images/comfort_class_fleet_1782258340226.jpg'),
+    // Fallbacks or legacy service items
+    luxuryHotelDining: getOverride('services_luxuryHotelDining', luxuryHotelDiningImg),
+    vipSClassAmman: getOverride('services_vipSClassAmman', vipSClassAmmanImg),
+    stariaHourlyDaily: getOverride('services_stariaHourlyDaily', stariaHourlyDailyImg),
+  },
+
+  // Tourist Destinations (TourismCarousel)
+  tourism: {
+    amman: getOverride('tourism_amman', ammanRegeneratedNewImg),
+    petra: getOverride('tourism_petra', petraTourImg),
+    wadirum: getOverride('tourism_wadirum', wadirumRegeneratedImg),
+    deadsea: getOverride('tourism_deadsea', deadSeaRegeneratedImg),
+    aqaba: getOverride('tourism_aqaba', aqabaRegeneratedImg),
+    jerash: getOverride('tourism_jerash', jerashRegeneratedImg),
+    madaba: getOverride('tourism_madaba', 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=1200&q=80'),
+    damascus: getOverride('tourism_damascus', damascusRegeneratedImg),
+    beirut: getOverride('tourism_beirut', beirutRegeneratedImg),
+    ajloun: getOverride('tourism_ajloun', ajlounRegeneratedImg),
+  },
+
+  // About Page
+  about: {
+    ministryPartner: getOverride('about_ministryPartner', petraTourImg),
+    cabinComfort: getOverride('about_cabinComfort', '/images/luxury_car_interior_1782219795811.jpg'),
+  },
+
+  // Blog Page
+  blog: {
+    airportVipLogistics: getOverride('blog_airportVipLogistics', newBlogImg),
+    jordanPetraItinerary: getOverride('blog_jordanPetraItinerary', petraTourImg),
+    crossBorderSyriaLebanon: getOverride('blog_crossBorderSyriaLebanon', crossBorderBlogImg),
+  },
+
+  // Testimonials Avatars
+  avatars: {
+    richardHarrington: getOverride('avatars_richardHarrington', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=70'),
+    elenaRostova: getOverride('avatars_elenaRostova', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=80&h=80&q=70'),
+    tariqAlSaeed: getOverride('avatars_tariqAlSaeed', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&h=80&q=70'),
+    marcusSophiaVance: getOverride('avatars_marcusSophiaVance', 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=80&h=80&q=70'),
+  }
+};
