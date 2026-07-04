@@ -4,7 +4,7 @@
 // Importing assets using ESM to ensure webpack/vite resolve them correctly
 import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.jpg';
 import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
-import luxuryBookingsImg from './assets/images/regenerated_image_1783192151412.jpg';
+import luxuryBookingsImg from './assets/images/regenerated_image_1783199521474.jpg';
 import vipSClassAmmanImg from './assets/images/regenerated_image_1783171439552.jpg';
 import stariaVipAmmanImg from './assets/images/images/staria_vip_amman_1782232781113.jpg';
 import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
