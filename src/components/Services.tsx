@@ -5,14 +5,14 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../LanguageContext';
 import { GoldCorners, GoldDivider } from './GoldOrnament';
-import crossBorderTransitImg from '../assets/images/regenerated_image_1782494533296.png';
+import crossBorderTransitImg from '../assets/images/regenerated_image_1782494533296.jpg';
 import luxuryHotelDiningImg from '../assets/images/images/luxury_hotel_dining_1782297400933.jpg';
-import luxuryBookingsImg from '../assets/images/regenerated_image_1782494179013.png';
+import luxuryBookingsImg from '../assets/images/regenerated_image_1783164932734.jpg';
 import vipSClassAmmanImg from '../assets/images/images/vip_s_class_amman_1782232812410.jpg';
 import stariaVipAmmanImg from '../assets/images/images/staria_vip_amman_1782232781113.jpg';
 import stariaHourlyDailyImg from '../assets/images/images/staria_hourly_daily_1782296563411.jpg';
 import airportTransitImg from '../assets/images/regenerated_image_1782490599935.jpg';
-import limousineServiceImg from '../assets/images/regenerated_image_1782493917504.png';
+import limousineServiceImg from '../assets/images/regenerated_image_1783164770043.jpg';
 import newServiceImg from '../assets/images/regenerated_image_1783092504466.jpg';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -356,7 +356,7 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.75, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="tailored-service-card group relative rounded-3xl overflow-hidden border border-[#C5A85C]/20 hover:border-[#C5A85C]/60 bg-royal-navy-900 shadow-xl transition-all duration-500 hover:shadow-2xl flex flex-col justify-between animate-gpu"
+                className="tailored-service-card group relative rounded-3xl overflow-hidden border border-[#C5A85C]/20 hover:border-[#C5A85C]/60 bg-black shadow-xl transition-all duration-500 hover:shadow-2xl flex flex-col justify-between animate-gpu"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
@@ -406,11 +406,11 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
                 <div className="p-6 flex-grow flex flex-col justify-between">
                   <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
                     {isSpecialSection ? (
-                      <h2 className="font-serif text-lg font-bold text-white group-hover:text-[#C5A85C] transition-colors leading-snug">
+                      <h2 className="font-serif text-lg font-bold text-[#C5A85C] transition-colors leading-snug">
                         {language === 'en' ? service.title : service.titleAr}
                       </h2>
                     ) : (
-                      <h3 className="font-serif text-lg font-bold text-white group-hover:text-[#C5A85C] transition-colors leading-snug">
+                      <h3 className="font-serif text-lg font-bold text-[#C5A85C] transition-colors leading-snug">
                         {language === 'en' ? service.title : service.titleAr}
                       </h3>
                     )}
@@ -480,7 +480,7 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
         </div>
 
         {/* Dynamic Trust bar underneath the services */}
-        <div className="mt-16 p-6 rounded-2xl bg-royal-navy-900 border border-champagne-gold-500/20 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mt-16 p-6 rounded-2xl bg-black border border-champagne-gold-500/20 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
           <div className={`flex items-center space-x-3.5 ${isRtl ? 'space-x-reverse text-right' : 'text-left'}`}>
             <div className="w-12 h-12 rounded-xl bg-[#C5A85C]/10 flex items-center justify-center text-[#C5A85C] border border-[#C5A85C]/25 shrink-0 shadow-inner">
               <ShieldCheck className="w-6 h-6" />
@@ -531,7 +531,7 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 30 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="relative w-full max-w-3xl bg-royal-navy-900 rounded-3xl overflow-hidden shadow-2xl border border-[#C5A85C]/35 max-h-[90vh] flex flex-col z-10"
+              className="relative w-full max-w-3xl bg-black rounded-3xl overflow-hidden shadow-2xl border border-[#C5A85C]/35 max-h-[90vh] flex flex-col z-10"
             >
               {/* Close Button overlay */}
               <button
@@ -555,7 +555,7 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
                     loading="lazy"
                     decoding="async"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-royal-navy-900 via-royal-navy-900/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                   
                   {/* Floating category tag */}
                   <div className={`absolute bottom-6 ${isRtl ? 'right-6 text-right' : 'left-6'}`}>

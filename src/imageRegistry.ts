@@ -2,32 +2,32 @@
 // This centralizes all local imports and static paths so they can be easily modified or added to in one place.
 
 // Importing assets using ESM to ensure webpack/vite resolve them correctly
-import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.png';
+import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.jpg';
 import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
-import luxuryBookingsImg from './assets/images/regenerated_image_1782494179013.png';
-import vipSClassAmmanImg from './assets/images/images/vip_s_class_amman_1782232812410.jpg';
+import luxuryBookingsImg from './assets/images/regenerated_image_1783164932734.jpg';
+import vipSClassAmmanImg from './assets/images/regenerated_image_1783171439552.jpg';
 import stariaVipAmmanImg from './assets/images/images/staria_vip_amman_1782232781113.jpg';
 import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
 import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
-import limousineServiceImg from './assets/images/regenerated_image_1782493917504.png';
-import petraTourImg from './assets/images/regenerated_image_1782516369460.png';
+import limousineServiceImg from './assets/images/regenerated_image_1783164770043.jpg';
+import petraTourImg from './assets/images/regenerated_image_1782516369460.jpg';
 const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
-import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.png';
-import deadSeaRegeneratedImg from './assets/images/regenerated_image_1782559795596.png';
-import ammanRegeneratedNewImg from './assets/images/regenerated_image_1782560873353.png';
+import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
+import deadSeaRegeneratedImg from './assets/images/regenerated_image_1782559795596.jpg';
+import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783172233726.jpg';
 import damascusRegeneratedImg from './assets/images/regenerated_image_1782562221421.jpg';
-import beirutRegeneratedImg from './assets/images/regenerated_image_1782559795596.png';
-import aqabaRegeneratedImg from './assets/images/regenerated_image_1782561837164.png';
-import wadirumRegeneratedImg from './assets/images/regenerated_image_1782562449414.png';
-import ajlounRegeneratedImg from './assets/images/regenerated_image_1782560716241.png';
-import jerashRegeneratedImg from './assets/images/regenerated_image_1782560970591.png';
-import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.png';
-import comfortClassImg from './assets/images/regenerated_image_1782645015213.png';
-import newStariaVipImg from './assets/images/regenerated_image_1783017095551.png';
-import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.png';
-import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.png';
-import newBlogImg from './assets/images/regenerated_image_1782668125071.png';
-import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.png';
+import beirutRegeneratedImg from './assets/images/regenerated_image_1782559795596.jpg';
+import aqabaRegeneratedImg from './assets/images/regenerated_image_1782561837164.jpg';
+import wadirumRegeneratedImg from './assets/images/regenerated_image_1782562449414.jpg';
+import ajlounRegeneratedImg from './assets/images/regenerated_image_1782560716241.jpg';
+import jerashRegeneratedImg from './assets/images/regenerated_image_1782560970591.jpg';
+import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.jpg';
+import comfortClassImg from './assets/images/regenerated_image_1783170968954.jpg';
+import newStariaVipImg from './assets/images/regenerated_image_1783017095551.jpg';
+import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.jpg';
+import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.jpg';
+import newBlogImg from './assets/images/regenerated_image_1782668125071.jpg';
+import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.jpg';
 
 // Helper to allow live administrative image customization/addition from client-side overrides
 const getOverride = (keyPath: string, defaultValue: string): string => {
@@ -46,6 +46,9 @@ const getOverride = (keyPath: string, defaultValue: string): string => {
       
       // Normalize backslashes to forward slashes
       let cleaned = saved.replace(/\\+/g, '/');
+      
+      // Convert stale png extensions to optimized jpg references
+      cleaned = cleaned.replace(/\.png/gi, '.jpg');
       
       // Ensure it starts with a single slash if it references src/
       if (cleaned.includes('src/') && !cleaned.startsWith('/')) {

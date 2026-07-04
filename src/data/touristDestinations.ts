@@ -297,14 +297,15 @@ export const getStoredDestinations = (): DestinationNode[] => {
           // Sync stale images with TOURIST_DESTINATIONS if defaults have newer/different regenerated images
           let modified = false;
           const updated = parsed.map(dest => {
+            let currentImg = dest.image;
             const def = TOURIST_DESTINATIONS.find(d => d.id === dest.id);
-            if (def && def.image !== dest.image) {
-              if (def.image.includes('regenerated_image_') || dest.image.includes('regenerated_image_')) {
+            if (def) {
+              if (!currentImg || currentImg.includes('.png') || currentImg.includes('/src/') || (currentImg.includes('regenerated_image_') && def.image !== currentImg)) {
+                currentImg = def.image;
                 modified = true;
-                return { ...dest, image: def.image };
               }
             }
-            return dest;
+            return { ...dest, image: currentImg };
           });
           if (modified) {
             localStorage.setItem('rr_custom_tourist_destinations', JSON.stringify(updated));

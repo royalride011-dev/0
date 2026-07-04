@@ -29,7 +29,9 @@ import { images } from '../imageRegistry';
 import { 
   getStoredDestinations, 
   FALLBACK_DESTINATION, 
-  DestinationNode 
+  DestinationNode,
+  TOURIST_DESTINATIONS,
+  resetStoredDestinations
 } from '../data/touristDestinations';
 
 // Coordinates for our handcrafted interactive vector route map
@@ -53,12 +55,37 @@ const JORDAN_MAP_NODES: MapCoordinate[] = [
   { id: 'aqaba', name: 'Aqaba', nameAr: 'العقبة', x: 30, y: 95 },
 ];
 
+const slideVariants = {
+  enter: (dir: number) => ({
+    x: dir > 0 ? '100%' : dir < 0 ? '-100%' : 0,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      x: { type: "spring", stiffness: 300, damping: 30 },
+      opacity: { duration: 0.3 }
+    }
+  },
+  exit: (dir: number) => ({
+    x: dir < 0 ? '100%' : dir > 0 ? '-100%' : 0,
+    opacity: 0,
+    transition: {
+      x: { type: "spring", stiffness: 300, damping: 30 },
+      opacity: { duration: 0.3 }
+    }
+  })
+};
+
 export default function TourismCarousel() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { language, isRtl } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [viewMode, setViewMode] = useState<'split' | 'grid'>('split');
   const [activeTab, setActiveTab] = useState<'story' | 'highlights' | 'fleet'>('story');
+  const [selectedFleetId, setSelectedFleetId] = useState<string | null>(null);
   const [showMap, setShowMap] = useState<boolean>(false); // toggle photo vs route map inside showcase card
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
@@ -84,10 +111,12 @@ export default function TourismCarousel() {
   };
 
   const handleNext = () => {
+    setDirection(1);
     setActiveIndex((prev) => (prev >= destinationsList.length - 1 ? 0 : prev + 1));
   };
 
   const handlePrev = () => {
+    setDirection(-1);
     setActiveIndex((prev) => (prev <= 0 ? destinationsList.length - 1 : prev - 1));
   };
 
@@ -115,34 +144,73 @@ export default function TourismCarousel() {
     }
   };
 
+  // Handcrafted premium fleet dataset for the interactive icons and recommender system
+  const FLEET_ITEMS = [
+    {
+      id: 's-class',
+      nameEn: 'Mercedes-Benz S-Class (W223)',
+      nameAr: 'مرسيدس بنز الفئة S ملوكية',
+      image: images.services.vipSClassAmman || '/images/vip_s_class_amman_1782232812410.jpg',
+      reasonEn: 'Perfect for urban prestige, supreme acoustic isolation, and gliding smoothly through capital hills.',
+      reasonAr: 'خيار مثالي لتنقلات العاصمة، عزل صوتي مطلق وانسيابية مذهلة تناسب تلال عمان الملوكية.',
+      luxuryRank: 'Elite Class VIP',
+      luxuryRankAr: 'نخبة كبار الشخصيات VIP'
+    },
+    {
+      id: 'yukon',
+      nameEn: 'GMC Yukon Denali Ultimate',
+      nameAr: 'جي إم سي يوكون دينالي برستيج',
+      image: images.fleet.luxuryGmcYukon || '/images/regenerated_image_1782434427794.jpg',
+      reasonEn: 'Commanding high-elevation control, all-wheel drive, and generous panoramic roof for scenic mountain views.',
+      reasonAr: 'أداء قوي في المرتفعات الجبلية العالية لجرش وعجلون، ونظام دفع رباعي آمن مع سقف بانورامي ساحر.',
+      luxuryRank: 'Royal SUV Expedition',
+      luxuryRankAr: 'الدفع الرباعي الملوكي'
+    },
+    {
+      id: 'staria',
+      nameEn: 'Hyundai Staria VIP',
+      nameAr: 'هيونداي ستاريا VIP',
+      image: images.fleet.stariaVip || '/images/staria_vip_amman_1782232781113.jpg',
+      reasonEn: 'Elite multi-passenger space with leather captain seats and panoramic windows.',
+      reasonAr: 'مساحة نخبوية مريحة لعدة ركاب مع مقاعد جلدية رئاسية ونوافذ بانورامية.',
+      luxuryRank: 'Elite Family Lounge',
+      luxuryRankAr: 'الدرجة العائلية الراقية'
+    },
+    {
+      id: 'comfort',
+      nameEn: 'Comfort Class (Sedan)',
+      nameAr: 'الفئة المريحة (سيدان)',
+      image: images.fleet.comfortClass || '/images/comfort_class_fleet_1782258340226.jpg',
+      reasonEn: 'Premium smooth sedans like Toyota Camry, perfect for comfortable city trips and daily transfers.',
+      reasonAr: 'سيارات سيدان راقية وعائلية مثل تويوتا كامري، ممتازة للتنقل المريح داخل المدن والتوصيل السريع.',
+      luxuryRank: 'Executive Comfort',
+      luxuryRankAr: 'الدرجة المريحة'
+    },
+    {
+      id: 'coaster',
+      nameEn: 'Toyota Coaster Luxury',
+      nameAr: 'حافلة تويوتا كوستر الفاخرة',
+      image: images.fleet.toyotaCoaster || '/images/regenerated_image_1782486245190.jpg',
+      reasonEn: 'Spacious high-capacity luxury touring bus for larger delegations and group expeditions.',
+      reasonAr: 'حافلة سياحية فاخرة واسعة ومريحة، مصممة للمجموعات الكبيرة والوفود المشتركة.',
+      luxuryRank: 'Sovereign Coach',
+      luxuryRankAr: 'الدرجة الجماعية الفاخرة'
+    }
+  ];
+
   // Helper to recommend high-end vehicles based on destination characteristics
   const getRecommendedFleet = (destId: string) => {
     const lowerId = destId.toLowerCase();
     if (lowerId.includes('amman')) {
-      return {
-        nameEn: 'Mercedes-Benz S-Class (W223)',
-        nameAr: 'مرسيدس بنز الفئة S ملوكية',
-        image: '/images/regenerated_image_1782325973899.png', // Fallback, or dynamic
-        reasonEn: 'Perfect for urban prestige, supreme acoustic isolation, and gliding smoothly through capital hills.',
-        reasonAr: 'خيار مثالي لتنقلات العاصمة، عزل صوتي مطلق وانسيابية مذهلة تناسب تلال عمان الملوكية.',
-        luxuryRank: 'Elite Class VIP',
-        luxuryRankAr: 'نخبة كبار الشخصيات VIP'
-      };
+      return FLEET_ITEMS[0]; // S-Class
     } else if (lowerId.includes('petra') || lowerId.includes('rum') || lowerId.includes('aqaba') || lowerId.includes('kerak')) {
-      return {
-        nameEn: 'Cadillac Escalade ESV Presidential',
-        nameAr: 'كاديلاك إسكاليد الرئاسية الفخمة',
-        image: '/images/regenerated_image_1782325973899.png',
-        reasonEn: 'Maximum rear legroom, high-speed Wi-Fi, and heavy road-presence designed for long cross-country highways.',
-        reasonAr: 'أقصى درجات الراحة للمسافات الطويلة، إنترنت سريع ومساحة وافرة تليق بالرحلات الطويلة للجنوب.',
-        luxuryRank: 'Presidential Sovereign',
-        luxuryRankAr: 'الدرجة الرئاسية السيادية'
-      };
+      return FLEET_ITEMS[1]; // GMC Yukon
     } else if (lowerId.includes('dead') || lowerId.includes('nebo')) {
       return {
+        id: 'yukon',
         nameEn: 'Range Rover Autobiography LWB',
         nameAr: 'رينج روفر أوتوبيوجرافي VIP',
-        image: '/images/regenerated_image_1782325973899.png',
+        image: images.fleet.luxuryGmcYukon || '/images/regenerated_image_1782434427794.jpg',
         reasonEn: 'Superior air suspension to smooth out elevation drop (-430m) and executive reclining wellness massage chairs.',
         reasonAr: 'نظام تعليق هوائي متطور يتكيف مع الانخفاض الجغرافي للبحر الميت، ومقاعد مساج مريحة للاستجمام.',
         luxuryRank: 'Wellness Executive LWB',
@@ -150,15 +218,7 @@ export default function TourismCarousel() {
       };
     } else {
       // Jerash, Ajloun
-      return {
-        nameEn: 'GMC Yukon Denali Ultimate',
-        nameAr: 'جي إم سي يوكون دينالي برستيج',
-        image: '/images/regenerated_image_1782325973899.png',
-        reasonEn: 'Commanding high-elevation control, all-wheel drive, and generous panoramic roof for scenic mountain views.',
-        reasonAr: 'أداء قوي في المرتفعات الجبلية العالية لجرش وعجلون، ونظام دفع رباعي آمن مع سقف بانورامي ساحر.',
-        luxuryRank: 'Royal SUV Expedition',
-        luxuryRankAr: 'الدفع الرباعي الملوكي'
-      };
+      return FLEET_ITEMS[1]; // GMC Yukon
     }
   };
 
@@ -168,6 +228,25 @@ export default function TourismCarousel() {
     : activeDest.image;
 
   const fleetRec = getRecommendedFleet(activeDest.id);
+
+  // Auto-reset customized vehicle selection when switching destinations
+  useEffect(() => {
+    setSelectedFleetId(null);
+  }, [activeIndex]);
+
+  // Self-healing image loader: reset failed flag for active destination when index, id, or image changes
+  useEffect(() => {
+    if (activeDest?.id) {
+      setFailedImages((prev) => {
+        if (prev[activeDest.id]) {
+          const next = { ...prev };
+          delete next[activeDest.id];
+          return next;
+        }
+        return prev;
+      });
+    }
+  }, [activeIndex, activeDest?.image, activeDest?.id]);
 
   return (
     <section id="tourism" ref={sectionRef} className="relative py-24 bg-black overflow-hidden text-left text-[#FAF6ED]">
@@ -232,95 +311,402 @@ export default function TourismCarousel() {
         </div>
 
         {viewMode === 'split' ? (
-          <div className="flex flex-col gap-8">
+          <div className="space-y-8">
+            {/* Elegant Selector Tabs with thumbnails of all images */}
+            <div className="flex flex-col space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <span className="text-xs font-mono uppercase tracking-wider text-[#C5A85C]">
+                  {language === 'en' ? 'Select Destination / Explore Gallery' : 'اختر الوجهة / استكشف المعرض'}
+                </span>
+                <button
+                  onClick={() => {
+                    const tourismKeys = ['tourism_amman', 'tourism_petra', 'tourism_wadirum', 'tourism_deadsea', 'tourism_aqaba', 'tourism_jerash', 'tourism_madaba', 'tourism_damascus', 'tourism_beirut', 'tourism_ajloun'];
+                    tourismKeys.forEach(key => {
+                      localStorage.removeItem(`rr_img_override_${key}`);
+                    });
+                    resetStoredDestinations();
+                    setDestinationsList(TOURIST_DESTINATIONS);
+                    setFailedImages({});
+                    setActiveIndex(0);
+                    window.location.reload();
+                  }}
+                  className="flex items-center justify-center gap-1.5 text-xs font-sans font-bold text-[#C5A85C] hover:text-white transition-colors duration-200 cursor-pointer bg-[#111111]/85 px-4 py-2 rounded-xl border border-[#C5A85C]/30 hover:border-[#C5A85C] shadow-md shadow-black/40 self-start sm:self-auto"
+                >
+                  <History className="w-3.5 h-3.5" />
+                  {language === 'en' ? 'Restore Original Images' : 'استعادة الصور الأصلية'}
+                </button>
+              </div>
+
               
-              {/* Top: Visual Media & Controls */}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+              
+              {/* Left Column: Visual Media & Controls */}
               <motion.div 
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-120px" }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full flex flex-col space-y-5 animate-gpu"
+                className="lg:col-span-7 w-full flex flex-col space-y-5 animate-gpu"
               >
                   <AnimatePresence mode="wait">
                     {!showMap ? (
-                      // Background Ken Burns Effect Image
-                      <motion.div
-                        key="photo-stage"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="relative w-full z-0 overflow-hidden rounded-3xl"
-                      >
-                        <motion.img
-                          src={currentImage}
-                          alt={`وجهة سياحية: ${activeDest.name} من Royal Ride Jordan`}
-                          className="w-full object-cover opacity-85"
-                          style={{ height: '500px' }}
-                          initial={{ scale: 1.03 }}
-                          animate={{ scale: 1.08 }}
-                          transition={{ duration: 12, ease: "linear" }}
-                          referrerPolicy="no-referrer"
-                          loading="lazy"
-                          decoding="async"
-                          onError={() => {
-                            setFailedImages(prev => ({ ...prev, [activeDest.id]: true }));
+                      // Interactive Sliding Image Carousel
+                      <div className="relative w-full max-w-[500px] aspect-square mx-auto z-0 overflow-hidden rounded-3xl group border border-[#C5A85C]/20 shadow-2xl bg-[#080808] flex items-center justify-center">
+                        <AnimatePresence initial={false} custom={direction}>
+                          <motion.div
+                            key={activeDest.id}
+                            custom={direction}
+                            variants={slideVariants}
+                            initial="enter"
+                            animate="center"
+                            exit="exit"
+                            className="absolute inset-0 w-full h-full"
+                          >
+                            <motion.img
+                              src={currentImage}
+                              alt={`وجهة سياحية: ${activeDest.name} من Royal Ride Jordan`}
+                              className="w-full h-full object-cover"
+                              initial={{ scale: 1.05 }}
+                              animate={{ scale: 1.10 }}
+                              transition={{ duration: 15, ease: "linear" }}
+                              referrerPolicy="no-referrer"
+                              loading="lazy"
+                              decoding="async"
+                              onError={() => {
+                                setFailedImages(prev => ({ ...prev, [activeDest.id]: true }));
+                              }}
+                            />
+                            {/* Linear Gradient Overlay for beautiful premium depth */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/45 pointer-events-none" />
+                          </motion.div>
+                        </AnimatePresence>
+
+                        {/* Slide Indicator Overlay e.g. 03 / 10 */}
+                        <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full bg-black/75 border border-[#C5A85C]/30 text-xs font-mono font-extrabold text-[#C5A85C] shadow-lg backdrop-blur-[6px]">
+                          {String(activeIndex + 1).padStart(2, '0')} / {String(destinationsList.length).padStart(2, '0')}
+                        </div>
+
+                        {/* Navigation Arrows (Always visible on mobile, beautifully styled on hover on desktop) */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePrev();
                           }}
-                        />
-                      </motion.div>
+                          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/60 hover:bg-black/80 md:bg-black/40 border border-[#C5A85C]/40 text-[#C5A85C] hover:text-white hover:scale-105 transition-all flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 opacity-100 shadow-xl cursor-pointer"
+                          aria-label="Previous Slide"
+                        >
+                          <ChevronLeft className="w-5.5 h-5.5" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNext();
+                          }}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/60 hover:bg-black/80 md:bg-black/40 border border-[#C5A85C]/40 text-[#C5A85C] hover:text-white hover:scale-105 transition-all flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 opacity-100 shadow-xl cursor-pointer"
+                          aria-label="Next Slide"
+                        >
+                          <ChevronRight className="w-5.5 h-5.5" />
+                        </button>
+
+                        {/* Route Map Toggle Overlay */}
+                        <button
+                          onClick={() => setShowMap(true)}
+                          className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-xl bg-black/80 border border-[#C5A85C]/30 text-xs font-sans font-semibold tracking-wider text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black transition-all flex items-center gap-1.5 shadow-md cursor-pointer backdrop-blur-[4px]"
+                        >
+                          <Map className="w-3.5 h-3.5" />
+                          {language === 'en' ? 'Show Route' : 'عرض الخريطة'}
+                        </button>
+
+                        {/* Carousel Dots Pagination Indicators inside the card at the bottom */}
+                        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex gap-2.5 bg-black/70 px-4 py-2 rounded-full border border-stone-800/80 backdrop-blur-md shadow-2xl">
+                          {destinationsList.map((_, idx) => (
+                            <button
+                              key={idx}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDirection(idx > activeIndex ? 1 : -1);
+                                setActiveIndex(idx);
+                              }}
+                              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                                idx === activeIndex 
+                                  ? 'w-7 bg-gradient-to-r from-[#C5A85C] to-[#ffe3a1] shadow-[0_0_8px_rgba(197,168,92,0.5)]' 
+                                  : 'w-2 bg-stone-500/80 hover:bg-stone-300'
+                              }`}
+                              aria-label={`Go to slide ${idx + 1}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
                     ) : (
-                      // Interactive Map Container (Simplified Placeholder)
+                      // Interactive Map Container
                       <motion.div
                         key="map-stage"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="relative w-full z-0 overflow-hidden rounded-3xl h-[500px] bg-stone-950 flex items-center justify-center border border-[#C5A85C]/20"
+                        className="relative w-full max-w-[500px] aspect-square mx-auto z-0 overflow-hidden rounded-3xl bg-[#0c0c0c] flex flex-col items-center justify-center border border-[#C5A85C]/30 group"
                       >
-                        <p className="text-champagne-gold-500/50 font-sans uppercase tracking-widest text-xs">
-                          {language === 'en' ? 'Interactive Map' : 'الخريطة التفاعلية'}
-                        </p>
+                        {/* Interactive Jordan Map Representation */}
+                        <div className="absolute inset-0 bg-radial-gradient from-[#111] to-black opacity-45 pointer-events-none" />
+                        
+                        {/* Map Grid Background */}
+                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#C5A85C 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+                        
+                        <div className="relative w-full h-full max-w-[400px] max-h-[460px] flex items-center justify-center">
+                          <svg className="absolute inset-0 w-full h-full text-[#C5A85C]/20" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <line x1="55" y1="22" x2="55" y2="32" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+                            <line x1="48" y1="18" x2="55" y2="32" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+                            <line x1="38" y1="45" x2="55" y2="32" stroke="currentColor" strokeWidth="1.5" />
+                            <line x1="48" y1="40" x2="55" y2="32" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+                            <line x1="42" y1="58" x2="38" y2="45" stroke="currentColor" strokeWidth="1.5" />
+                            <line x1="38" y1="78" x2="42" y2="58" stroke="currentColor" strokeWidth="1.5" />
+                            <line x1="42" y1="90" x2="38" y2="78" stroke="currentColor" strokeWidth="1.5" />
+                            <line x1="30" y1="95" x2="42" y2="90" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3" />
+                          </svg>
+
+                          {JORDAN_MAP_NODES.map((node) => {
+                            const isNodeActive = node.id === activeDest.id;
+                            const isHovered = hoveredNode === node.id;
+                            return (
+                              <button
+                                key={node.id}
+                                onMouseEnter={() => setHoveredNode(node.id)}
+                                onMouseLeave={() => setHoveredNode(null)}
+                                onClick={() => {
+                                  const index = destinationsList.findIndex(d => d.id === node.id);
+                                  if (index !== -1) {
+                                    setActiveIndex(index);
+                                  }
+                                }}
+                                className="absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 z-20 flex flex-col items-center group cursor-pointer"
+                                style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                              >
+                                <div className={`w-3.5 h-3.5 rounded-full transition-all duration-300 flex items-center justify-center ${
+                                  isNodeActive 
+                                    ? 'bg-[#C5A85C] scale-125 shadow-[0_0_12px_#C5A85C]' 
+                                    : isHovered 
+                                      ? 'bg-white scale-110 shadow-md' 
+                                      : 'bg-[#C5A85C]/40 border border-[#C5A85C]/60'
+                                }`}>
+                                  {isNodeActive && <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />}
+                                </div>
+                                <span className={`mt-1 px-1.5 py-0.5 rounded text-[9px] font-sans font-bold tracking-wide border transition-all duration-300 whitespace-nowrap ${
+                                  isNodeActive
+                                    ? 'bg-[#C5A85C] text-black border-[#C5A85C]'
+                                    : 'bg-black/90 text-champagne-gold-300 border-[#C5A85C]/20 hover:border-[#C5A85C]/50'
+                                }`}>
+                                  {language === 'en' ? node.name : node.nameAr}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {/* Back to Photo overlay */}
+                        <button
+                          onClick={() => setShowMap(false)}
+                          className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-xl bg-black/85 border border-[#C5A85C]/30 text-xs font-sans font-semibold tracking-wider text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black transition-all flex items-center gap-1.5 shadow-md cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          {language === 'en' ? 'Show Gallery' : 'عرض المعرض'}
+                        </button>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </motion.div>
 
                 {/* Right Column: Premium Sovereign Experience Ledger Card */}
-                <div className="flex flex-col justify-between h-full bg-black border-2 border-[#C5A85C] shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_30px_rgba(197,168,92,0.1)] rounded-3xl p-6 sm:p-8 relative overflow-hidden w-full self-stretch">
+                <div className="lg:col-span-5 flex flex-col justify-between h-full bg-[#0a0a0a] border-2 border-[#C5A85C]/40 hover:border-[#C5A85C] transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(197,168,92,0.05)] rounded-3xl p-6 sm:p-8 relative overflow-hidden w-full self-stretch min-h-[500px]">
                   {/* Elegant gold filigree corner accents */}
-                  <div className="absolute top-2 left-2 w-5 h-5 border-t border-l border-[#C5A85C]/40" />
-                  <div className="absolute top-2 right-2 w-5 h-5 border-t border-r border-[#C5A85C]/40" />
-                  <div className="absolute bottom-2 left-2 w-5 h-5 border-b border-l border-[#C5A85C]/40" />
-                  <div className="absolute bottom-2 right-2 w-5 h-5 border-b border-r border-[#C5A85C]/40" />
+                  <div className="absolute top-2 left-2 w-5 h-5 border-t border-l border-[#C5A85C]/40 pointer-events-none" />
+                  <div className="absolute top-2 right-2 w-5 h-5 border-t border-r border-[#C5A85C]/40 pointer-events-none" />
+                  <div className="absolute bottom-2 left-2 w-5 h-5 border-b border-l border-[#C5A85C]/40 pointer-events-none" />
+                  <div className="absolute bottom-2 right-2 w-5 h-5 border-b border-r border-[#C5A85C]/40 pointer-events-none" />
 
                   {/* Header */}
                   <div className="space-y-2">
-                    <h3 className="text-[#C5A85C] font-serif text-3xl md:text-4xl tracking-tight">
+                    <h3 className="text-[#C5A85C] font-serif text-3xl md:text-4xl tracking-tight font-bold">
                       {language === 'en' ? activeDest.name : activeDest.nameAr}
                     </h3>
-                    <p className="text-gray-400 font-sans text-sm tracking-wide">
+                    <p className="text-champagne-gold-400 font-sans text-xs tracking-wider uppercase">
                       {language === 'en' ? activeDest.subtitle : activeDest.subtitleAr}
                     </p>
                   </div>
 
+                  {/* Elegant Internal Tabs */}
+                  <div className="flex border-b border-[#C5A85C]/20 mt-6 mb-4">
+                    <button
+                      onClick={() => setActiveTab('story')}
+                      className={`flex-1 pb-2.5 text-xs font-sans font-extrabold uppercase tracking-wider text-center border-b-2 transition-all cursor-pointer ${
+                        activeTab === 'story'
+                          ? 'border-[#C5A85C] text-[#C5A85C]'
+                          : 'border-transparent text-stone-500 hover:text-stone-300'
+                      }`}
+                    >
+                      {language === 'en' ? 'Story' : 'القصة'}
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('highlights')}
+                      className={`flex-1 pb-2.5 text-xs font-sans font-extrabold uppercase tracking-wider text-center border-b-2 transition-all cursor-pointer ${
+                        activeTab === 'highlights'
+                          ? 'border-[#C5A85C] text-[#C5A85C]'
+                          : 'border-transparent text-stone-500 hover:text-stone-300'
+                      }`}
+                    >
+                      {language === 'en' ? 'Highlights' : 'أبرز المعالم'}
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('fleet')}
+                      className={`flex-1 pb-2.5 text-xs font-sans font-extrabold uppercase tracking-wider text-center border-b-2 transition-all cursor-pointer ${
+                        activeTab === 'fleet'
+                          ? 'border-[#C5A85C] text-[#C5A85C]'
+                          : 'border-transparent text-stone-500 hover:text-stone-300'
+                      }`}
+                    >
+                      {language === 'en' ? 'Luxury Fleet' : 'الأسطول الفاخر'}
+                    </button>
+                  </div>
+
                   {/* Main Content */}
-                  <div className="py-8 border-y border-[#C5A85C]/20 my-6">
-                    <p className="text-stone-300 font-sans leading-relaxed">
-                      {language === 'en' ? activeDest.description : activeDest.descriptionAr}
-                    </p>
+                  <div className="py-4 border-b border-[#C5A85C]/20 my-4 flex-grow flex items-center min-h-[160px]">
+                    <AnimatePresence mode="wait">
+                      {activeTab === 'story' && (
+                        <motion.div
+                          key="story-tab"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="w-full"
+                        >
+                          <p className={`text-stone-300 font-sans text-sm leading-relaxed ${isRtl ? 'text-right' : 'text-left'}`}>
+                            {language === 'en' ? activeDest.description : activeDest.descriptionAr}
+                          </p>
+                        </motion.div>
+                      )}
+
+                      {activeTab === 'highlights' && (
+                        <motion.div
+                          key="highlights-tab"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="w-full space-y-2.5"
+                        >
+                          {(language === 'en' ? activeDest.highlights : activeDest.highlightsAr).map((hl, i) => (
+                            <div key={i} className={`flex items-start gap-2.5 ${isRtl ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#C5A85C] mt-1.5 shrink-0 animate-pulse" />
+                              <span className="text-stone-300 text-xs sm:text-sm font-sans leading-relaxed">{hl}</span>
+                            </div>
+                          ))}
+                        </motion.div>
+                      )}
+
+                      {activeTab === 'fleet' && (() => {
+                        const activeVehicle = selectedFleetId 
+                          ? (FLEET_ITEMS.find(f => f.id === selectedFleetId) || fleetRec) 
+                          : fleetRec;
+                        return (
+                          <motion.div
+                            key="fleet-tab"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="w-full space-y-4"
+                          >
+                            {/* Horizontal Fleet Selector Icons */}
+                            <div className={`flex flex-col space-y-1.5 ${isRtl ? 'text-right' : 'text-left'}`}>
+                              <span className="text-[10px] font-sans font-extrabold text-[#C5A85C] uppercase tracking-wider">
+                                {language === 'en' ? 'Sovereign Fleet Options' : 'خيارات أسطول السيارات الفاخرة'}
+                              </span>
+                              <div className={`flex gap-3 overflow-x-auto pb-1 scrollbar-none py-1 justify-start ${isRtl ? 'flex-row-reverse' : ''}`}>
+                                {FLEET_ITEMS.map((vehicle) => {
+                                  const isRecommended = vehicle.id === fleetRec.id;
+                                  const isCurrentlySelected = selectedFleetId === vehicle.id || (!selectedFleetId && isRecommended);
+                                  return (
+                                    <button
+                                      key={vehicle.id}
+                                      onClick={() => setSelectedFleetId(vehicle.id)}
+                                      className={`relative flex items-center justify-center p-0.5 rounded-full border-2 transition-all duration-300 shrink-0 cursor-pointer ${
+                                        isCurrentlySelected
+                                          ? 'border-[#C5A85C] scale-105 shadow-[0_0_8px_rgba(197,168,92,0.4)]'
+                                          : 'border-stone-800 hover:border-stone-700 bg-stone-900/30'
+                                      }`}
+                                      title={language === 'en' ? vehicle.nameEn : vehicle.nameAr}
+                                    >
+                                      <div className="w-10 h-10 rounded-full overflow-hidden border border-black bg-black">
+                                        <img
+                                          src={vehicle.image}
+                                          alt={vehicle.nameEn}
+                                          className="w-full h-full object-cover"
+                                          referrerPolicy="no-referrer"
+                                        />
+                                      </div>
+                                      {isRecommended && (
+                                        <span className="absolute -top-1 -right-1 bg-[#C5A85C] text-black text-[7px] font-sans font-bold px-1 rounded-full border border-black scale-90">
+                                          {language === 'en' ? 'Rec' : 'موصى'}
+                                        </span>
+                                      )}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Active Fleet Vehicle Card with Image */}
+                            <div className={`flex flex-col sm:flex-row gap-4 items-center bg-[#111111]/95 p-4 rounded-2xl border border-[#C5A85C]/20 shadow-lg ${isRtl ? 'sm:flex-row-reverse' : ''}`}>
+                              <div className="w-full sm:w-28 h-20 rounded-xl overflow-hidden shrink-0 border border-stone-800 bg-black/50">
+                                <img
+                                  src={activeVehicle.image}
+                                  alt={language === 'en' ? activeVehicle.nameEn : activeVehicle.nameAr}
+                                  className="w-full h-full object-cover"
+                                  referrerPolicy="no-referrer"
+                                />
+                              </div>
+                              <div className={`flex-grow w-full ${isRtl ? 'text-right' : 'text-left'}`}>
+                                <div className="flex items-center justify-between gap-2 flex-wrap mb-1.5">
+                                  <h4 className="text-[#C5A85C] font-sans text-xs sm:text-sm font-extrabold">
+                                    {language === 'en' ? activeVehicle.nameEn : activeVehicle.nameAr}
+                                  </h4>
+                                  <span className="text-[9px] bg-[#C5A85C]/15 border border-[#C5A85C]/30 text-[#C5A85C] px-2 py-0.5 rounded-full font-mono font-bold">
+                                    {language === 'en' ? activeVehicle.luxuryRank : activeVehicle.luxuryRankAr}
+                                  </span>
+                                </div>
+                                <p className="text-stone-400 text-xs leading-relaxed">
+                                  {language === 'en' ? activeVehicle.reasonEn : activeVehicle.reasonAr}
+                                </p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })()}
+                    </AnimatePresence>
                   </div>
 
                   {/* Footer/Action */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-[#C5A85C] font-mono text-sm">
-                      {activeDest.duration}
-                    </span>
-                    <button className="bg-[#C5A85C] text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-white transition-colors">
+                  <div className={`flex items-center justify-between gap-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex flex-col ${isRtl ? 'items-end' : 'items-start'}`}>
+                      <span className="text-stone-500 text-[10px] uppercase tracking-wider">
+                        {language === 'en' ? 'Best Time' : 'أفضل وقت للزيارة'}
+                      </span>
+                      <span className="text-[#C5A85C] font-mono text-[11px] font-bold mt-0.5">
+                        {language === 'en' ? activeDest.bestTime : activeDest.bestTimeAr}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={() => handleBookDestination(activeDest.name, activeDest.nameAr)}
+                      className="bg-[#C5A85C] text-black px-6 py-2.5 rounded-xl font-bold text-xs hover:bg-white transition-all cursor-pointer shadow-md shadow-[#C5A85C]/10"
+                    >
                       {language === 'en' ? 'Book Now' : 'احجز الآن'}
                     </button>
                   </div>
                 </div>
             </div>
+          </div>
         ) : (
           /* Luxury Grid Brochure Explorer Layout */
           <motion.div 
@@ -339,17 +725,19 @@ export default function TourismCarousel() {
                   key={dest.id}
                   className="rounded-lg overflow-hidden border border-[#C5A85C]/35 bg-stone-900 shadow-md hover:shadow-lg hover:border-[#C5A85C]/60 transition-all duration-300"
                 >
-                  <img 
-                    src={destImage} 
-                    alt={`وجهة سياحية: ${dest.name} من Royal Ride Jordan`} 
-                    className="w-full h-64 object-cover"
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    decoding="async"
-                    onError={() => {
-                      setFailedImages(prev => ({ ...prev, [dest.id]: true }));
-                    }}
-                  />
+                  <div className="overflow-hidden h-[250px]">
+                    <img 
+                      src={destImage} 
+                      alt={`وجهة سياحية: ${dest.name} من Royal Ride Jordan`} 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
+                      onError={() => {
+                        setFailedImages(prev => ({ ...prev, [dest.id]: true }));
+                      }}
+                    />
+                  </div>
                   <div className="p-4">
                     <h4 className="text-champagne-gold-500 font-serif text-lg">
                       {language === 'en' ? dest.name : dest.nameAr}

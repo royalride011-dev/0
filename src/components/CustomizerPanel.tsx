@@ -23,11 +23,11 @@ const CUSTOMIZABLE_IMAGES: CustomizableImage[] = [
   { key: 'fleet_stariaVip', nameEn: 'Hyundai Staria VIP Cabin', nameAr: 'هيونداي ستاريا كابينة كبار الشخصيات', section: 'fleet', defaultVal: '/images/staria_vip_amman_1782232781113.jpg' },
   { key: 'fleet_toyotaHiace', nameEn: 'Toyota Hiace Luxury Van', nameAr: 'تويوتا هايس باص النخبة الفاخر', section: 'fleet', defaultVal: '/images/royal_ride_hero_1781696285755.jpg' },
   { key: 'fleet_toyotaCoaster', nameEn: 'Toyota Coaster Sovereign Mini-Bus', nameAr: 'تويوتا كوستر حافلة النخبة', section: 'fleet', defaultVal: '/images/luxury_tour_jordan_1782232796504.jpg' },
-  { key: 'fleet_luxuryGmcYukon', nameEn: 'GMC Yukon Luxury SUV', nameAr: 'جي إم سي يوكون الدفع الرباعي الفاخر', section: 'fleet', defaultVal: '/images/regenerated_image_1782325973899.png' },
+  { key: 'fleet_luxuryGmcYukon', nameEn: 'GMC Yukon Luxury SUV', nameAr: 'جي إم سي يوكون الدفع الرباعي الفاخر', section: 'fleet', defaultVal: '/images/regenerated_image_1782325973899.jpg' },
 
   // Tourism
-  { key: 'tourism_amman', nameEn: 'Amman City Destination', nameAr: 'وجهة عمان الدافئة', section: 'tourism', defaultVal: '/src/assets/images/regenerated_image_1782523407133.png' },
-  { key: 'tourism_petra', nameEn: 'Petra Rose City Tour', nameAr: 'جولة البتراء الوردية الأثرية', section: 'tourism', defaultVal: '/src/assets/images/regenerated_image_1782516369460.png' },
+  { key: 'tourism_amman', nameEn: 'Amman City Destination', nameAr: 'وجهة عمان الدافئة', section: 'tourism', defaultVal: '/src/assets/images/regenerated_image_1782523407133.jpg' },
+  { key: 'tourism_petra', nameEn: 'Petra Rose City Tour', nameAr: 'جولة البتراء الوردية الأثرية', section: 'tourism', defaultVal: '/src/assets/images/regenerated_image_1782516369460.jpg' },
   { key: 'tourism_wadirum', nameEn: 'Wadi Rum Desert', nameAr: 'صحراء وادي رم الساحرة', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80' },
   { key: 'tourism_deadsea', nameEn: 'Dead Sea Wellness', nameAr: 'البحر الميت وملاذ الاسترخاء', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80' },
   { key: 'tourism_aqaba', nameEn: 'Aqaba Coastal Gateway', nameAr: 'العقبة الدافئة ومنفذ البحر الأحمر', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=1200&q=80' },
@@ -521,13 +521,13 @@ export default function CustomizerPanel() {
                         <ul className="list-disc pl-4 space-y-1 text-[10px] text-champagne-gold-300/80">
                           {language === 'en' ? (
                             <>
-                              <li>Paste any direct link to an image (ending in <code>.jpg</code>, <code>.png</code>, or Unsplash/Imgur links).</li>
+                              <li>Paste any direct link to an image (ending in <code>.jpg</code>, <code>.jpg</code>, or Unsplash/Imgur links).</li>
                               <li>You can upload files in the <strong>Sovereign VIP Portal</strong> to get dynamic link addresses!</li>
                               <li>Leave an input empty to fall back to our premium pre-configured default image.</li>
                             </>
                           ) : (
                             <>
-                              <li>ألصق أي رابط مباشر لصورة من الإنترنت (ينتهي بـ <code>.jpg</code> أو <code>.png</code> أو روابط Unsplash).</li>
+                              <li>ألصق أي رابط مباشر لصورة من الإنترنت (ينتهي بـ <code>.jpg</code> أو <code>.jpg</code> أو روابط Unsplash).</li>
                               <li>يمكنك رفع الصور وملفاتك في <strong>بوابة النخبة (Sovereign VIP Portal)</strong> للحصول على روابط مباشرة!</li>
                               <li>اترك الحقل فارغاً لاستعادة الصورة الافتراضية عالية الجودة المرفقة مسبقاً.</li>
                             </>

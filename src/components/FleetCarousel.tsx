@@ -223,13 +223,13 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
           >
             
             {/* Main Visual Slider Frame with elegant gold decorative borders & artistic ornaments */}
-            <div className="relative rounded-xl overflow-hidden w-[490px] h-[500px] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center">
+            <div className="relative rounded-xl overflow-hidden w-full max-w-[490px] aspect-[49/50] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center">
               
               {/* Elegant Golden Double Corner Ornaments */}
-              <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none" />
-              <div className="absolute top-2.5 right-2.5 w-4 h-4 border-t border-r border-[#C5A85C]/60 pointer-events-none" />
-              <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b border-l border-[#C5A85C]/60 pointer-events-none" />
-              <div className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b border-r border-[#C5A85C]/60 pointer-events-none" />
+              <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none z-20" />
+              <div className="absolute top-2.5 right-2.5 w-4 h-4 border-t border-r border-[#C5A85C]/60 pointer-events-none z-20" />
+              <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b border-l border-[#C5A85C]/60 pointer-events-none z-20" />
+              <div className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b border-r border-[#C5A85C]/60 pointer-events-none z-20" />
 
               {/* Dotted Accent Lights inside Corners */}
               <div className="absolute top-[18px] left-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
@@ -258,9 +258,9 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                            (max-width: 1200px) 960px,
                            1920px"
                     alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
-                    width={490}
-                    height={500}
-                    className={`w-[490px] h-[500px] object-cover filter brightness-[0.9] saturate-[1.1] contrast-[1.05]`}
+                    width="100%"
+                    height="100%"
+                    className="w-full h-full object-cover filter brightness-[0.9] saturate-[1.1] contrast-[1.05]"
                   />
               </AnimatePresence>
 

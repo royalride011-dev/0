@@ -1,5 +1,5 @@
 import { Vehicle, ServiceType, Testimonial } from './types';
-import luxuryCarsImg from './assets/images/regenerated_image_1782434427794.png';
+import luxuryCarsImg from './assets/images/regenerated_image_1782434427794.jpg';
 import luxuryTourJordanImg from './assets/images/images/luxury_tour_jordan_1782232796504.jpg';
 import vipSClassAmmanImg from './assets/images/images/vip_s_class_amman_1782232812410.jpg';
 import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
