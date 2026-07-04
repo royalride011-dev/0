@@ -245,23 +245,17 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
               </div>
 
               <AnimatePresence mode="wait">
-                  <LazyImage
-                    src={currentVehicle.image}
-                    srcSet={
-                      currentVehicle.image.includes('.jpg') 
-                        ? `${currentVehicle.image.replace('.jpg', '-480w.jpg')} 480w,
-                           ${currentVehicle.image.replace('.jpg', '-960w.jpg')} 960w,
-                           ${currentVehicle.image.replace('.jpg', '-1920w.jpg')} 1920w`
-                        : undefined
-                    }
-                    sizes="(max-width: 600px) 480px,
-                           (max-width: 1200px) 960px,
-                           1920px"
-                    alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
-                    width="100%"
-                    height="100%"
-                    className="w-full h-full object-cover filter brightness-[0.9] saturate-[1.1] contrast-[1.05]"
-                  />
+                <motion.img
+                  key={currentVehicle.id}
+                  src={currentVehicle.image}
+                  alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  referrerPolicy="no-referrer"
+                />
               </AnimatePresence>
 
               {/* Gradient Shading Underlay */}

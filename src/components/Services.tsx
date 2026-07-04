@@ -5,15 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../LanguageContext';
 import { GoldCorners, GoldDivider } from './GoldOrnament';
-import crossBorderTransitImg from '../assets/images/regenerated_image_1782494533296.jpg';
-import luxuryHotelDiningImg from '../assets/images/images/luxury_hotel_dining_1782297400933.jpg';
-import luxuryBookingsImg from '../assets/images/regenerated_image_1783164932734.jpg';
-import vipSClassAmmanImg from '../assets/images/images/vip_s_class_amman_1782232812410.jpg';
-import stariaVipAmmanImg from '../assets/images/images/staria_vip_amman_1782232781113.jpg';
-import stariaHourlyDailyImg from '../assets/images/images/staria_hourly_daily_1782296563411.jpg';
-import airportTransitImg from '../assets/images/regenerated_image_1782490599935.jpg';
-import limousineServiceImg from '../assets/images/regenerated_image_1783164770043.jpg';
-import newServiceImg from '../assets/images/regenerated_image_1783092504466.jpg';
+import { images } from '../imageRegistry';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,7 +54,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Enter the realm of ultimate relaxation. Our highly experienced, bilingual, background-checked chauffeurs manage Jordan’s traffic grid flawlessly. Guided by strict confidentiality protocol, this service is ideal for visiting global experts, fast-paced corporate executives, and secure state missions.',
     longDescAr: 'ادخل عالم الاسترخاء والراحة والمظهر الدبلوماسي الرفيع. سيارات ليموزين مصاحبة لسائقين ذوي تدريب عالٍ وبدلات رسمية تتحدث لغات عدة تمنحك حضوراً ووقاراً وحفظاً كاملاً للسرية والخصوصية أثناء تنقلكم.',
     icon: 'Sparkles',
-    image: limousineServiceImg,
+    image: images.services.limousinePassenger,
     features: [
       'Background-checked professional chauffeurs',
       'Suited and multilingual (English & Arabic) crew',
@@ -85,7 +77,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Simplify your itinerary with our integrated concierge service. Through our deep-rooted partnerships with Five-Star luxury hospitality brands in Amman, Petra, and Aqaba, we assist with preferential room bookings, suite upgrades, and priority table reservations at exclusive fine dining venues.',
     longDescAr: 'اجعل مسار رحلتك يسيراً وممتعاً مع كونسيرج رويال رايد المتكامل. نوفر لكم بفضل علاقاتنا الوطيدة مع الفنادق الرائدة والمطاعم الشهيرة حجزاً تفصيلياً مع إمكانية الترقية والاستقبال الخاص وترتيب الضيافة التي تليق بحضرتكم.',
     icon: 'Landmark',
-    image: luxuryBookingsImg,
+    image: images.services.hotelRestaurantBookings,
     features: [
       'Direct coordination with 5-star VIP hotel concierge desks',
       'Priority bookings at fully-booked peak season restaurants',
@@ -108,7 +100,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Travel smoothly across borders with our highly specialized regional service. We handle cross-border documentation clearance guidelines, security inspections, and coordinate terminal pathways between Jordan, Syria, and Lebanon, carrying you in climate-controlled isolation.',
     longDescAr: 'سافر براحة وطمأنينة متناهية عبر المعابر الإقليمية. يتولى كباتننا المتمرسون إرشادكم وتيسير مستندات العبور وتراخيص الدخول بين الأردن وسوريا ولبنان، لتستمتع بمقصورة فاخرة هادئة ومعزولة تماماً تضمن وصولكم بالموعد المحدد.',
     icon: 'Globe',
-    image: newServiceImg,
+    image: images.services.internationalTransit,
     features: [
       'Comprehensive cross-border permit clearances',
       'Highly veteran regional route-certified drivers',
@@ -131,7 +123,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Experience zero-stress airport transfers. Our team tracks your flights live via satellite schedules to adjust pick-up times for any delays automatically. Enjoy dual-zone climate-controlled executive interiors and professional baggage handlers at both departure and arrival gates.',
     longDescAr: 'تخلص من عناء تتبع أوقات الرحلات وضغوطات اللحاق بالطائرة. نتبع لحظياً حركات الطيران بشكل آلي لنصل قبل موعد طائرتك لتأمين صعود هادئ، مع توفير مقصورة مكيفة، مياه مبردة مع غسيل وتعقيم كامل للأيدي ترحيباً بكم.',
     icon: 'Plane',
-    image: airportTransitImg,
+    image: images.services.airportTransitJordan,
     features: [
       'Continuous computerized flight tracking system',
       'Complimentary airport terminal parking fees included',
@@ -154,7 +146,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Make your travel between Jordan and the West Bank or neighboring crossings seamless. We schedule customized pickups and dropoffs perfectly timed to align with bridge operating hours, avoiding terminal confusion.',
     longDescAr: 'اجعل حركتك وتنقلاتك ميسرة وآمنة تماماً عند عبورك للمعابر الحدودية. ننسق مواعيد وإقلال الركاب ليتطابق بدقة فائقة مع ساعات العمل الرسمية للجسور (جسر الملك حسين، جسر الشيخ حسين) لضمان سفر بلا عقبات.',
     icon: 'Compass',
-    image: vipSClassAmmanImg,
+    image: images.services.vipSClassAmman,
     features: [
       'Coverage for King Hussein & Sheikh Hussein Bridges',
       'Specially authorized border vehicles for quick drop-offs',
@@ -177,7 +169,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Enable seamless mobile-office logistics for your company. Our specialized corporate account infrastructure offers monthly postpaid billing systems, direct coordinate dispatcher hotlines, and total passenger privacy safeguards to keep your corporate travelers arriving on time.',
     longDescAr: 'وفر بيئة عمل متنقلة لموظفي شركتكم وزواركم الأجانب. نعد شريك اللوجستيات الأفضل في عمان من خلال تقديم تسهيلات الدفع الآجل وبموجب فواتير شهرية، وخط ساخن للطلبات العاجلة، مع الالتزام التام بحفظ السرية والأمان للأعمال.',
     icon: 'Briefcase',
-    image: '/images/corporate_vip_cabin_1782298274501.jpg',
+    image: images.services.corporateTransportation,
     features: [
       'Custom post-paid corporate account billing options',
       'VIP express bookings priority during high seasons',
@@ -200,7 +192,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Dwell into modern convenience. Every vehicle is delivered to your designated airport terminal or residence in pristine, fully detailed condition with complete coverage options. Choose self-drive or relax with our certified chauffeurs.',
     longDescAr: 'تنقل بأرقى تشكيلة سيارات مجهزة لراحتكم. نوفر فانات مثل مرسيدس V-Class للوفود والعائلات الكبيرة وسيارات سيدان كاديلاك أو كامري تضمن لكم أعلى مستويات العملية والرفاهية والخدمة الفندقية الفاخرة.',
     icon: 'Car',
-    image: stariaVipAmmanImg,
+    image: images.services.carVanRentals,
     features: [
       'Flexible daily, weekly, or monthly self-drive contracts',
       'Latest premium models with active driver assistance tech',
@@ -223,7 +215,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Transition seamlessly from flight to vehicle cabin. Right past customs processing, a suited Royal Ride concierge agent will be waiting holding a modern digital placard with your name or brand. We handle heavy baggage transit direct to the trunk, ensuring an absolute luxury welcome.',
     longDescAr: 'تنقل بمنتهى السلاسة من بوابات الخروج لداخل مقصورة سيارتك. تجد كادر الاستقبال المحترف بانتظارك فور الخروج بلافتة رقمية أنيقة تحمل الاسم المتفق عليه، ويتولى نيابة عنك حمل حقائب السفر وتوجيه خطاك للسيارة المجهزة والمكيفة.',
     icon: 'UserCheck',
-    image: '/images/airport_meet_greet_1782298298272.jpg',
+    image: images.services.airportMeetGreet,
     features: [
       'Instant, unmistakable visual identification at arrival boundaries',
       'Baggage porterage and custom coordinate dispatch to the curb',
@@ -246,7 +238,7 @@ const ALL_SERVICES_DATA: ServiceNode[] = [
     longDesc: 'Maximize executive efficiency. Charter a certified vehicle and elite chauffeur in discrete blocks of hours or days. The driver remains on strict standby, perfectly synchronized with your meetings, shopping tours, or scenic excursions.',
     longDescAr: 'ارتق بإنتاجيتك وراحتك في رحلات العمل والتسوق والزيارات الخاصة. يظل سائقك والسيارة في حالة استعداد وتشغيل تام وتحت رهن إشارتكم وبأجمل مستويات الهندام ليتطابق مع جداول أعمالكم المزدحمة.',
     icon: 'Clock',
-    image: stariaHourlyDailyImg,
+    image: images.services.stariaHourlyDaily,
     features: [
       'Flexible time blocks (4h, 8h, or full multi-day shifts)',
       'Infinite mileage limits within the city limits of Amman',
@@ -363,7 +355,7 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
                 <GoldCorners />
                 
                 {/* Image Frame with gold thin border */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-[#C5A85C]/20">
+                <div className="relative h-[300px] w-full overflow-hidden border-b border-[#C5A85C]/20">
                   <img
                     src={service.image}
                     alt={`${language === 'en' ? service.title : service.titleAr} - Royal Ride luxury transportation service`}
@@ -371,27 +363,6 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
                     decoding="async"
                     className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
                     referrerPolicy="no-referrer"
-                    style={
-                      service.id === 'hotel-restaurant-bookings'
-                        ? { height: '280px' }
-                        : service.id === 'limousine-passenger'
-                        ? { height: '280.9px', width: '448.6px' }
-                        : service.id === 'border-crossings-jordan'
-                        ? { height: '280px' }
-                        : service.id === 'international-transit'
-                        ? { height: '279.9px' }
-                        : service.id === 'airport-transit-jordan'
-                        ? { height: '281.938px', width: '451.8px' }
-                        : service.id === 'corporate-transportation'
-                        ? { height: '280.938px' }
-                        : service.id === 'car-van-rentals'
-                        ? { height: '280.15px' }
-                        : service.id === 'airport-meet-greet'
-                        ? { height: '280px' }
-                        : service.id === 'daily-hourly-rentals'
-                        ? { height: '280px' }
-                        : undefined
-                    }
                   />
                   {/* Subtle Elegant Dark Overlay on image to guarantee high contrast */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 transition-opacity duration-500" />

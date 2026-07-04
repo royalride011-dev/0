@@ -367,10 +367,7 @@ export default function TourismCarousel() {
                             <motion.img
                               src={currentImage}
                               alt={`وجهة سياحية: ${activeDest.name} من Royal Ride Jordan`}
-                              className="w-full h-full object-cover"
-                              initial={{ scale: 1.05 }}
-                              animate={{ scale: 1.10 }}
-                              transition={{ duration: 15, ease: "linear" }}
+                              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                               referrerPolicy="no-referrer"
                               loading="lazy"
                               decoding="async"
@@ -378,8 +375,8 @@ export default function TourismCarousel() {
                                 setFailedImages(prev => ({ ...prev, [activeDest.id]: true }));
                               }}
                             />
-                            {/* Linear Gradient Overlay for beautiful premium depth */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/45 pointer-events-none" />
+                            {/* Fine Vignette Overlay instead of heavy black mask for beautiful crisp photo details */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 pointer-events-none" />
                           </motion.div>
                         </AnimatePresence>
 

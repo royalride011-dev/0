@@ -4,12 +4,12 @@
 // Importing assets using ESM to ensure webpack/vite resolve them correctly
 import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.jpg';
 import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
-import luxuryBookingsImg from './assets/images/regenerated_image_1783164932734.jpg';
+import luxuryBookingsImg from './assets/images/regenerated_image_1783192151412.jpg';
 import vipSClassAmmanImg from './assets/images/regenerated_image_1783171439552.jpg';
 import stariaVipAmmanImg from './assets/images/images/staria_vip_amman_1782232781113.jpg';
 import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
 import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
-import limousineServiceImg from './assets/images/regenerated_image_1783164770043.jpg';
+import limousineServiceImg from './assets/images/regenerated_image_1783198487098.jpg';
 import petraTourImg from './assets/images/regenerated_image_1782516369460.jpg';
 const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
 import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
@@ -28,6 +28,7 @@ import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.j
 import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.jpg';
 import newBlogImg from './assets/images/regenerated_image_1782668125071.jpg';
 import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.jpg';
+import newServiceImg from './assets/images/regenerated_image_1783092504466.jpg';
 
 // Helper to allow live administrative image customization/addition from client-side overrides
 const getOverride = (keyPath: string, defaultValue: string): string => {
@@ -89,10 +90,11 @@ export const images = {
     limousinePassenger: getOverride('services_limousinePassenger', limousineServiceImg),
     hotelRestaurantBookings: getOverride('services_hotelRestaurantBookings', luxuryBookingsImg),
     borderCrossingsJordan: getOverride('services_borderCrossingsJordan', crossBorderTransitImg),
-    internationalTransit: getOverride('services_internationalTransit', '/images/cross_border_transit_1782298169892.jpg'),
+    internationalTransit: getOverride('services_internationalTransit', newServiceImg),
     airportTransitJordan: getOverride('services_airportTransitJordan', airportTransitImg),
     corporateTransportation: getOverride('services_corporateTransportation', '/images/corporate_vip_cabin_1782298274501.jpg'),
-    carVanRentals: getOverride('services_carVanRentals', '/images/comfort_class_fleet_1782258340226.jpg'),
+    carVanRentals: getOverride('services_carVanRentals', stariaVipAmmanImg),
+    airportMeetGreet: getOverride('services_airportMeetGreet', '/images/airport_meet_greet_1782298298272.jpg'),
     // Fallbacks or legacy service items
     luxuryHotelDining: getOverride('services_luxuryHotelDining', luxuryHotelDiningImg),
     vipSClassAmman: getOverride('services_vipSClassAmman', vipSClassAmmanImg),
