@@ -2,7 +2,6 @@
 // This centralizes all local imports and static paths so they can be easily modified or added to in one place.
 
 // Importing assets using ESM to ensure webpack/vite resolve them correctly
-import luxuryCarsImg from './assets/images/regenerated_image_1782602686534.png';
 import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.png';
 import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
 import luxuryBookingsImg from './assets/images/regenerated_image_1782494179013.png';
@@ -15,8 +14,6 @@ import petraTourImg from './assets/images/regenerated_image_1782516369460.png';
 const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
 import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.png';
 import deadSeaRegeneratedImg from './assets/images/regenerated_image_1782559795596.png';
-import fleetShowcaseRegeneratedImg from './assets/images/regenerated_image_1782524705621.png';
-import tourismShowcaseRegeneratedImg from './assets/images/regenerated_image_1782524952600.png';
 import ammanRegeneratedNewImg from './assets/images/regenerated_image_1782560873353.png';
 import damascusRegeneratedImg from './assets/images/regenerated_image_1782562221421.jpg';
 import beirutRegeneratedImg from './assets/images/regenerated_image_1782559795596.png';
@@ -24,16 +21,13 @@ import aqabaRegeneratedImg from './assets/images/regenerated_image_1782561837164
 import wadirumRegeneratedImg from './assets/images/regenerated_image_1782562449414.png';
 import ajlounRegeneratedImg from './assets/images/regenerated_image_1782560716241.png';
 import jerashRegeneratedImg from './assets/images/regenerated_image_1782560970591.png';
-import regeneratedImage from './assets/images/regenerated_image_1782566736051.png';
 import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.png';
-import luxuryVipImg from './assets/images/regenerated_image_1782603241397.png';
 import comfortClassImg from './assets/images/regenerated_image_1782645015213.png';
 import newStariaVipImg from './assets/images/regenerated_image_1783017095551.png';
 import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.png';
 import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.png';
 import newBlogImg from './assets/images/regenerated_image_1782668125071.png';
 import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.png';
-import newRegeneratedImg from './assets/images/regenerated_image_1783017095551.png';
 
 // Helper to allow live administrative image customization/addition from client-side overrides
 const getOverride = (keyPath: string, defaultValue: string): string => {
