@@ -5,6 +5,7 @@
  */
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import Header from './components/Header';
 import JordanClock from './components/JordanClock';
 import Hero from './components/Hero';
@@ -227,6 +228,9 @@ export default function App() {
 
       {/* Floating Back to Top Button */}
       <BackToTop />
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </div>
   );
 }
