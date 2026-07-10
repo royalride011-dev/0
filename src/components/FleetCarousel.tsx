@@ -379,7 +379,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                   setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
                 }
               }}
-              className={`relative rounded-xl overflow-hidden w-full max-w-[490px] aspect-[49/50] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center ${customizingVehicleId !== currentVehicle.id ? 'cursor-pointer' : ''}`}
+              className={`relative rounded-xl overflow-hidden w-full max-w-[600px] aspect-[16/10] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center ${customizingVehicleId !== currentVehicle.id ? 'cursor-pointer' : ''}`}
             >
               
               {/* Elegant Golden Double Corner Ornaments */}

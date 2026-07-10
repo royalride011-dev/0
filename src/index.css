@@ -857,6 +857,12 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(197, 168, 92, 0.08) !important;
 }
 
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-showcase:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) {
+  aspect-ratio: 16/10 !important;
+  max-width: 600px !important;
+  width: 100% !important;
+}
+
 /* ==========================================================================
    GOLD & BLACK PREMIUM HARMONY OVERRIDES
    ========================================================================== */
