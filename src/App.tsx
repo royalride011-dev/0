@@ -5,14 +5,12 @@ import JordanClock from './components/JordanClock';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
-import CustomizerPanel from './components/CustomizerPanel';
 
 // Lazy load below-the-fold and sub-route components for lightning-fast loading (under 1 sec)
 const SovereignReviewsCarousel = lazy(() => import('./components/SovereignReviewsCarousel'));
 const Services = lazy(() => import('./components/ServicesShowcase'));
 const TourismCarousel = lazy(() => import('./components/TourismCarousel'));
 const FleetCarousel = lazy(() => import('./components/FleetCarousel'));
-const FleetGallery = lazy(() => import('./components/FleetGallery'));
 const About = lazy(() => import('./components/About'));
 const Reviews = lazy(() => import('./components/Reviews'));
 const ContactForm = lazy(() => import('./components/ContactForm'));
@@ -187,7 +185,6 @@ export default function App() {
               {route === 'fleet' && (
                 <div className="pt-24">
                   <FleetCarousel onSelectVehicleAndInquire={handleSelectVehicle} />
-                  <FleetGallery />
                 </div>
               )}
 
@@ -225,9 +222,6 @@ export default function App() {
 
       {/* Floating Back to Top Button */}
       <BackToTop />
-
-      {/* Floating Image Customizer Panel */}
-      <CustomizerPanel />
     </div>
   );
 }
