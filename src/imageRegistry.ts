@@ -11,18 +11,18 @@ import luxuryCarImg from './assets/images/regenerated_image_1783339331958.png';
 import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
 import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
 import limousineServiceImg from './assets/images/regenerated_image_1783340810361.png';
-const petraTourImg = 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=1200&q=80';
-const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
+const petraTourImg = 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=800&q=75';
+const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75';
 import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
 import tourismPetraImg from './assets/images/regenerated_image_1782516369460.jpg';
-const deadSeaRegeneratedImg = 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80';
-const ammanRegeneratedNewImg = 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80';
-const damascusRegeneratedImg = 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=1200&q=80';
-const beirutRegeneratedImg = 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=1200&q=80';
-const aqabaRegeneratedImg = 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=1200&q=80';
-const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80';
-const ajlounRegeneratedImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
-const jerashRegeneratedImg = 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=1200&q=80';
+import deadSeaRegeneratedImg from './assets/images/regenerated_image_1783693430307.png';
+import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783687258922.png';
+const damascusRegeneratedImg = 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=800&q=75';
+const beirutRegeneratedImg = 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=800&q=75';
+const aqabaRegeneratedImg = 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=800&q=75';
+const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75';
+const ajlounRegeneratedImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75';
+const jerashRegeneratedImg = 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=800&q=75';
 import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.jpg';
 import comfortClassImg from './assets/images/regenerated_image_1783359463566.png';
 import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
@@ -114,7 +114,7 @@ export const images = {
     deadsea: getOverride('tourism_deadsea', deadSeaRegeneratedImg),
     aqaba: getOverride('tourism_aqaba', aqabaRegeneratedImg),
     jerash: getOverride('tourism_jerash', jerashRegeneratedImg),
-    madaba: getOverride('tourism_madaba', 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=1200&q=80'),
+    madaba: getOverride('tourism_madaba', 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=800&q=75'),
     damascus: getOverride('tourism_damascus', damascusRegeneratedImg),
     beirut: getOverride('tourism_beirut', beirutRegeneratedImg),
     ajloun: getOverride('tourism_ajloun', ajlounRegeneratedImg),

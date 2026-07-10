@@ -385,7 +385,7 @@ function ImageCustomizeOverlay({
 }
 
 export default function ServicesShowcase({ onSelectServiceAndInquire, preSelectedId }: ServicesShowcaseProps) {
-  const { language, isRtl } = useLanguage();
+  const { language, isRtl, isAdmin } = useLanguage();
   const [activeCardId, setActiveCardId] = useState<string | null>(preSelectedId || null);
   const [editingImageId, setEditingImageId] = useState<string | null>(null);
 
@@ -504,6 +504,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
 
   return (
     <section id="services" className="services-showcase-container" dir={isRtl ? 'rtl' : 'ltr'}>
+      {!isAdmin && (
+        <style dangerouslySetInnerHTML={{ __html: `
+          .edit-image-trigger {
+            display: none !important;
+          }
+        `}} />
+      )}
       <div className="wrap">
         
         {/* Head Block */}

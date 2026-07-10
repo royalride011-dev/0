@@ -1,15 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&family=Montserrat:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('/fonts/custom-font.woff2') format('woff2'),
-       url('/fonts/custom-font.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
   --font-sans: "Cairo", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Montserrat", Georgia, Cambria, "Times New Roman", Times, serif;
@@ -758,10 +749,12 @@ img {
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(7) > div:nth-of-type(1) > img:nth-of-type(1) {
   height: 300px;
+  object-fit: cover;
 }
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(5) > div:nth-of-type(1) > img:nth-of-type(1) {
   height: 300px;
+  object-fit: cover;
 }
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) {
@@ -772,6 +765,8 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > img:nth-of-type(1) {
   height: 500px;
+  width: 500px;
+  object-fit: cover;
 }
 
 /* High-fidelity digital display optimization for all images */

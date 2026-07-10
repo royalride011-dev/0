@@ -7,6 +7,9 @@ interface LanguageContextType {
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
   isRtl: boolean;
+  isAdmin: boolean;
+  loginAdmin: (email: string, pass: string) => boolean;
+  logoutAdmin: () => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -169,10 +172,30 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const saved = localStorage.getItem('royalride_lang');
     if (saved === 'ar' || saved === 'en') return saved;
     
-    // Detect browser language
-    const browserLang = navigator.language.split('-')[0];
-    return (browserLang === 'ar') ? 'ar' : 'en';
+    return 'en';
   });
+
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('royalride_admin_logged_in') === 'true';
+    }
+    return false;
+  });
+
+  const loginAdmin = (email: string, pass: string): boolean => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (normalizedEmail === 'royalride011@gmail.com' && (pass === 'royal011' || pass === 'royalride011')) {
+      localStorage.setItem('royalride_admin_logged_in', 'true');
+      setIsAdmin(true);
+      return true;
+    }
+    return false;
+  };
+
+  const logoutAdmin = () => {
+    localStorage.removeItem('royalride_admin_logged_in');
+    setIsAdmin(false);
+  };
 
   const isRtl = language === 'ar';
 
@@ -204,7 +227,15 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return record[language] || key;
   }, [language]);
 
-  const value = React.useMemo(() => ({ language, setLanguage, t, isRtl }), [language, setLanguage, t, isRtl]);
+  const value = React.useMemo(() => ({ 
+    language, 
+    setLanguage, 
+    t, 
+    isRtl, 
+    isAdmin, 
+    loginAdmin, 
+    logoutAdmin 
+  }), [language, setLanguage, t, isRtl, isAdmin]);
 
   return (
     <LanguageContext.Provider value={value}>

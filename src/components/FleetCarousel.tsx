@@ -40,7 +40,7 @@ interface FleetCarouselProps {
 }
 
 export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarouselProps) {
-  const { language, t, isRtl } = useLanguage();
+  const { language, t, isRtl, isAdmin } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [compareList, setCompareList] = useState<string[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
@@ -411,7 +411,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
               </AnimatePresence>
 
               {/* Elegant always-visible Glassmorphic badge for flexible customization */}
-              {customizingVehicleId !== currentVehicle.id && (
+              {isAdmin && customizingVehicleId !== currentVehicle.id && (
                 <div className="absolute bottom-4 right-4 z-20">
                   <button
                     onClick={(e) => {
@@ -428,7 +428,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
               )}
 
               {/* Absolute embedded uploader panel */}
-              {customizingVehicleId === currentVehicle.id && (
+              {isAdmin && customizingVehicleId === currentVehicle.id && (
                 <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-6 flex flex-col justify-between z-30 animate-fadeIn border border-[#C5A85C]/45 rounded-xl text-left">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-2">

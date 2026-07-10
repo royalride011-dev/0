@@ -26,7 +26,8 @@ import {
   Upload,
   Link,
   Edit2,
-  Camera
+  Camera,
+  Trash2
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { images } from '../imageRegistry';
@@ -130,9 +131,30 @@ const DEFAULT_PRESETS = [
   { url: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80', labelEn: 'Dead Sea Wellness', labelAr: 'استجمام البحر الميت' }
 ];
 
+const optimizeImage = (url: string, width = 800, height?: number, quality = 75) => {
+  if (!url) return '';
+  if (url.startsWith('data:')) return url;
+  if (url.includes('images.unsplash.com')) {
+    try {
+      const urlObj = new URL(url);
+      urlObj.searchParams.set('auto', 'format');
+      urlObj.searchParams.set('fit', 'crop');
+      urlObj.searchParams.set('w', String(width));
+      if (height) {
+        urlObj.searchParams.set('h', String(height));
+      }
+      urlObj.searchParams.set('q', String(quality));
+      return urlObj.toString();
+    } catch (e) {
+      return url;
+    }
+  }
+  return url;
+};
+
 export default function TourismCarousel() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { language, isRtl } = useLanguage();
+  const { language, isRtl, isAdmin } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [viewMode, setViewMode] = useState<'split' | 'grid'>('split');
@@ -189,13 +211,36 @@ export default function TourismCarousel() {
     }
   };
 
+  const handleDeleteDestination = (destId: string) => {
+    const updated = destinationsList.filter((d) => d.id !== destId);
+    setDestinationsList(updated);
+    saveStoredDestinations(updated);
+  };
+
+  const handleResetDestinations = () => {
+    resetStoredDestinations();
+    const list = getStoredDestinations();
+    setDestinationsList(list);
+  };
+
+  const handleSelectAndShow = (destId: string) => {
+    const idx = destinationsList.findIndex(d => d.id === destId);
+    if (idx !== -1) {
+      setActiveIndex(idx);
+      setViewMode('split');
+      if (sectionRef.current) {
+        sectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
   // Preload & Pre-decode all destination and fleet images in the background for ultra-high performance instant rendering
   useEffect(() => {
     if (typeof window !== 'undefined' && destinationsList) {
       destinationsList.forEach((dest) => {
         if (dest?.image) {
           const img = document.createElement('img') as HTMLImageElement;
-          img.src = dest.image;
+          img.src = optimizeImage(dest.image, 800, 75);
           // Modern GPU pre-decoding to avoid frame drops on rendering
           const canDecode = typeof (img as any).decode === 'function';
           if (canDecode) {
@@ -224,17 +269,17 @@ export default function TourismCarousel() {
   }, [destinationsList]);
 
   const fallbackImages: Record<string, string> = {
-    amman: 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80',
-    petra: 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=1200&q=80',
-    wadirum: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
-    deadsea: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80',
-    jerash: 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=1200&q=80',
-    aqaba: 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=1200&q=80',
-    mountnebo: 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=1200&q=80',
-    kerak: 'https://images.unsplash.com/photo-1544085311-11a028465b03?auto=format&fit=crop&w=1200&q=80',
-    ajloun: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80',
-    damascus: 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=1200&q=80',
-    beirut: 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=1200&q=80'
+    amman: 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=800&q=75',
+    petra: 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=800&q=75',
+    wadirum: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75',
+    deadsea: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=800&q=75',
+    jerash: 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=800&q=75',
+    aqaba: 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=800&q=75',
+    mountnebo: 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=800&q=75',
+    kerak: 'https://images.unsplash.com/photo-1544085311-11a028465b03?auto=format&fit=crop&w=800&q=75',
+    ajloun: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75',
+    damascus: 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=800&q=75',
+    beirut: 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=800&q=75'
   };
 
   const handleNext = () => {
@@ -351,9 +396,14 @@ export default function TourismCarousel() {
   };
 
   const activeDest = destinationsList[activeIndex] || FALLBACK_DESTINATION;
-  const currentImage = failedImages[activeDest.id]
-    ? (fallbackImages[activeDest.id] || 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80')
-    : activeDest.image;
+  const currentImage = optimizeImage(
+    failedImages[activeDest.id]
+      ? (fallbackImages[activeDest.id] || 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=800&q=75')
+      : activeDest.image,
+    500,
+    500,
+    75
+  );
 
   const fleetRec = getRecommendedFleet(activeDest.id);
 
@@ -468,9 +518,13 @@ export default function TourismCarousel() {
               <div className={`flex gap-3 overflow-x-auto pb-3 pt-1 scrollbar-none justify-start ${isRtl ? 'flex-row-reverse' : ''}`}>
                 {destinationsList.map((dest, idx) => {
                   const isCurrentlySelected = activeIndex === idx;
-                  const destImage = failedImages[dest.id]
-                    ? (fallbackImages[dest.id] || 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80')
-                    : dest.image;
+                  const destImage = optimizeImage(
+                    failedImages[dest.id]
+                      ? (fallbackImages[dest.id] || 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=800&q=75')
+                      : dest.image,
+                    200,
+                    70
+                  );
 
                   return (
                     <button
@@ -513,7 +567,7 @@ export default function TourismCarousel() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-120px" }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="lg:col-span-7 w-full flex flex-col space-y-5 animate-gpu"
+                className="lg:col-span-6 w-full flex flex-col items-center justify-center space-y-5 animate-gpu"
               >
                   <AnimatePresence mode="wait">
                     {!showMap ? (
@@ -525,7 +579,7 @@ export default function TourismCarousel() {
                             setCustomUrl(activeDest.image.startsWith('data:') ? '' : activeDest.image);
                           }
                         }}
-                        className={`relative w-full max-w-[500px] aspect-square mx-auto z-0 overflow-hidden rounded-3xl group border border-[#C5A85C]/20 shadow-2xl bg-[#080808] flex items-center justify-center transition-all duration-300 ${customizingDestId !== activeDest.id ? 'cursor-pointer hover:border-[#C5A85C]/60 hover:shadow-[0_0_25px_rgba(197,168,92,0.15)]' : ''}`}
+                        className={`relative w-full aspect-square max-w-[500px] mx-auto z-0 overflow-hidden rounded-3xl group border border-[#C5A85C]/35 hover:border-[#C5A85C]/65 shadow-[0_25px_60px_rgba(0,0,0,0.85)] bg-[#080808] flex items-center justify-center transition-all duration-500 ${customizingDestId !== activeDest.id ? 'cursor-pointer hover:shadow-[0_0_25px_rgba(197,168,92,0.15)]' : ''}`}
                       >
                         <AnimatePresence initial={false} custom={direction}>
                           <motion.div
@@ -540,7 +594,7 @@ export default function TourismCarousel() {
                             <motion.img
                               src={currentImage}
                               alt={`وجهة سياحية: ${activeDest.name} من Royal Ride Jordan`}
-                              className={`w-full h-full object-cover transition-all duration-700 ${customizingDestId === activeDest.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
+                              className={`w-[500px] h-full object-cover transition-all duration-700 ${customizingDestId === activeDest.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
                               referrerPolicy="no-referrer"
                               loading="lazy"
                               decoding="async"
@@ -554,7 +608,7 @@ export default function TourismCarousel() {
                         </AnimatePresence>
 
                         {/* Elegant always-visible Glassmorphic badge for flexible customization */}
-                        {customizingDestId !== activeDest.id && (
+                        {isAdmin && customizingDestId !== activeDest.id && (
                           <div className="absolute bottom-4 right-4 z-10">
                             <button
                               onClick={(e) => {
@@ -571,7 +625,7 @@ export default function TourismCarousel() {
                         )}
 
                         {/* Absolute embedded uploader panel for Split mode */}
-                        {customizingDestId === activeDest.id && (
+                        {isAdmin && customizingDestId === activeDest.id && (
                           <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-6 flex flex-col justify-between z-20 animate-fadeIn border border-[#C5A85C]/45 rounded-3xl text-left">
                             <div className="space-y-4">
                               <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-2">
@@ -850,7 +904,7 @@ export default function TourismCarousel() {
                 </motion.div>
 
                 {/* Right Column: Premium Sovereign Experience Ledger Card */}
-                <div className="lg:col-span-5 flex flex-col justify-between h-full bg-[#0a0a0a] border-2 border-[#C5A85C]/40 hover:border-[#C5A85C] transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(197,168,92,0.05)] rounded-3xl p-6 sm:p-8 relative overflow-hidden w-full self-stretch min-h-[500px]">
+                <div className="lg:col-span-6 flex flex-col justify-between h-full bg-[#0a0a0a] border border-[#C5A85C]/35 hover:border-[#C5A85C] transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(197,168,92,0.07)] rounded-3xl p-6 sm:p-8 relative overflow-hidden w-full self-stretch min-h-[500px]">
                   {/* Elegant gold filigree corner accents */}
                   <div className="absolute top-2 left-2 w-5 h-5 border-t border-l border-[#C5A85C]/40 pointer-events-none" />
                   <div className="absolute top-2 right-2 w-5 h-5 border-t border-r border-[#C5A85C]/40 pointer-events-none" />
@@ -1029,6 +1083,24 @@ export default function TourismCarousel() {
                 </div>
             </div>
           </div>
+        ) : destinationsList.length === 0 ? (
+          <div className="text-center py-20 bg-[#0a0a0a]/60 rounded-3xl border-2 border-dashed border-[#C5A85C]/20 max-w-lg mx-auto p-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] animate-fadeIn">
+            <Sparkles className="w-12 h-12 text-[#C5A85C]/60 mx-auto mb-5 animate-pulse" />
+            <h4 className="text-champagne-gold-400 font-serif text-lg font-bold mb-2">
+              {language === 'en' ? 'No Destinations' : 'لا توجد وجهات معروضة'}
+            </h4>
+            <p className="text-stone-400 text-xs leading-relaxed max-w-sm mx-auto">
+              {language === 'en' 
+                ? 'All custom destinations have been deleted. You can restore the premium default places easily.' 
+                : 'تم حذف جميع الوجهات السياحية المخصصة. يمكنك استعادة الأماكن الافتراضية الفاخرة بسهولة.'}
+            </p>
+            <button
+              onClick={handleResetDestinations}
+              className="mt-8 px-6 py-3 rounded-xl bg-[#C5A85C] text-black text-xs font-bold hover:bg-white transition-all cursor-pointer shadow-lg hover:shadow-[#C5A85C]/20 active:scale-95"
+            >
+              {language === 'en' ? 'Restore Default Destinations' : 'استعادة الوجهات الافتراضية'}
+            </button>
+          </div>
         ) : (
           /* Luxury Grid Brochure Explorer Layout */
           <motion.div 
@@ -1038,15 +1110,20 @@ export default function TourismCarousel() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-2"
           >
             {destinationsList.map((dest) => {
-              const destImage = failedImages[dest.id]
-                ? (fallbackImages[dest.id] || 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80')
-                : dest.image;
+              const destImage = optimizeImage(
+                failedImages[dest.id]
+                  ? (fallbackImages[dest.id] || 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=800&q=75')
+                  : dest.image,
+                600,
+                75
+              );
 
               return (
                 <div 
                   key={dest.id}
-                  className="rounded-lg overflow-hidden border border-[#C5A85C]/35 bg-stone-900 shadow-md hover:shadow-lg hover:border-[#C5A85C]/60 transition-all duration-300 animate-fadeIn"
+                  className="rounded-3xl overflow-hidden border border-[#C5A85C]/30 hover:border-[#C5A85C]/75 bg-[#0a0a0a] shadow-xl hover:shadow-[0_20px_40px_rgba(197,168,92,0.08)] transition-all duration-500 animate-fadeIn flex flex-col justify-between h-full group/card"
                 >
+                  {/* Card Image Header with Customizer options */}
                   <div 
                     onClick={() => {
                       if (customizingDestId !== dest.id) {
@@ -1054,7 +1131,7 @@ export default function TourismCarousel() {
                         setCustomUrl(dest.image.startsWith('data:') ? '' : dest.image);
                       }
                     }}
-                    className={`overflow-hidden h-[250px] relative group/img bg-stone-950 flex items-center justify-center transition-all duration-300 ${customizingDestId !== dest.id ? 'cursor-pointer' : ''}`}
+                    className={`overflow-hidden aspect-[16/10] w-full relative group/img bg-stone-950 flex items-center justify-center transition-all duration-300 ${customizingDestId !== dest.id ? 'cursor-pointer' : ''}`}
                   >
                     <img 
                       src={destImage} 
@@ -1085,9 +1162,21 @@ export default function TourismCarousel() {
                       </div>
                     )}
 
-                    {/* Always visible, highly premium Change Photo trigger badge */}
+                    {/* Premium embedded name & subtitle overlay */}
                     {customizingDestId !== dest.id && loadedImages[dest.id] && (
-                      <div className="absolute bottom-4 right-4 z-10">
+                      <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-5 pt-12 flex flex-col justify-end z-10 pointer-events-none ${isRtl ? 'text-right' : 'text-left'}`}>
+                        <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-[#C5A85C] mb-1">
+                          {language === 'en' ? 'Exclusive Tour' : 'رحلة حصرية'}
+                        </span>
+                        <h4 className="text-champagne-gold-400 font-serif text-lg font-bold">
+                          {language === 'en' ? dest.name : dest.nameAr}
+                        </h4>
+                      </div>
+                    )}
+
+                    {/* Always visible, highly premium Change Photo & Delete triggers */}
+                    {isAdmin && customizingDestId !== dest.id && loadedImages[dest.id] && (
+                      <div className="absolute top-4 right-4 z-20 flex items-center gap-1.5">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -1096,14 +1185,24 @@ export default function TourismCarousel() {
                           }}
                           className="px-3 py-1.5 rounded-lg border border-[#C5A85C]/35 bg-black/80 text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-[10px] font-sans font-extrabold flex items-center gap-1.5 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
                         >
-                          <Camera className="w-3 h-3 animate-pulse" />
+                          <Camera className="w-3.5 h-3.5" />
                           <span>{language === 'en' ? 'Change Photo' : 'تغيير الصورة'}</span>
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteDestination(dest.id);
+                          }}
+                          className="p-1.5 rounded-lg border border-red-500/30 bg-black/80 text-red-500 hover:bg-red-500 hover:text-white hover:border-red-500 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
+                          title={language === 'en' ? 'Delete' : 'حذف'}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     )}
 
                     {/* Absolute embedded uploader panel */}
-                    {customizingDestId === dest.id && (
+                    {isAdmin && customizingDestId === dest.id && (
                       <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-4 flex flex-col justify-between z-20 animate-fadeIn border border-[#C5A85C]/45 rounded-lg text-left">
                         <div className="space-y-2">
                           <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-1.5">
@@ -1216,18 +1315,106 @@ export default function TourismCarousel() {
                       </div>
                     )}
                   </div>
-                  <div className="p-4">
-                    <h4 className="text-champagne-gold-500 font-serif text-lg">
-                      {language === 'en' ? dest.name : dest.nameAr}
-                    </h4>
-                    <p className="text-gray-400 text-sm mt-1">
-                      {language === 'en' ? dest.subtitle : dest.subtitleAr}
-                    </p>
+
+                  {/* Redesigned Premium Info Package Body */}
+                  <div className={`p-6 flex-grow flex flex-col justify-between space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+                    <div className="space-y-4">
+                      {/* Name & Subtitle */}
+                      <div>
+                        <h4 className="text-[#C5A85C] font-serif text-xl font-bold tracking-tight">
+                          {language === 'en' ? dest.name : dest.nameAr}
+                        </h4>
+                        <p className="text-gray-400 text-xs mt-1 font-sans line-clamp-1">
+                          {language === 'en' ? dest.subtitle : dest.subtitleAr}
+                        </p>
+                      </div>
+
+                      {/* Brief description */}
+                      <p className="text-stone-300 text-xs leading-relaxed line-clamp-3">
+                        {language === 'en' ? dest.description : dest.descriptionAr}
+                      </p>
+
+                      <div className="border-t border-[#C5A85C]/15 pt-4 space-y-3">
+                        {/* Highlights (Package Includes) */}
+                        <div className="space-y-2">
+                          <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-[#C5A85C]/75 block">
+                            {language === 'en' ? 'Package Highlights:' : 'مزايا ومعالم الجولة:'}
+                          </span>
+                          <div className="space-y-1.5">
+                            {(dest.highlights || []).slice(0, 2).map((hl, index) => {
+                              const hlAr = dest.highlightsAr?.[index] || hl;
+                              return (
+                                <div key={index} className="flex items-start gap-2 text-xs text-stone-300">
+                                  <ShieldCheck className="w-3.5 h-3.5 text-[#C5A85C] flex-shrink-0 mt-0.5" />
+                                  <span className="line-clamp-1">{language === 'en' ? hl : hlAr}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Best season & fleet */}
+                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-stone-800/50">
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-mono text-stone-500 block uppercase">
+                              {language === 'en' ? 'Best Season' : 'الموسم الأمثل'}
+                            </span>
+                            <div className="flex items-center gap-1.5 text-stone-300 text-[11px]">
+                              <Calendar className="w-3.5 h-3.5 text-[#C5A85C]/70" />
+                              <span className="truncate">{language === 'en' ? dest.bestTime : dest.bestTimeAr}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-mono text-stone-500 block uppercase">
+                              {language === 'en' ? 'Fleet Transport' : 'السيارة المقترحة'}
+                            </span>
+                            <div className="flex items-center gap-1.5 text-stone-300 text-[11px]">
+                              <Car className="w-3.5 h-3.5 text-[#C5A85C]/70" />
+                              <span className="truncate">
+                                {language === 'en' ? getRecommendedFleet(dest.id)?.nameEn : getRecommendedFleet(dest.id)?.nameAr}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Book & View interactive actions */}
+                    <div className="flex items-center gap-3 pt-4 border-t border-stone-800/80">
+                      <button
+                        onClick={() => handleBookDestination(dest.name, dest.nameAr)}
+                        className="flex-1 bg-[#C5A85C] text-black hover:bg-white hover:text-black transition-all duration-300 px-4 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-[#C5A85C]/10 text-center cursor-pointer active:scale-95"
+                      >
+                        {language === 'en' ? 'Book Package' : 'حجز الباقة'}
+                      </button>
+                      
+                      <button
+                        onClick={() => handleSelectAndShow(dest.id)}
+                        className="p-2.5 rounded-xl border border-[#C5A85C]/30 hover:border-[#C5A85C] hover:bg-[#C5A85C]/10 text-[#C5A85C] transition-all duration-300 text-xs font-bold cursor-pointer active:scale-95 flex items-center justify-center"
+                        title={language === 'en' ? 'View in Showcase' : 'عرض المعرض'}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
             })}
           </motion.div>
+        )}
+
+        {/* Restore defaults button if any items have been deleted */}
+        {viewMode === 'grid' && destinationsList.length > 0 && destinationsList.length < TOURIST_DESTINATIONS.length && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={handleResetDestinations}
+              className="px-4 py-2 rounded-xl border border-[#C5A85C]/30 bg-[#0a0a0a] text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-xs font-bold transition-all cursor-pointer shadow-lg active:scale-95 flex items-center gap-2"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{language === 'en' ? 'Restore Default Destinations' : 'استعادة كافة الوجهات الافتراضية'}</span>
+            </button>
+          </div>
         )}
 
         {/* Dynamic interactive VIP banner */}

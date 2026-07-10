@@ -1,8 +1,13 @@
+import { useState } from 'react';
 import { ArrowUp, Sparkles, Phone, Mail, MapPin, Instagram, Facebook, Twitter } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 
 export default function Footer() {
-  const { language, t, isRtl } = useLanguage();
+  const { language, t, isRtl, isAdmin, loginAdmin, logoutAdmin } = useLanguage();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -150,7 +155,7 @@ export default function Footer() {
         {/* Lower Legal Bar with Dynamic Year */}
         <div className={`border-t border-royal-navy-900 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-[10px] text-champagne-gold-400/50 uppercase font-mono tracking-wider ${isRtl ? 'md:flex-row-reverse text-right' : 'text-left'}`}>
           <p>© {new Date().getFullYear()} Royal Ride Jordan. {language === 'en' ? 'All Sovereign Rights Reserved.' : 'جميع حقوق النقل الفاخر محفوظة.'}</p>
-          <div className={`flex space-x-6 mt-4 md:mt-0 ${isRtl ? 'space-x-reverse' : ''}`}>
+          <div className={`flex space-x-6 mt-4 md:mt-0 items-center ${isRtl ? 'space-x-reverse' : ''}`}>
             <a href="#" className="hover:text-champagne-gold-200">
               {language === 'en' ? 'Privacy Policy' : 'سياسة الخصوصية'}
             </a>
@@ -158,8 +163,104 @@ export default function Footer() {
             <a href="#" className="hover:text-champagne-gold-200">
               {language === 'en' ? 'Terms of Chauffeur Dispatch' : 'أحكام تسيير الرحلات والسائقين'}
             </a>
+            <span className="text-royal-navy-800">|</span>
+            {isAdmin ? (
+              <button 
+                onClick={logoutAdmin} 
+                className="hover:text-red-400 transition-colors cursor-pointer text-red-500/70 font-bold"
+              >
+                {language === 'en' ? 'Admin Logout' : 'خروج المشرف'}
+              </button>
+            ) : (
+              <button 
+                onClick={() => setIsLoginOpen(true)} 
+                className="hover:text-champagne-gold-200 transition-colors cursor-pointer font-bold text-[#C5A85C]"
+              >
+                {language === 'en' ? 'Admin' : 'لوحة التحكم'}
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Premium Admin Login Modal */}
+        {isLoginOpen && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[999] flex items-center justify-center p-4">
+            <div className="bg-royal-navy-950 border border-[#C5A85C]/35 rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+              <button 
+                onClick={() => {
+                  setIsLoginOpen(false);
+                  setError('');
+                }}
+                className="absolute top-4 right-4 text-stone-500 hover:text-white transition-colors cursor-pointer text-sm"
+              >
+                ✕
+              </button>
+              <h3 className="font-serif text-lg font-bold text-[#C5A85C] mb-1 text-center">
+                {language === 'en' ? 'Administrative Access' : 'بوابة المشرف'}
+              </h3>
+              <p className="text-[10px] font-mono text-champagne-gold-400/55 tracking-wider text-center uppercase mb-6">
+                {language === 'en' ? 'Royal Ride Control Room' : 'غرفة التحكم رويال رايد'}
+              </p>
+
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const success = loginAdmin(email, password);
+                  if (success) {
+                    setIsLoginOpen(false);
+                    setError('');
+                    setEmail('');
+                    setPassword('');
+                  } else {
+                    setError(language === 'en' ? 'Invalid credentials or unauthorized' : 'بيانات الدخول غير صحيحة أو غير مصرح بها');
+                  }
+                }} 
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-[10px] text-stone-400 uppercase tracking-wider mb-1.5 font-mono text-left">
+                    {language === 'en' ? 'Email Address' : 'البريد الإلكتروني'}
+                  </label>
+                  <input 
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="royalride011@gmail.com"
+                    required
+                    className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-[#C5A85C]/60 text-left"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] text-stone-400 uppercase tracking-wider mb-1.5 font-mono text-left">
+                    {language === 'en' ? 'Access Password' : 'كلمة المرور'}
+                  </label>
+                  <input 
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="w-full bg-stone-900 border border-stone-800 rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-[#C5A85C]/60 text-left"
+                  />
+                </div>
+
+                {error && (
+                  <p className="text-red-500 text-[10px] font-sans text-center font-semibold bg-red-950/20 py-1.5 rounded-lg border border-red-500/20">
+                    {error}
+                  </p>
+                )}
+
+                <button 
+                  type="submit"
+                  className="w-full bg-[#C5A85C] text-black text-xs font-bold py-3 rounded-xl hover:bg-white transition-colors cursor-pointer active:scale-95 shadow-lg shadow-[#C5A85C]/15"
+                >
+                  {language === 'en' ? 'Authenticate Access' : 'تأكيد الهوية والدخول'}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
 
       </div>
     </footer>

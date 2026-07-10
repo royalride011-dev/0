@@ -192,7 +192,7 @@ export default function Blog({ onBookNowClicked }: BlogProps) {
                     className="flex flex-col bg-royal-navy-900 border border-champagne-gold-500/5 hover:border-champagne-gold-500/20 rounded overflow-hidden shadow-lg transition-all duration-300 group"
                   >
                     {/* Cover Photo with premium gold borders */}
-                    <div className="relative h-[282.694px] overflow-hidden border-b border-champagne-gold-500/30 p-0.5 bg-royal-navy-950">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-champagne-gold-500/30 p-0.5 bg-royal-navy-950">
                       <LazyImage
                         src={article.image}
                         alt={`مقالة: ${article.titleEn} من Royal Ride Jordan`}

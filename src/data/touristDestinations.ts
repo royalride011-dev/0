@@ -23,7 +23,7 @@ export const FALLBACK_DESTINATION: DestinationNode = {
   nameAr: 'المعلم المهيب',
   subtitle: 'Exclusive guided route',
   subtitleAr: 'مسار جولات مخصصة لكبار الشخصيات',
-  image: 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80',
+  image: 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=800&q=75',
   highlights: ['Elite customized route planning', 'First-class travel comfort'],
   highlightsAr: ['تخطيط مسار مخصص للنخبة', 'أقصى درجات الراحة والرفاهية أثناء السفر'],
   bestTime: 'Spring & Autumn',
