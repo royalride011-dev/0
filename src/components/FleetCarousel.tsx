@@ -481,9 +481,9 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-[500px] aspect-square mx-auto flex flex-col justify-between animate-gpu relative rounded-3xl overflow-hidden bg-royal-navy-950/95 border border-[#C5A85C]/35 group shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:border-[#C5A85C]/60 transition-all duration-500 cursor-pointer"
+            className={`w-full max-w-[500px] aspect-square mx-auto flex flex-col justify-between animate-gpu relative rounded-3xl overflow-hidden bg-royal-navy-950/95 border border-[#C5A85C]/35 group shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:border-[#C5A85C]/60 transition-all duration-500 ${isAdmin ? 'cursor-pointer' : 'cursor-default'}`}
             onClick={() => {
-              if (customizingVehicleId !== currentVehicle.id) {
+              if (isAdmin && customizingVehicleId !== currentVehicle.id) {
                 setCustomizingVehicleId(currentVehicle.id);
                 setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
               }
@@ -514,7 +514,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                 key={currentVehicle.id}
                 src={getVehicleImage(currentVehicle)}
                 alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
-                className={`w-full h-full object-cover absolute inset-0 transition-transform duration-700 ${customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
+                className={`w-full h-full object-cover absolute inset-0 transition-transform duration-700 ${isAdmin && customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.02 }}
