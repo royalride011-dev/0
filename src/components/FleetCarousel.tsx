@@ -215,16 +215,9 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
     }
   }, []);
 
-  // Elegant Auto-scrolling (Autoplay) mechanism for the luxury vehicles carousel
+  // Autoplay disabled as requested. The carousel is now fully manually controlled via Next/Prev buttons and options.
   useEffect(() => {
-    // Only auto-advance if the customizer uploader is not active
-    if (customizingVehicleId !== null) return;
-
-    const interval = setInterval(() => {
-      nextVehicle();
-    }, 7000); // 7 seconds for luxury vehicle display to match the page rhythm
-
-    return () => clearInterval(interval);
+    // Autoplay interval removed to allow manual user-driven navigation
   }, [customizingVehicleId, activeIndex]);
 
   const handleUpdateImage = async (vehicleId: string, newImage: string) => {
