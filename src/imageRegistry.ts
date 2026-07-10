@@ -22,11 +22,11 @@ import wadiRumRegeneratedImg from './assets/images/regenerated_image_17836952781
 import aqabaRegeneratedImg from './assets/images/regenerated_image_1783695771565.png';
 import jerashRegeneratedImg from './assets/images/regenerated_image_1783695774079.png';
 import beirutRegeneratedImg from './assets/images/regenerated_image_1783695780655.png';
-const damascusRegeneratedImg = 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=800&q=75';
+import ajlounRegeneratedNewImg from './assets/images/regenerated_image_1783696245556.png';
+import damascusRegeneratedNewImg from './assets/images/regenerated_image_1783696258576.png';
 const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75';
-const ajlounRegeneratedImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75';
 import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.jpg';
-import comfortClassImg from './assets/images/regenerated_image_1783359463566.png';
+import comfortClassImg from './assets/images/regenerated_image_1783696774556.png';
 import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
 import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.jpg';
 import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.jpg';
@@ -117,9 +117,9 @@ export const images = {
     aqaba: getOverride('tourism_aqaba', aqabaRegeneratedImg),
     jerash: getOverride('tourism_jerash', jerashRegeneratedImg),
     madaba: getOverride('tourism_madaba', 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=800&q=75'),
-    damascus: getOverride('tourism_damascus', damascusRegeneratedImg),
+    damascus: getOverride('tourism_damascus', damascusRegeneratedNewImg),
     beirut: getOverride('tourism_beirut', beirutRegeneratedImg),
-    ajloun: getOverride('tourism_ajloun', ajlounRegeneratedImg),
+    ajloun: getOverride('tourism_ajloun', ajlounRegeneratedNewImg),
   },
 
   // About Page
