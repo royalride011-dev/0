@@ -26,7 +26,7 @@ import ajlounRegeneratedNewImg from './assets/images/regenerated_image_178369624
 import damascusRegeneratedNewImg from './assets/images/regenerated_image_1783696258576.png';
 const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75';
 import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.jpg';
-import comfortClassImg from './assets/images/regenerated_image_1783698331606.png';
+import comfortClassImg from './assets/images/regenerated_image_1783701769981.png';
 import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
 import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.jpg';
 import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.jpg';
