@@ -1,3 +1,8 @@
+/**
+ * Royal Ride Jordan - Main Application Entry
+ * Fully optimized single-page layout with elegant routing, luxury styling, 
+ * and persistent language support (English/Arabic).
+ */
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Header from './components/Header';
