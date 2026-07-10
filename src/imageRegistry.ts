@@ -16,7 +16,7 @@ const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234d
 import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
 import tourismPetraImg from './assets/images/regenerated_image_1782516369460.jpg';
 import deadSeaRegeneratedImg from './assets/images/regenerated_image_1783693430307.png';
-import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783687258922.png';
+import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783699790509.png';
 import petraRegeneratedImg from './assets/images/regenerated_image_1783695271320.png';
 import wadiRumRegeneratedImg from './assets/images/regenerated_image_1783695278185.png';
 import aqabaRegeneratedImg from './assets/images/regenerated_image_1783695771565.png';
