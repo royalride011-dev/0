@@ -916,7 +916,7 @@ export default function TourismCarousel() {
                 </motion.div>
 
                 {/* Right Column: Premium Sovereign Experience Ledger Card */}
-                <div className="lg:col-span-6 flex flex-col justify-between h-full bg-[#0a0a0a] border border-[#C5A85C]/35 hover:border-[#C5A85C] transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(197,168,92,0.07)] rounded-3xl p-6 sm:p-8 relative overflow-hidden w-full self-stretch min-h-[500px]">
+                <div className="lg:col-span-6 flex flex-col justify-between w-full max-w-[500px] h-[500px] aspect-square mx-auto bg-[#0a0a0a] border border-[#C5A85C]/35 hover:border-[#C5A85C] transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(197,168,92,0.07)] rounded-3xl p-6 sm:p-8 relative overflow-hidden">
                   {/* Elegant gold filigree corner accents */}
                   <div className="absolute top-2 left-2 w-5 h-5 border-t border-l border-[#C5A85C]/40 pointer-events-none" />
                   <div className="absolute top-2 right-2 w-5 h-5 border-t border-r border-[#C5A85C]/40 pointer-events-none" />
