@@ -17,6 +17,8 @@ import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg
 import tourismPetraImg from './assets/images/regenerated_image_1782516369460.jpg';
 import deadSeaRegeneratedImg from './assets/images/regenerated_image_1783693430307.png';
 import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783687258922.png';
+import petraRegeneratedImg from './assets/images/regenerated_image_1783695271320.png';
+import wadiRumRegeneratedImg from './assets/images/regenerated_image_1783695278185.png';
 const damascusRegeneratedImg = 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=800&q=75';
 const beirutRegeneratedImg = 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=800&q=75';
 const aqabaRegeneratedImg = 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=800&q=75';
@@ -109,8 +111,8 @@ export const images = {
   // Tourist Destinations (TourismCarousel)
   tourism: {
     amman: getOverride('tourism_amman', ammanRegeneratedNewImg),
-    petra: getOverride('tourism_petra', petraTourImg),
-    wadirum: getOverride('tourism_wadirum', wadirumRegeneratedImg),
+    petra: getOverride('tourism_petra', petraRegeneratedImg),
+    wadirum: getOverride('tourism_wadirum', wadiRumRegeneratedImg),
     deadsea: getOverride('tourism_deadsea', deadSeaRegeneratedImg),
     aqaba: getOverride('tourism_aqaba', aqabaRegeneratedImg),
     jerash: getOverride('tourism_jerash', jerashRegeneratedImg),
