@@ -19,12 +19,12 @@ import deadSeaRegeneratedImg from './assets/images/regenerated_image_17836934303
 import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783687258922.png';
 import petraRegeneratedImg from './assets/images/regenerated_image_1783695271320.png';
 import wadiRumRegeneratedImg from './assets/images/regenerated_image_1783695278185.png';
+import aqabaRegeneratedImg from './assets/images/regenerated_image_1783695771565.png';
+import jerashRegeneratedImg from './assets/images/regenerated_image_1783695774079.png';
+import beirutRegeneratedImg from './assets/images/regenerated_image_1783695780655.png';
 const damascusRegeneratedImg = 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=800&q=75';
-const beirutRegeneratedImg = 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=800&q=75';
-const aqabaRegeneratedImg = 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=800&q=75';
 const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75';
 const ajlounRegeneratedImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75';
-const jerashRegeneratedImg = 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=800&q=75';
 import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.jpg';
 import comfortClassImg from './assets/images/regenerated_image_1783359463566.png';
 import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
