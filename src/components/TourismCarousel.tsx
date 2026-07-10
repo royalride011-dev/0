@@ -426,6 +426,18 @@ export default function TourismCarousel() {
     }
   }, [activeDest?.image]);
 
+  // Elegant Auto-scrolling (Autoplay) mechanism for the premium carousel
+  useEffect(() => {
+    // Only auto-advance in split mode, when map is hidden, and when uploader is not active
+    if (viewMode !== 'split' || showMap || customizingDestId !== null) return;
+
+    const interval = setInterval(() => {
+      handleNext();
+    }, 6000); // 6 seconds for a luxurious, leisurely reading speed
+
+    return () => clearInterval(interval);
+  }, [viewMode, showMap, customizingDestId, activeIndex, destinationsList.length]);
+
   return (
     <section id="tourism" ref={sectionRef} className="relative py-24 bg-black overflow-hidden text-left text-[#FAF6ED]">
       
@@ -594,7 +606,7 @@ export default function TourismCarousel() {
                             <motion.img
                               src={currentImage}
                               alt={`وجهة سياحية: ${activeDest.name} من Royal Ride Jordan`}
-                              className={`w-[500px] h-full object-cover transition-all duration-700 ${customizingDestId === activeDest.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
+                              className={`w-full h-full object-cover transition-transform duration-700 ${customizingDestId === activeDest.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
                               referrerPolicy="no-referrer"
                               loading="lazy"
                               decoding="async"
@@ -1136,7 +1148,7 @@ export default function TourismCarousel() {
                     <img 
                       src={destImage} 
                       alt={`وجهة سياحية: ${dest.name} من Royal Ride Jordan`} 
-                      className={`w-full h-full object-cover transition-all duration-700 ${customizingDestId === dest.id ? 'blur-sm brightness-50' : 'group-hover/img:scale-105'}`}
+                      className={`w-full h-full object-cover transition-transform duration-700 ${customizingDestId === dest.id ? 'blur-sm brightness-50' : 'group-hover/img:scale-105'}`}
                       referrerPolicy="no-referrer"
                       loading="lazy"
                       decoding="async"

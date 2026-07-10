@@ -215,6 +215,18 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
     }
   }, []);
 
+  // Elegant Auto-scrolling (Autoplay) mechanism for the luxury vehicles carousel
+  useEffect(() => {
+    // Only auto-advance if the customizer uploader is not active
+    if (customizingVehicleId !== null) return;
+
+    const interval = setInterval(() => {
+      nextVehicle();
+    }, 7000); // 7 seconds for luxury vehicle display to match the page rhythm
+
+    return () => clearInterval(interval);
+  }, [customizingVehicleId, activeIndex]);
+
   const handleUpdateImage = async (vehicleId: string, newImage: string) => {
     try {
       const compressedImage = await compressImageSource(newImage, 1000, 1000, 0.75);
@@ -394,7 +406,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                   key={currentVehicle.id}
                   src={getVehicleImage(currentVehicle)}
                   alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
-                  className={`w-full h-full object-cover transition-all duration-700 ${customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
+                  className={`w-full h-full object-cover transition-transform duration-700 ${customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.02 }}
