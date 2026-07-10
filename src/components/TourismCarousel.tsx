@@ -22,7 +22,11 @@ import {
   Award, 
   History,
   TrendingUp,
-  LayoutGrid
+  LayoutGrid,
+  Upload,
+  Link,
+  Edit2,
+  Camera
 } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import { images } from '../imageRegistry';
@@ -31,8 +35,10 @@ import {
   FALLBACK_DESTINATION, 
   DestinationNode,
   TOURIST_DESTINATIONS,
-  resetStoredDestinations
+  resetStoredDestinations,
+  saveStoredDestinations
 } from '../data/touristDestinations';
+import { compressImageSource } from '../utils/imageCompressor';
 
 // Coordinates for our handcrafted interactive vector route map
 interface MapCoordinate {
@@ -78,6 +84,52 @@ const slideVariants = {
   })
 };
 
+const PRESETS_BY_DESTINATION: Record<string, { url: string; labelEn: string; labelAr: string }[]> = {
+  amman: [
+    { url: 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80', labelEn: 'Amman Citadel', labelAr: 'قلعة عمان' },
+    { url: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=1200&q=80', labelEn: 'Downtown Theater', labelAr: 'المدرج الروماني' },
+    { url: 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=1200&q=80', labelEn: 'Ancient Pillars', labelAr: 'الأعمدة الأثرية' }
+  ],
+  petra: [
+    { url: 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=1200&q=80', labelEn: 'The Treasury', labelAr: 'الخزنة الوردية' },
+    { url: 'https://images.unsplash.com/photo-1580835153549-9d0473e1c66f?auto=format&fit=crop&w=1200&q=80', labelEn: 'Petra By Night', labelAr: 'البتراء مضاءة ليلاً' },
+    { url: 'https://images.unsplash.com/photo-1544085311-11a028465b03?auto=format&fit=crop&w=1200&q=80', labelEn: 'Monastery Gorge', labelAr: 'ممر الدير الصخري' }
+  ],
+  wadirum: [
+    { url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80', labelEn: 'Golden Dunes', labelAr: 'كثبان وادي رم' },
+    { url: 'https://images.unsplash.com/photo-1581005118544-775e52c8bc52?auto=format&fit=crop&w=1200&q=80', labelEn: 'Bedouin Camp Fire', labelAr: 'شعلة المخيم البدوي' },
+    { url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&q=80', labelEn: 'Starry Desert Night', labelAr: 'نجوم سماء وادي رم' }
+  ],
+  deadsea: [
+    { url: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80', labelEn: 'Turquoise Waters', labelAr: 'مياه البحر الميت' },
+    { url: 'https://images.unsplash.com/photo-1473116763269-255ea7427be2?auto=format&fit=crop&w=1200&q=80', labelEn: 'Salt Shoreline', labelAr: 'شواطئ الملح البيضاء' },
+    { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80', labelEn: 'Sunset Floating', labelAr: 'الاسترخاء وقت الغروب' }
+  ],
+  aqaba: [
+    { url: 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=1200&q=80', labelEn: 'Coastal Luxury', labelAr: 'ساحل العقبة الدافئ' },
+    { url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80', labelEn: 'Red Sea Yachts', labelAr: 'يخوت البحر الأحمر' }
+  ],
+  jerash: [
+    { url: 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=1200&q=80', labelEn: 'Roman Colonnade', labelAr: 'شارع الأعمدة الأثري' }
+  ],
+  damascus: [
+    { url: 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=1200&q=80', labelEn: 'Damascus Old City', labelAr: 'حارات دمشق القديمة' }
+  ],
+  beirut: [
+    { url: 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=1200&q=80', labelEn: 'Beirut Raouche', labelAr: 'صخرة الروشة ببيروت' }
+  ],
+  ajloun: [
+    { url: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80', labelEn: 'Ajloun Forest', labelAr: 'قلعة عجلون ومحميتها' }
+  ]
+};
+
+const DEFAULT_PRESETS = [
+  { url: 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80', labelEn: 'Amman Citadel', labelAr: 'القلعة الأثرية' },
+  { url: 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=1200&q=80', labelEn: 'Petra Treasury', labelAr: 'خزنة البتراء' },
+  { url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80', labelEn: 'Wadi Rum Desert', labelAr: 'صحراء رم' },
+  { url: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80', labelEn: 'Dead Sea Wellness', labelAr: 'استجمام البحر الميت' }
+];
+
 export default function TourismCarousel() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { language, isRtl } = useLanguage();
@@ -94,20 +146,95 @@ export default function TourismCarousel() {
     return Array.isArray(list) && list.length > 0 ? list : [FALLBACK_DESTINATION];
   });
 
+  const [customizingDestId, setCustomizingDestId] = useState<string | null>(null);
+  const [customUrl, setCustomUrl] = useState<string>('');
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+
+  const handleUpdateImage = async (destId: string, newImage: string) => {
+    try {
+      // Compress/resize the image before applying and storing it
+      const compressedImage = await compressImageSource(newImage, 1000, 1000, 0.75);
+      
+      const updated = destinationsList.map((d) => {
+        if (d.id === destId) {
+          return { ...d, image: compressedImage };
+        }
+        return d;
+      });
+      setDestinationsList(updated);
+      saveStoredDestinations(updated);
+      
+      // Clear failed and loaded state to trigger a fresh load of the new resource
+      setFailedImages((prev) => {
+        const copy = { ...prev };
+        delete copy[destId];
+        return copy;
+      });
+      setLoadedImages((prev) => ({
+        ...prev,
+        [destId]: false
+      }));
+    } catch (err) {
+      console.error('Error compressing or updating image:', err);
+    }
+  };
+
+  const handleFileUpload = async (destId: string, file: File) => {
+    if (!file) return;
+    try {
+      const compressedImage = await compressImageSource(file, 1000, 1000, 0.75);
+      await handleUpdateImage(destId, compressedImage);
+    } catch (err) {
+      console.error('Error uploading and compressing file:', err);
+    }
+  };
+
+  // Preload & Pre-decode all destination and fleet images in the background for ultra-high performance instant rendering
   useEffect(() => {
-    setFailedImages({});
+    if (typeof window !== 'undefined' && destinationsList) {
+      destinationsList.forEach((dest) => {
+        if (dest?.image) {
+          const img = document.createElement('img') as HTMLImageElement;
+          img.src = dest.image;
+          // Modern GPU pre-decoding to avoid frame drops on rendering
+          const canDecode = typeof (img as any).decode === 'function';
+          if (canDecode) {
+            img.decode().then(() => {
+              setLoadedImages(prev => ({ ...prev, [dest.id]: true }));
+            }).catch(() => {
+              // Graceful fallback to default browser onload
+              img.onload = () => {
+                setLoadedImages(prev => ({ ...prev, [dest.id]: true }));
+              };
+            });
+          } else {
+            img.onload = () => {
+              setLoadedImages(prev => ({ ...prev, [dest.id]: true }));
+            };
+          }
+        }
+      });
+      FLEET_ITEMS.forEach((item) => {
+        if (item?.image) {
+          const img = document.createElement('img') as HTMLImageElement;
+          img.src = item.image;
+        }
+      });
+    }
   }, [destinationsList]);
 
   const fallbackImages: Record<string, string> = {
     amman: 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80',
     petra: 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=1200&q=80',
-    wadirum: 'https://images.unsplash.com/photo-1581005118544-775e52c8bc52?auto=format&fit=crop&w=600&q=70',
-    deadsea: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=600&q=70',
+    wadirum: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
+    deadsea: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80',
     jerash: 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=1200&q=80',
-    aqaba: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70',
-    mountnebo: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=600&q=70',
+    aqaba: 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=1200&q=80',
+    mountnebo: 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=1200&q=80',
     kerak: 'https://images.unsplash.com/photo-1544085311-11a028465b03?auto=format&fit=crop&w=1200&q=80',
-    ajloun: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80'
+    ajloun: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80',
+    damascus: 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=1200&q=80',
+    beirut: 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=1200&q=80'
   };
 
   const handleNext = () => {
@@ -187,6 +314,16 @@ export default function TourismCarousel() {
       luxuryRankAr: 'الدرجة المريحة'
     },
     {
+      id: 'hiace',
+      nameEn: 'Toyota Hiace Tourer',
+      nameAr: 'تويوتا هايس السياحية',
+      image: images.fleet.toyotaHiace || '/images/royal_ride_hero_1781696285755.jpg',
+      reasonEn: 'Highly spacious medium-sized van customized for group transfers, luggage convenience, and ancient landmark excursions.',
+      reasonAr: 'ڤان متوسط الحجم فخم ومتسع، مخصص للمجموعات والرحلات السياحية وجولات الأردن الأثرية براحة وأمان.',
+      luxuryRank: 'Executive Van',
+      luxuryRankAr: 'الدرجة العائلية المتوسطة'
+    },
+    {
       id: 'coaster',
       nameEn: 'Toyota Coaster Luxury',
       nameAr: 'حافلة تويوتا كوستر الفاخرة',
@@ -206,16 +343,7 @@ export default function TourismCarousel() {
     } else if (lowerId.includes('petra') || lowerId.includes('rum') || lowerId.includes('aqaba') || lowerId.includes('kerak')) {
       return FLEET_ITEMS[1]; // GMC Yukon
     } else if (lowerId.includes('dead') || lowerId.includes('nebo')) {
-      return {
-        id: 'yukon',
-        nameEn: 'Range Rover Autobiography LWB',
-        nameAr: 'رينج روفر أوتوبيوجرافي VIP',
-        image: images.fleet.luxuryGmcYukon || '/images/regenerated_image_1782434427794.jpg',
-        reasonEn: 'Superior air suspension to smooth out elevation drop (-430m) and executive reclining wellness massage chairs.',
-        reasonAr: 'نظام تعليق هوائي متطور يتكيف مع الانخفاض الجغرافي للبحر الميت، ومقاعد مساج مريحة للاستجمام.',
-        luxuryRank: 'Wellness Executive LWB',
-        luxuryRankAr: 'الدرجة التنفيذية الفاخرة'
-      };
+      return FLEET_ITEMS[0]; // S-Class
     } else {
       // Jerash, Ajloun
       return FLEET_ITEMS[1]; // GMC Yukon
@@ -234,7 +362,7 @@ export default function TourismCarousel() {
     setSelectedFleetId(null);
   }, [activeIndex]);
 
-  // Self-healing image loader: reset failed flag for active destination when index, id, or image changes
+  // Self-healing image loader: reset failed flag for active destination only when its actual image property is modified
   useEffect(() => {
     if (activeDest?.id) {
       setFailedImages((prev) => {
@@ -246,7 +374,7 @@ export default function TourismCarousel() {
         return prev;
       });
     }
-  }, [activeIndex, activeDest?.image, activeDest?.id]);
+  }, [activeDest?.image]);
 
   return (
     <section id="tourism" ref={sectionRef} className="relative py-24 bg-black overflow-hidden text-left text-[#FAF6ED]">
@@ -336,8 +464,45 @@ export default function TourismCarousel() {
                   {language === 'en' ? 'Restore Original Images' : 'استعادة الصور الأصلية'}
                 </button>
               </div>
+              {/* Horizontal Scrollable Destination Tabs */}
+              <div className={`flex gap-3 overflow-x-auto pb-3 pt-1 scrollbar-none justify-start ${isRtl ? 'flex-row-reverse' : ''}`}>
+                {destinationsList.map((dest, idx) => {
+                  const isCurrentlySelected = activeIndex === idx;
+                  const destImage = failedImages[dest.id]
+                    ? (fallbackImages[dest.id] || 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80')
+                    : dest.image;
 
-              
+                  return (
+                    <button
+                      key={dest.id}
+                      onClick={() => {
+                        setDirection(idx > activeIndex ? 1 : -1);
+                        setActiveIndex(idx);
+                      }}
+                      className={`relative flex items-center gap-3 px-4 py-2 rounded-xl border-2 transition-all duration-300 shrink-0 cursor-pointer ${
+                        isCurrentlySelected
+                          ? 'border-[#C5A85C] bg-[#C5A85C]/10 text-[#C5A85C] scale-[1.03] shadow-[0_4px_12px_rgba(197,168,92,0.15)]'
+                          : 'border-stone-800 bg-stone-900/40 text-stone-400 hover:border-[#C5A85C]/40 hover:text-stone-200'
+                      }`}
+                    >
+                      <div className="w-8 h-8 rounded-full overflow-hidden border border-[#C5A85C]/35 bg-black shrink-0">
+                        <img
+                          src={destImage}
+                          alt={dest.name}
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                          onError={() => {
+                            setFailedImages(prev => ({ ...prev, [dest.id]: true }));
+                          }}
+                        />
+                      </div>
+                      <span className="text-xs font-sans font-bold whitespace-nowrap">
+                        {language === 'en' ? dest.name : dest.nameAr}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
@@ -353,7 +518,15 @@ export default function TourismCarousel() {
                   <AnimatePresence mode="wait">
                     {!showMap ? (
                       // Interactive Sliding Image Carousel
-                      <div className="relative w-full max-w-[500px] aspect-square mx-auto z-0 overflow-hidden rounded-3xl group border border-[#C5A85C]/20 shadow-2xl bg-[#080808] flex items-center justify-center">
+                      <div 
+                        onClick={() => {
+                          if (customizingDestId !== activeDest.id) {
+                            setCustomizingDestId(activeDest.id);
+                            setCustomUrl(activeDest.image.startsWith('data:') ? '' : activeDest.image);
+                          }
+                        }}
+                        className={`relative w-full max-w-[500px] aspect-square mx-auto z-0 overflow-hidden rounded-3xl group border border-[#C5A85C]/20 shadow-2xl bg-[#080808] flex items-center justify-center transition-all duration-300 ${customizingDestId !== activeDest.id ? 'cursor-pointer hover:border-[#C5A85C]/60 hover:shadow-[0_0_25px_rgba(197,168,92,0.15)]' : ''}`}
+                      >
                         <AnimatePresence initial={false} custom={direction}>
                           <motion.div
                             key={activeDest.id}
@@ -367,7 +540,7 @@ export default function TourismCarousel() {
                             <motion.img
                               src={currentImage}
                               alt={`وجهة سياحية: ${activeDest.name} من Royal Ride Jordan`}
-                              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                              className={`w-full h-full object-cover transition-all duration-700 ${customizingDestId === activeDest.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
                               referrerPolicy="no-referrer"
                               loading="lazy"
                               decoding="async"
@@ -380,9 +553,169 @@ export default function TourismCarousel() {
                           </motion.div>
                         </AnimatePresence>
 
+                        {/* Elegant always-visible Glassmorphic badge for flexible customization */}
+                        {customizingDestId !== activeDest.id && (
+                          <div className="absolute bottom-4 right-4 z-10">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCustomizingDestId(activeDest.id);
+                                setCustomUrl(activeDest.image.startsWith('data:') ? '' : activeDest.image);
+                              }}
+                              className="px-4 py-2 rounded-xl border border-[#C5A85C]/35 bg-black/80 text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-xs font-sans font-extrabold flex items-center gap-1.5 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
+                            >
+                              <Camera className="w-3.5 h-3.5 animate-pulse" />
+                              <span>{language === 'en' ? 'Change Photo' : 'تغيير الصورة'}</span>
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Absolute embedded uploader panel for Split mode */}
+                        {customizingDestId === activeDest.id && (
+                          <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-6 flex flex-col justify-between z-20 animate-fadeIn border border-[#C5A85C]/45 rounded-3xl text-left">
+                            <div className="space-y-4">
+                              <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-2">
+                                <span className="text-xs font-mono font-bold text-[#C5A85C] uppercase tracking-wider">
+                                  {language === 'en' ? 'Configure Destination Image' : 'تعديل صورة الوجهة'}
+                                </span>
+                                <button 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCustomizingDestId(null);
+                                  }}
+                                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-sm font-bold"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+
+                              {/* URL Paste */}
+                              <div className="space-y-1.5 text-left">
+                                <label className="text-[10px] text-stone-400 font-sans block">
+                                  {language === 'en' ? 'Option 1: Paste Image Web Address' : 'الخيار 1: لصق رابط الصورة'}
+                                </label>
+                                <div className="flex gap-2 items-center">
+                                  <div className="relative flex-1">
+                                    <Link className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
+                                    <input 
+                                      type="text"
+                                      placeholder={language === 'en' ? 'Paste any high-res image URL...' : 'رابط صورة عالي الدقة...'}
+                                      value={customUrl}
+                                      onChange={(e) => setCustomUrl(e.target.value)}
+                                      className="w-full bg-stone-900 text-white text-xs pl-9 pr-3 py-2 rounded-xl border border-[#C5A85C]/20 focus:border-[#C5A85C] outline-none font-sans"
+                                    />
+                                  </div>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (customUrl.trim()) {
+                                        handleUpdateImage(activeDest.id, customUrl.trim());
+                                        setCustomizingDestId(null);
+                                      }
+                                    }}
+                                    className="bg-[#C5A85C] text-black text-xs px-4 py-2 rounded-xl font-bold hover:bg-white transition-colors cursor-pointer shrink-0"
+                                  >
+                                    {language === 'en' ? 'Apply' : 'تطبيق'}
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* File upload */}
+                              <div className="space-y-1.5 text-left">
+                                <label className="text-[10px] text-stone-400 font-sans block">
+                                  {language === 'en' ? 'Option 2: Drag & Drop or Upload Local File' : 'الخيار 2: سحب أو تحميل ملف صورة'}
+                                </label>
+                                <div className="relative border border-dashed border-[#C5A85C]/35 rounded-xl p-4 hover:border-[#C5A85C] transition-all bg-stone-900/60 flex flex-col items-center justify-center space-y-2">
+                                  <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    onClick={(e) => e.stopPropagation()}
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        handleFileUpload(activeDest.id, file);
+                                        setCustomizingDestId(null);
+                                      }
+                                    }}
+                                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                  />
+                                  <Upload className="w-6 h-6 text-[#C5A85C]" />
+                                  <span className="text-xs font-semibold text-stone-300">
+                                    {language === 'en' ? 'Upload Local Photo' : 'تحميل صورة من جهازك'}
+                                  </span>
+                                  <span className="text-[9px] text-stone-500 font-sans">
+                                    Supports JPG, PNG, WebP (instant local cache)
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Curated Presets */}
+                              <div className="space-y-1.5 pt-1 text-left">
+                                <span className="text-[10px] font-mono text-[#C5A85C]/75 block uppercase tracking-wider">
+                                  {language === 'en' ? 'Option 3: Select an Elite Preset' : 'الخيار 3: اختر من الباقة الفاخرة'}
+                                </span>
+                                <div className="grid grid-cols-3 gap-2">
+                                  {(PRESETS_BY_DESTINATION[activeDest.id] || DEFAULT_PRESETS).map((preset, idx) => (
+                                    <button
+                                      key={idx}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleUpdateImage(activeDest.id, preset.url);
+                                        setCustomizingDestId(null);
+                                      }}
+                                      className="group/preset relative aspect-video rounded-xl overflow-hidden border border-stone-850 hover:border-[#C5A85C] transition-all bg-stone-950 cursor-pointer"
+                                      title={language === 'en' ? preset.labelEn : preset.labelAr}
+                                    >
+                                      <img 
+                                        src={preset.url} 
+                                        alt={preset.labelEn}
+                                        className="w-full h-full object-cover group-hover/preset:scale-110 transition-transform duration-300"
+                                        referrerPolicy="no-referrer"
+                                        loading="lazy"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50 group-hover/preset:bg-transparent transition-all flex items-end p-1">
+                                        <span className="text-[8px] text-white font-sans bg-black/80 px-1.5 py-0.5 rounded-lg w-full truncate text-center font-bold">
+                                          {language === 'en' ? preset.labelEn : preset.labelAr}
+                                        </span>
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex gap-2 justify-between border-t border-stone-800 pt-2 items-center">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  const def = TOURIST_DESTINATIONS.find(d => d.id === activeDest.id);
+                                  if (def) {
+                                    handleUpdateImage(activeDest.id, def.image);
+                                  }
+                                  setCustomizingDestId(null);
+                                }}
+                                className="text-[10px] text-red-400 hover:text-red-300 font-bold transition-colors cursor-pointer"
+                              >
+                                {language === 'en' ? 'Reset to Default Image' : 'استعادة الصورة الافتراضية'}
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setCustomizingDestId(null);
+                                }}
+                                className="text-[10px] text-stone-400 hover:text-white transition-colors cursor-pointer"
+                              >
+                                {language === 'en' ? 'Cancel' : 'إلغاء'}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
                         {/* Slide Indicator Overlay e.g. 03 / 10 */}
-                        <div className="absolute top-4 left-4 z-10 px-3.5 py-1.5 rounded-full bg-black/75 border border-[#C5A85C]/30 text-xs font-mono font-extrabold text-[#C5A85C] shadow-lg backdrop-blur-[6px]">
-                          {String(activeIndex + 1).padStart(2, '0')} / {String(destinationsList.length).padStart(2, '0')}
+                        <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                          <div className="px-3.5 py-1.5 rounded-full bg-black/75 border border-[#C5A85C]/30 text-xs font-mono font-extrabold text-[#C5A85C] shadow-lg backdrop-blur-[6px]">
+                            {String(activeIndex + 1).padStart(2, '0')} / {String(destinationsList.length).padStart(2, '0')}
+                          </div>
                         </div>
 
                         {/* Navigation Arrows (Always visible on mobile, beautifully styled on hover on desktop) */}
@@ -435,6 +768,8 @@ export default function TourismCarousel() {
                             />
                           ))}
                         </div>
+
+
                       </div>
                     ) : (
                       // Interactive Map Container
@@ -553,16 +888,6 @@ export default function TourismCarousel() {
                       }`}
                     >
                       {language === 'en' ? 'Highlights' : 'أبرز المعالم'}
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('fleet')}
-                      className={`flex-1 pb-2.5 text-xs font-sans font-extrabold uppercase tracking-wider text-center border-b-2 transition-all cursor-pointer ${
-                        activeTab === 'fleet'
-                          ? 'border-[#C5A85C] text-[#C5A85C]'
-                          : 'border-transparent text-stone-500 hover:text-stone-300'
-                      }`}
-                    >
-                      {language === 'en' ? 'Luxury Fleet' : 'الأسطول الفاخر'}
                     </button>
                   </div>
 
@@ -720,20 +1045,176 @@ export default function TourismCarousel() {
               return (
                 <div 
                   key={dest.id}
-                  className="rounded-lg overflow-hidden border border-[#C5A85C]/35 bg-stone-900 shadow-md hover:shadow-lg hover:border-[#C5A85C]/60 transition-all duration-300"
+                  className="rounded-lg overflow-hidden border border-[#C5A85C]/35 bg-stone-900 shadow-md hover:shadow-lg hover:border-[#C5A85C]/60 transition-all duration-300 animate-fadeIn"
                 >
-                  <div className="overflow-hidden h-[250px]">
+                  <div 
+                    onClick={() => {
+                      if (customizingDestId !== dest.id) {
+                        setCustomizingDestId(dest.id);
+                        setCustomUrl(dest.image.startsWith('data:') ? '' : dest.image);
+                      }
+                    }}
+                    className={`overflow-hidden h-[250px] relative group/img bg-stone-950 flex items-center justify-center transition-all duration-300 ${customizingDestId !== dest.id ? 'cursor-pointer' : ''}`}
+                  >
                     <img 
                       src={destImage} 
                       alt={`وجهة سياحية: ${dest.name} من Royal Ride Jordan`} 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      className={`w-full h-full object-cover transition-all duration-700 ${customizingDestId === dest.id ? 'blur-sm brightness-50' : 'group-hover/img:scale-105'}`}
                       referrerPolicy="no-referrer"
                       loading="lazy"
                       decoding="async"
+                      onLoad={() => {
+                        setLoadedImages(prev => ({ ...prev, [dest.id]: true }));
+                      }}
                       onError={() => {
                         setFailedImages(prev => ({ ...prev, [dest.id]: true }));
+                        setLoadedImages(prev => ({ ...prev, [dest.id]: true }));
                       }}
                     />
+
+                    {/* Shimmer skeleton loading spacer */}
+                    {!loadedImages[dest.id] && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-900 to-stone-950 flex flex-col items-center justify-center space-y-3 z-10">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C5A85C]/10 to-transparent -translate-x-full animate-shimmer" />
+                        <div className="w-10 h-10 rounded-full border border-[#C5A85C]/30 flex items-center justify-center animate-pulse">
+                          <Sparkles className="w-4 h-4 text-[#C5A85C]/85" />
+                        </div>
+                        <span className="text-[10px] font-mono tracking-widest text-[#C5A85C]/80 uppercase">
+                          {language === 'en' ? 'Sovereign Load' : 'جاري التحميل'}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Always visible, highly premium Change Photo trigger badge */}
+                    {customizingDestId !== dest.id && loadedImages[dest.id] && (
+                      <div className="absolute bottom-4 right-4 z-10">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCustomizingDestId(dest.id);
+                            setCustomUrl(dest.image.startsWith('data:') ? '' : dest.image);
+                          }}
+                          className="px-3 py-1.5 rounded-lg border border-[#C5A85C]/35 bg-black/80 text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-[10px] font-sans font-extrabold flex items-center gap-1.5 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
+                        >
+                          <Camera className="w-3 h-3 animate-pulse" />
+                          <span>{language === 'en' ? 'Change Photo' : 'تغيير الصورة'}</span>
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Absolute embedded uploader panel */}
+                    {customizingDestId === dest.id && (
+                      <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-4 flex flex-col justify-between z-20 animate-fadeIn border border-[#C5A85C]/45 rounded-lg text-left">
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-1.5">
+                            <span className="text-[10px] font-mono font-bold text-[#C5A85C] uppercase tracking-wider">
+                              {language === 'en' ? 'Configure Image' : 'تعديل الصورة'}
+                            </span>
+                            <button 
+                              onClick={() => setCustomizingDestId(null)}
+                              className="text-stone-400 hover:text-white transition-colors cursor-pointer text-xs"
+                            >
+                              ✕
+                            </button>
+                          </div>
+
+                          {/* URL Paste */}
+                          <div className="flex gap-1.5 items-center">
+                            <div className="relative flex-1">
+                              <Link className="absolute left-2.5 top-2 w-3.5 h-3.5 text-stone-500" />
+                              <input 
+                                type="text"
+                                placeholder={language === 'en' ? 'Paste image URL...' : 'رابط الصورة...'}
+                                value={customUrl}
+                                onChange={(e) => setCustomUrl(e.target.value)}
+                                className="w-full bg-stone-900 text-white text-[10px] pl-8 pr-2 py-1.5 rounded-lg border border-[#C5A85C]/20 focus:border-[#C5A85C] outline-none font-sans"
+                              />
+                            </div>
+                            <button
+                              onClick={() => {
+                                if (customUrl.trim()) {
+                                  handleUpdateImage(dest.id, customUrl.trim());
+                                  setCustomizingDestId(null);
+                                }
+                              }}
+                              className="bg-[#C5A85C] text-black text-[10px] px-2.5 py-1.5 rounded-lg font-bold hover:bg-white transition-colors cursor-pointer"
+                            >
+                              {language === 'en' ? 'Apply' : 'تطبيق'}
+                            </button>
+                          </div>
+
+                          {/* File upload */}
+                          <div className="relative border border-dashed border-[#C5A85C]/35 rounded-lg p-2 hover:border-[#C5A85C] transition-all bg-stone-900/60 flex items-center justify-center">
+                            <input 
+                              type="file" 
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  handleFileUpload(dest.id, file);
+                                  setCustomizingDestId(null);
+                                }
+                              }}
+                              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                            />
+                            <div className="flex items-center gap-1.5 text-stone-300">
+                              <Upload className="w-3.5 h-3.5 text-[#C5A85C]" />
+                              <span className="text-[10px] font-medium">
+                                {language === 'en' ? 'Upload Local Photo' : 'تحميل صورة من جهازك'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Curated Presets */}
+                          <div className="space-y-1">
+                            <span className="text-[9px] font-mono text-[#C5A85C]/75 block uppercase">
+                              {language === 'en' ? 'Premium Presets' : 'صور جاهزة فاخرة'}
+                            </span>
+                            <div className="grid grid-cols-3 gap-1">
+                              {(PRESETS_BY_DESTINATION[dest.id] || DEFAULT_PRESETS).map((preset, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => {
+                                    handleUpdateImage(dest.id, preset.url);
+                                    setCustomizingDestId(null);
+                                  }}
+                                  className="group/preset relative aspect-video rounded overflow-hidden border border-stone-850 hover:border-[#C5A85C] transition-all bg-stone-950 cursor-pointer"
+                                  title={language === 'en' ? preset.labelEn : preset.labelAr}
+                                >
+                                  <img 
+                                    src={preset.url} 
+                                    alt={preset.labelEn}
+                                    className="w-full h-full object-cover group-hover/preset:scale-110 transition-transform duration-300"
+                                    referrerPolicy="no-referrer"
+                                    loading="lazy"
+                                  />
+                                  <div className="absolute inset-0 bg-black/50 group-hover/preset:bg-transparent transition-all flex items-end p-0.5">
+                                    <span className="text-[7px] text-white font-sans bg-black/75 px-1 py-0.5 rounded w-full truncate text-center">
+                                      {language === 'en' ? preset.labelEn : preset.labelAr}
+                                    </span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 justify-between border-t border-stone-800 pt-1.5 items-center">
+                          <button
+                            onClick={() => {
+                              const def = TOURIST_DESTINATIONS.find(d => d.id === dest.id);
+                              if (def) {
+                                handleUpdateImage(dest.id, def.image);
+                              }
+                              setCustomizingDestId(null);
+                            }}
+                            className="text-[9px] text-red-400 hover:text-red-300 font-bold transition-colors cursor-pointer"
+                          >
+                            {language === 'en' ? 'Reset to Default' : 'استعادة الافتراضي'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="p-4">
                     <h4 className="text-champagne-gold-500 font-serif text-lg">

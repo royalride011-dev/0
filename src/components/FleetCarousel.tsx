@@ -1,13 +1,39 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Users, Briefcase, CheckSquare, Sparkles, AlertCircle, Crown, Scale, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Users, Briefcase, CheckSquare, Sparkles, AlertCircle, Crown, Scale, X, Camera, Upload, Link, Edit2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../LanguageContext';
 import { images } from '../imageRegistry';
 import { LazyImage } from './LazyImage';
+import { compressImageSource } from '../utils/imageCompressor';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const PRESETS_BY_VEHICLE: Record<string, { url: string; labelEn: string; labelAr: string }[]> = {
+  'comfort-class': [
+    { url: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop', labelEn: 'Luxury White Camry', labelAr: 'كامري أبيض فاخر' },
+    { url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1200&auto=format&fit=crop', labelEn: 'Elite Sedan', labelAr: 'سيدان النخبة' },
+    { url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop', labelEn: 'Executive Porsche', labelAr: 'بورتشه التنفيذية' }
+  ],
+  'staria': [
+    { url: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop', labelEn: 'Hyundai Staria Lounge', labelAr: 'هيونداي ستاريا لاونج' },
+    { url: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop', labelEn: 'Luxury Coach', labelAr: 'حافلة فاخرة' },
+    { url: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=1200&auto=format&fit=crop', labelEn: 'Lounge Concept', labelAr: 'مفهوم الصالون الفخم' }
+  ],
+  'toyota-hiace': [
+    { url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1200&auto=format&fit=crop', labelEn: 'Hiace Tourer Black', labelAr: 'هايس سياحية سوداء' },
+    { url: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=1200&auto=format&fit=crop', labelEn: 'Group Transporter', labelAr: 'ناقلة المجموعات' }
+  ],
+  'toyota-coaster': [
+    { url: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1200&auto=format&fit=crop', labelEn: 'Toyota Coaster White', labelAr: 'تويوتا كوستر أبيض' },
+    { url: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1200&auto=format&fit=crop', labelEn: 'City Shuttle Bus', labelAr: 'حافلة النقل الحضري' }
+  ],
+  'luxury-cars': [
+    { url: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop', labelEn: 'GMC Yukon Denali', labelAr: 'جي إم سي يوكون دينالي' },
+    { url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop', labelEn: 'Sports Sovereign', labelAr: 'السيارة الرياضية الفارهة' }
+  ]
+};
 
 interface FleetCarouselProps {
   onSelectVehicleAndInquire: (vehicleId: string) => void;
@@ -18,6 +44,10 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
   const [activeIndex, setActiveIndex] = useState(0);
   const [compareList, setCompareList] = useState<string[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+  const [customizingVehicleId, setCustomizingVehicleId] = useState<string | null>(null);
+  const [customUrl, setCustomUrl] = useState<string>('');
+  const [customOverrides, setCustomOverrides] = useState<Record<string, string>>({});
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Meticulous translation arrays of our prestige vehicles in Jordan
@@ -164,11 +194,118 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
 
   const currentVehicle = VEHICLES_LOCALIZED[activeIndex];
 
+  // Load custom overrides on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const overrides: Record<string, string> = {};
+      const vehicleKeys = {
+        'comfort-class': 'fleet_comfortClass',
+        'staria': 'fleet_stariaVip',
+        'toyota-hiace': 'fleet_toyotaHiace',
+        'toyota-coaster': 'fleet_toyotaCoaster',
+        'luxury-cars': 'fleet_luxuryGmcYukon'
+      };
+      Object.entries(vehicleKeys).forEach(([id, key]) => {
+        const saved = localStorage.getItem(`rr_img_override_${key}`);
+        if (saved) {
+          overrides[id] = saved;
+        }
+      });
+      setCustomOverrides(overrides);
+    }
+  }, []);
+
+  const handleUpdateImage = async (vehicleId: string, newImage: string) => {
+    try {
+      const compressedImage = await compressImageSource(newImage, 1000, 1000, 0.75);
+      
+      const vehicleKeys: Record<string, string> = {
+        'comfort-class': 'fleet_comfortClass',
+        'staria': 'fleet_stariaVip',
+        'toyota-hiace': 'fleet_toyotaHiace',
+        'toyota-coaster': 'fleet_toyotaCoaster',
+        'luxury-cars': 'fleet_luxuryGmcYukon'
+      };
+      
+      const key = vehicleKeys[vehicleId];
+      if (key) {
+        localStorage.setItem(`rr_img_override_${key}`, compressedImage);
+      }
+      
+      setCustomOverrides((prev) => ({ ...prev, [vehicleId]: compressedImage }));
+      
+      setImageErrors((prev) => {
+        const copy = { ...prev };
+        delete copy[vehicleId];
+        return copy;
+      });
+    } catch (err) {
+      console.error('Error compressing or updating vehicle image:', err);
+    }
+  };
+
+  const handleFileUpload = async (vehicleId: string, file: File) => {
+    if (!file) return;
+    try {
+      const compressedImage = await compressImageSource(file, 1000, 1000, 0.75);
+      await handleUpdateImage(vehicleId, compressedImage);
+    } catch (err) {
+      console.error('Error uploading and compressing file:', err);
+    }
+  };
+
+  const handleResetImage = (vehicleId: string) => {
+    const vehicleKeys: Record<string, string> = {
+      'comfort-class': 'fleet_comfortClass',
+      'staria': 'fleet_stariaVip',
+      'toyota-hiace': 'fleet_toyotaHiace',
+      'toyota-coaster': 'fleet_toyotaCoaster',
+      'luxury-cars': 'fleet_luxuryGmcYukon'
+    };
+    const key = vehicleKeys[vehicleId];
+    if (key) {
+      localStorage.removeItem(`rr_img_override_${key}`);
+    }
+    setCustomOverrides((prev) => {
+      const copy = { ...prev };
+      delete copy[vehicleId];
+      return copy;
+    });
+    setImageErrors((prev) => {
+      const copy = { ...prev };
+      delete copy[vehicleId];
+      return copy;
+    });
+  };
+
+  const getVehicleImage = (vehicle: typeof currentVehicle) => {
+    if (imageErrors[vehicle.id]) {
+      switch (vehicle.id) {
+        case 'comfort-class':
+          return 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+        case 'staria':
+          return 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop';
+        case 'toyota-hiace':
+          return 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1200&auto=format&fit=crop';
+        case 'toyota-coaster':
+          return 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1200&auto=format&fit=crop';
+        case 'luxury-cars':
+          return 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop';
+        default:
+          return 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+      }
+    }
+    if (customOverrides[vehicle.id]) {
+      return customOverrides[vehicle.id];
+    }
+    return vehicle.image || 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+  };
+
   // Preload image to speed up appearance
   useEffect(() => {
     const img = new Image();
-    img.src = currentVehicle.image;
-  }, [currentVehicle.image]);
+    img.src = getVehicleImage(currentVehicle);
+  }, [currentVehicle.id, imageErrors, customOverrides]);
 
   // No GSAP scroll trigger block needed here. Framer Motion coordinates scroll-triggered cinematic entries beautifully.
   useEffect(() => {
@@ -223,7 +360,15 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
           >
             
             {/* Main Visual Slider Frame with elegant gold decorative borders & artistic ornaments */}
-            <div className="relative rounded-xl overflow-hidden w-full max-w-[490px] aspect-[49/50] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center">
+            <div 
+              onClick={() => {
+                if (customizingVehicleId !== currentVehicle.id) {
+                  setCustomizingVehicleId(currentVehicle.id);
+                  setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
+                }
+              }}
+              className={`relative rounded-xl overflow-hidden w-full max-w-[490px] aspect-[49/50] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center ${customizingVehicleId !== currentVehicle.id ? 'cursor-pointer' : ''}`}
+            >
               
               {/* Elegant Golden Double Corner Ornaments */}
               <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none z-20" />
@@ -247,16 +392,178 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentVehicle.id}
-                  src={currentVehicle.image}
+                  src={getVehicleImage(currentVehicle)}
                   alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  className={`w-full h-full object-cover transition-all duration-700 ${customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.02 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                   referrerPolicy="no-referrer"
+                  onError={() => {
+                    console.warn(`Failed to load image for ${currentVehicle.id}. Healing state and falling back.`);
+                    if (customOverrides[currentVehicle.id]) {
+                      handleResetImage(currentVehicle.id);
+                    }
+                    setImageErrors((prev) => ({ ...prev, [currentVehicle.id]: true }));
+                  }}
                 />
               </AnimatePresence>
+
+              {/* Elegant always-visible Glassmorphic badge for flexible customization */}
+              {customizingVehicleId !== currentVehicle.id && (
+                <div className="absolute bottom-4 right-4 z-20">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCustomizingVehicleId(currentVehicle.id);
+                      setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
+                    }}
+                    className="px-3 py-1.5 rounded-lg border border-[#C5A85C]/35 bg-black/85 text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-xs font-sans font-extrabold flex items-center gap-1.5 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
+                  >
+                    <Camera className="w-3.5 h-3.5 animate-pulse" />
+                    <span>{language === 'en' ? 'Change Photo' : 'تغيير الصورة'}</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Absolute embedded uploader panel */}
+              {customizingVehicleId === currentVehicle.id && (
+                <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-6 flex flex-col justify-between z-30 animate-fadeIn border border-[#C5A85C]/45 rounded-xl text-left">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-2">
+                      <span className="text-xs font-mono font-bold text-[#C5A85C] uppercase tracking-wider">
+                        {language === 'en' ? 'Configure Vehicle Image' : 'تعديل صورة المركبة'}
+                      </span>
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCustomizingVehicleId(null);
+                        }}
+                        className="text-stone-400 hover:text-white transition-colors cursor-pointer text-sm font-bold animate-pulse"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    {/* URL Paste */}
+                    <div className="space-y-1.5 text-left">
+                      <label className="text-[10px] text-stone-400 font-sans block">
+                        {language === 'en' ? 'Option 1: Paste Image Web Address' : 'الخيار 1: لصق رابط الصورة'}
+                      </label>
+                      <div className="flex gap-2 items-center">
+                        <div className="relative flex-1">
+                          <Link className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
+                          <input 
+                            type="text" 
+                            value={customUrl}
+                            onClick={(e) => e.stopPropagation()}
+                            onChange={(e) => setCustomUrl(e.target.value)}
+                            placeholder="https://images.unsplash.com/photo-..."
+                            className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-[#C5A85C]/60"
+                          />
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (customUrl.trim()) {
+                              handleUpdateImage(currentVehicle.id, customUrl.trim());
+                              setCustomizingVehicleId(null);
+                            }
+                          }}
+                          className="bg-[#C5A85C] text-black text-xs px-4 py-2 rounded-xl font-bold hover:bg-white transition-colors cursor-pointer shrink-0"
+                        >
+                          {language === 'en' ? 'Apply' : 'تطبيق'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* File upload */}
+                    <div className="space-y-1.5 text-left">
+                      <label className="text-[10px] text-stone-400 font-sans block">
+                        {language === 'en' ? 'Option 2: Drag & Drop or Upload Local File' : 'الخيار 2: سحب أو تحميل ملف صورة'}
+                      </label>
+                      <div className="relative border border-dashed border-[#C5A85C]/35 rounded-xl p-4 hover:border-[#C5A85C] transition-all bg-stone-900/60 flex flex-col items-center justify-center space-y-2">
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              handleFileUpload(currentVehicle.id, file);
+                              setCustomizingVehicleId(null);
+                            }
+                          }}
+                          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                        />
+                        <Upload className="w-6 h-6 text-[#C5A85C]" />
+                        <span className="text-xs font-semibold text-stone-300">
+                          {language === 'en' ? 'Upload Local Photo' : 'تحميل صورة من جهازك'}
+                        </span>
+                        <span className="text-[9px] text-stone-500 font-sans">
+                          Supports JPG, PNG, WebP (instant local cache)
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Curated Presets */}
+                    <div className="space-y-1.5 pt-1 text-left">
+                      <span className="text-[10px] font-mono text-[#C5A85C]/75 block uppercase tracking-wider">
+                        {language === 'en' ? 'Option 3: Select a Premium Preset' : 'الخيار 3: اختر من الباقة الفاخرة'}
+                      </span>
+                      <div className="grid grid-cols-3 gap-2">
+                        {PRESETS_BY_VEHICLE[currentVehicle.id]?.map((preset, idx) => (
+                          <button
+                            key={idx}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateImage(currentVehicle.id, preset.url);
+                              setCustomizingVehicleId(null);
+                            }}
+                            className="group/preset relative aspect-video rounded-xl overflow-hidden border border-stone-850 hover:border-[#C5A85C] transition-all bg-stone-950 cursor-pointer"
+                            title={language === 'en' ? preset.labelEn : preset.labelAr}
+                          >
+                            <img 
+                              src={preset.url} 
+                              alt={preset.labelEn}
+                              className="w-full h-full object-cover group-hover/preset:scale-110 transition-transform duration-300"
+                              referrerPolicy="no-referrer"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/40 group-hover/preset:bg-black/10 transition-colors" />
+                            <span className="absolute bottom-1 left-1.5 right-1.5 text-[8px] text-white/95 font-sans font-medium line-clamp-1 bg-black/65 px-1 rounded backdrop-blur-[2px]">
+                              {language === 'en' ? preset.labelEn : preset.labelAr}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 justify-end border-t border-stone-900 pt-3">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleResetImage(currentVehicle.id);
+                        setCustomizingVehicleId(null);
+                      }}
+                      className="px-3 py-1.5 bg-red-950/40 hover:bg-red-900 border border-red-800/40 hover:border-red-600 rounded-lg text-[10px] font-mono text-red-200 transition-all cursor-pointer"
+                    >
+                      {language === 'en' ? 'Reset to Default' : 'إعادة ضبط'}
+                    </button>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCustomizingVehicleId(null);
+                      }}
+                      className="px-3 py-1.5 bg-stone-900 hover:bg-stone-850 border border-stone-800 rounded-lg text-[10px] font-mono text-stone-300 transition-all cursor-pointer"
+                    >
+                      {language === 'en' ? 'Close' : 'إغلاق'}
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Gradient Shading Underlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-royal-navy-950/85 via-transparent to-transparent pointer-events-none" />
@@ -409,15 +716,39 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
               </div>
             </div>
 
-            {/* Chauffeur actions with rich gold button */}
+            {/* Chauffeur actions with rich gold button & Compare toggle */}
             <div className="pt-3 relative z-10">
-              <button
-                onClick={() => onSelectVehicleAndInquire(currentVehicle.id)}
-                tabIndex={0}
-                className="w-full text-center btn-metallic-gold text-royal-navy-950 font-sans text-xs uppercase tracking-widest font-extrabold py-4 px-6 rounded cursor-pointer transition-all duration-300 hover:shadow-[0_0_25px_rgba(197,168,92,0.4)] transform hover:-translate-y-0.5"
-              >
-                {language === 'en' ? `Book ${currentVehicle.name} Now` : `احجز ${currentVehicle.name} الآن`}
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => onSelectVehicleAndInquire(currentVehicle.id)}
+                  tabIndex={0}
+                  className="flex-1 text-center btn-metallic-gold text-royal-navy-950 font-sans text-xs uppercase tracking-widest font-extrabold py-4 px-6 rounded cursor-pointer transition-all duration-300 hover:shadow-[0_0_25px_rgba(197,168,92,0.4)] transform hover:-translate-y-0.5"
+                >
+                  {language === 'en' ? `Book ${currentVehicle.name} Now` : `احجز ${currentVehicle.name} الآن`}
+                </button>
+                <button
+                  onClick={() => {
+                    if (compareList.includes(currentVehicle.id)) {
+                      setCompareList(prev => prev.filter(id => id !== currentVehicle.id));
+                    } else {
+                      setCompareList(prev => [...prev, currentVehicle.id]);
+                    }
+                  }}
+                  className={`px-6 py-4 rounded border text-xs font-mono tracking-widest uppercase font-extrabold transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 ${
+                    compareList.includes(currentVehicle.id)
+                      ? 'border-[#C5A85C] bg-[#C5A85C]/20 text-champagne-gold-100 hover:bg-[#C5A85C]/30'
+                      : 'border-[#C5A85C]/30 hover:border-[#C5A85C] hover:bg-white/5 text-[#C5A85C]'
+                  }`}
+                  title={language === 'en' ? 'Add or remove model from specs comparison matrix' : 'إضافة أو إزالة هذا الموديل من جدول مقارنة المواصفات'}
+                >
+                  <Scale className="w-4 h-4 shrink-0" />
+                  <span>
+                    {compareList.includes(currentVehicle.id)
+                      ? (language === 'en' ? 'Compared' : 'مضاف للمقارنة')
+                      : (language === 'en' ? 'Compare Specs' : 'مقارنة المواصفات')}
+                  </span>
+                </button>
+              </div>
             </div>
 
           </motion.div>

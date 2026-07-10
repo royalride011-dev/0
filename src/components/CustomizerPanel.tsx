@@ -31,16 +31,19 @@ const CUSTOMIZABLE_IMAGES: CustomizableImage[] = [
   { key: 'tourism_wadirum', nameEn: 'Wadi Rum Desert', nameAr: 'صحراء وادي رم الساحرة', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80' },
   { key: 'tourism_deadsea', nameEn: 'Dead Sea Wellness', nameAr: 'البحر الميت وملاذ الاسترخاء', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80' },
   { key: 'tourism_aqaba', nameEn: 'Aqaba Coastal Gateway', nameAr: 'العقبة الدافئة ومنفذ البحر الأحمر', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=1200&q=80' },
-  { key: 'tourism_jerash', nameEn: 'Jerash Roman Ruins', nameAr: 'جرش الأثرية وبوابات التاريخ', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=1200&q=80' },
   { key: 'tourism_beirut', nameEn: 'Beirut Pearl of Levant', nameAr: 'بيروت عاصمة الثقافة والجمال', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=1200&q=80' },
-  { key: 'tourism_damascus', nameEn: 'Damascus Historic Pearl', nameAr: 'دمشق العاصمة التاريخية العريقة', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1200&q=80' },
-  { key: 'tourism_ajloun', nameEn: 'Ajloun Castle & Forest', nameAr: 'عجلون وجبالها الخضراء', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80' },
+  { key: 'tourism_damascus', nameEn: 'Damascus Historic Pearl', nameAr: 'دمشق العاصمة التاريخية العريقة', section: 'tourism', defaultVal: 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=1200&q=80' },
 
   // Services
-  { key: 'services_limousinePassenger', nameEn: 'VIP Limousine Service', nameAr: 'خدمات الليموزين النخبوية الفاخرة', section: 'services', defaultVal: '/images/comfort_class_fleet_1782258340226.jpg' },
-  { key: 'services_hotelRestaurantBookings', nameEn: 'Exclusive Hotel & Dining Bookings', nameAr: 'حجوزات الفنادق والمطاعم الفاخرة', section: 'services', defaultVal: '/images/luxury_hotel_dining_1782297400933.jpg' },
-  { key: 'services_borderCrossingsJordan', nameEn: 'Cross-Border Fast Track VIP', nameAr: 'تسهيل المعابر والحدود الدولية والمعاملات', section: 'services', defaultVal: '/images/cross_border_transit_1782298169892.jpg' },
-  { key: 'services_airportTransitJordan', nameEn: 'VIP Airport Meet & Greet', nameAr: 'استقبال وتوديع المطارات الفخم', section: 'services', defaultVal: '/images/airport_meet_greet_1782298298272.jpg' },
+  { key: 'services_limousinePassenger', nameEn: 'VIP Limousine Service (Card 01)', nameAr: 'خدمة الليموزين النخبوية الفاخرة (بطاقة 01)', section: 'services', defaultVal: '/images/comfort_class_fleet_1782258340226.jpg' },
+  { key: 'services_airportTransitJordan', nameEn: 'VIP Airport Transit Jordan (Card 02)', nameAr: 'خدمة النقل من وإلى المطار (بطاقة 02)', section: 'services', defaultVal: '/images/airport_meet_greet_1782298298272.jpg' },
+  { key: 'services_vipSClassAmman', nameEn: 'VIP Border & Bridge Crossings (Card 03)', nameAr: 'تسهيل المعابر والجسور والحدود (بطاقة 03)', section: 'services', defaultVal: '/images/vip_s_class_amman_1782232812410.jpg' },
+  { key: 'services_internationalTransit', nameEn: 'International Cross-Border Transit (Card 04)', nameAr: 'النقل الدولي العابر للحدود (بطاقة 04)', section: 'services', defaultVal: '/images/cross_border_transit_1782298169892.jpg' },
+  { key: 'services_airportMeetGreet', nameEn: 'VIP Airport Meet & Greet (Card 05)', nameAr: 'الاستقبال والترحيب بالمطارات (بطاقة 05)', section: 'services', defaultVal: '/images/airport_meet_greet_1782298298272.jpg' },
+  { key: 'services_carVanRentals', nameEn: 'Luxury Car & Van Rentals (Card 06)', nameAr: 'تأجير السيارات والفانات الفاخرة (بطاقة 06)', section: 'services', defaultVal: '/images/fleet_palace.jpg' },
+  { key: 'services_stariaHourlyDaily', nameEn: 'Daily & Hourly Executive Rentals (Card 07)', nameAr: 'التأجير اليومي والساعي التنفيذي (بطاقة 07)', section: 'services', defaultVal: '/images/staria_hourly_daily_1782296563411.jpg' },
+  { key: 'services_corporateTransportation', nameEn: 'VIP Corporate Transportation (Card 08)', nameAr: 'خدمات نقل حصرية للشركات (بطاقة 08)', section: 'services', defaultVal: '/images/fleet_palace.jpg' },
+  { key: 'services_hotelRestaurantBookings', nameEn: 'Exclusive Hotel & Dining Bookings (Card 09)', nameAr: 'حجوزات الفنادق والمطاعم الفاخرة (بطاقة 09)', section: 'services', defaultVal: '/images/luxury_hotel_dining_1782297400933.jpg' },
 
   // About & Blog
   { key: 'about_cabinComfort', nameEn: 'Cabin Interior & Comfort', nameAr: 'تفاصيل الراحة والرفاهية داخل المقصورة', section: 'about', defaultVal: '/images/luxury_car_interior_1782219795811.jpg' },

@@ -294,13 +294,13 @@ export const getStoredDestinations = (): DestinationNode[] => {
       try {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          // Sync stale images with TOURIST_DESTINATIONS if defaults have newer/different regenerated images
+          // Sync stale images with TOURIST_DESTINATIONS only if absolutely empty or corrupted
           let modified = false;
           const updated = parsed.map(dest => {
             let currentImg = dest.image;
             const def = TOURIST_DESTINATIONS.find(d => d.id === dest.id);
             if (def) {
-              if (!currentImg || currentImg.includes('.png') || currentImg.includes('/src/') || (currentImg.includes('regenerated_image_') && def.image !== currentImg)) {
+              if (!currentImg) {
                 currentImg = def.image;
                 modified = true;
               }
@@ -308,7 +308,11 @@ export const getStoredDestinations = (): DestinationNode[] => {
             return { ...dest, image: currentImg };
           });
           if (modified) {
-            localStorage.setItem('rr_custom_tourist_destinations', JSON.stringify(updated));
+            try {
+              localStorage.setItem('rr_custom_tourist_destinations', JSON.stringify(updated));
+            } catch (e) {
+              console.warn('Failed to sync updated destinations in localStorage:', e);
+            }
           }
           return updated;
         }
@@ -322,7 +326,13 @@ export const getStoredDestinations = (): DestinationNode[] => {
 
 export const saveStoredDestinations = (destinations: DestinationNode[]) => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('rr_custom_tourist_destinations', JSON.stringify(destinations));
+    try {
+      localStorage.setItem('rr_custom_tourist_destinations', JSON.stringify(destinations));
+    } catch (e) {
+      console.error('Failed to save customized destinations to localStorage. Quota exceeded or in private mode:', e);
+      // Dispatch a custom event to notify components that quota was exceeded
+      window.dispatchEvent(new CustomEvent('rr_storage_quota_exceeded', { detail: { error: e } }));
+    }
   }
 };
 

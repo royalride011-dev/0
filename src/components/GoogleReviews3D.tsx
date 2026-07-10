@@ -76,15 +76,10 @@ export default function GoogleReviews3D() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Automatic transition - "متحرك تلقائي سريع" (every 2.3 seconds)
+  // Manual transition only as requested
   useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % GOOGLE_REVIEWS_LIST.length);
-    }, 2300);
-
-    return () => clearInterval(interval);
-  }, [isHovered]);
+    // Left empty to prevent auto rotation, carousel is now fully manual
+  }, []);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % GOOGLE_REVIEWS_LIST.length);

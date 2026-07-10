@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface LazyImageProps {
   src: string;
@@ -12,22 +12,36 @@ interface LazyImageProps {
 }
 
 export function LazyImage({ src, srcSet, sizes, placeholder, alt, className, width, height }: LazyImageProps) {
+  const [currentSrc, setCurrentSrc] = useState(placeholder || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+  const [isLoaded, setIsLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     if (!imgRef.current) return;
 
+    // Set up observer with 200px margin so images start loading before entering the viewport
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const lazyImage = entry.target as HTMLImageElement;
-          lazyImage.src = src;
-          if (srcSet) lazyImage.srcset = srcSet;
-          if (sizes) lazyImage.sizes = sizes;
-          observer.unobserve(lazyImage);
+          const tempImg = new Image();
+          tempImg.src = src;
+          if (srcSet) tempImg.srcset = srcSet;
+          if (sizes) tempImg.sizes = sizes;
+          
+          tempImg.onload = () => {
+            setCurrentSrc(src);
+            setIsLoaded(true);
+          };
+          
+          tempImg.onerror = () => {
+            setCurrentSrc(src);
+            setIsLoaded(true);
+          };
+
+          observer.unobserve(entry.target);
         }
       });
-    });
+    }, { rootMargin: '200px' });
 
     observer.observe(imgRef.current);
 
@@ -39,13 +53,17 @@ export function LazyImage({ src, srcSet, sizes, placeholder, alt, className, wid
   return (
     <img
       ref={imgRef}
-      src={placeholder || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'}
-      data-src={src}
-      data-srcset={srcSet}
+      src={currentSrc}
+      srcSet={currentSrc !== placeholder ? srcSet : undefined}
+      sizes={currentSrc !== placeholder ? sizes : undefined}
       alt={alt}
-      className={className}
+      className={`${className} transition-all duration-500 ease-out will-change-[opacity,transform,filter] ${
+        isLoaded ? 'opacity-100 scale-100 blur-0' : 'opacity-40 scale-[0.98] blur-[2px]'
+      }`}
       width={width}
       height={height}
+      decoding="async"
     />
   );
 }
+

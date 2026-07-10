@@ -100,7 +100,7 @@ export default function Header() {
           </a>
 
           {/* Desktop Navigation */}
-          <nav aria-label="Main Navigation" className={`hidden xl:flex items-center ${isRtl ? 'space-x-reverse' : ''}`} id="desktop-nav">
+          <nav aria-label="Main Navigation" className={`hidden lg:flex items-center ${isRtl ? 'space-x-reverse' : ''}`} id="desktop-nav">
             <ul className={`flex items-center ${isRtl ? 'space-x-reverse' : ''} space-x-6`}>
               <li>
                 <a href="#/" aria-label="Home" className="text-champagne-gold-100 hover:text-champagne-gold-400 transition-colors duration-300">
@@ -211,28 +211,9 @@ export default function Header() {
           </div>
 
           {/* Mobile Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex lg:hidden items-center space-x-2">
             <LanguageSwitcher />
             
-            <a
-              href="https://wa.me/962775328853"
-              target="_blank"
-              rel="noreferrer"
-              className="p-1.5 border border-champagne-gold-500/30 rounded text-champagne-gold-400 bg-royal-navy-900"
-              aria-label="WhatsApp Us"
-            >
-              <WhatsAppIcon className="w-4 h-4" />
-            </a>
-            
-            <a
-              href="https://www.instagram.com/royalridejo?igsh=cTFuM2VwdDd1N28x"
-              target="_blank"
-              rel="noreferrer"
-              className="p-1.5 border border-champagne-gold-500/30 rounded text-champagne-gold-400 bg-royal-navy-900"
-              aria-label="Instagram Profile"
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`p-1.5 border border-champagne-gold-500/30 rounded text-champagne-gold-100 hover:text-champagne-gold-400 transition-colors menu-toggle`}
@@ -255,7 +236,7 @@ export default function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className={`xl:hidden bg-royal-navy-950 border-b border-champagne-gold-500/20 menu ${mobileMenuOpen ? 'active' : ''}`}
+            className={`lg:hidden bg-royal-navy-950 border-b border-champagne-gold-500/20 menu ${mobileMenuOpen ? 'active' : ''}`}
             id="mobile-nav-drawer"
           >
             <div className="px-4 pt-2 pb-6 space-y-3">
@@ -290,7 +271,6 @@ export default function Header() {
                 </div>
               ))}
               <div className="pt-4 flex flex-col space-y-3">
-                <LanguageSwitcher className="pt-4" />
                 <a
                   href="tel:+962775328853"
                   className="flex items-center text-sm text-champagne-gold-300 font-mono"

@@ -71,11 +71,14 @@ export default function Hero({ onExploreFleetClicked, onBookNowClicked }: HeroPr
       
       {/* Background Graphic Framework containing Image */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none">
-        <LazyImage 
+        <img 
           src="/images/royal_ride_hero_ultimate_v2_1781855232538.jpg" 
           alt="Royal Ride luxury sedan with elegant personal chauffeur at entrance of premium hotel in Amman under golden light" 
           width={1200}
           height={800}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover object-center opacity-65 brightness-[1.25] contrast-[1.05] saturate-[1.05]"
         />
         

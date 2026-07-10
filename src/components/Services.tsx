@@ -362,6 +362,7 @@ export default function Services({ onSelectServiceAndInquire, preSelectedId }: S
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
+                    style={service.id === 'border-crossings-jordan' ? { height: '300px' } : undefined}
                     referrerPolicy="no-referrer"
                   />
                   {/* Subtle Elegant Dark Overlay on image to guarantee high contrast */}

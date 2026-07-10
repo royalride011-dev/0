@@ -4,31 +4,33 @@
 // Importing assets using ESM to ensure webpack/vite resolve them correctly
 import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.jpg';
 import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
-import luxuryBookingsImg from './assets/images/regenerated_image_1783199521474.jpg';
-import vipSClassAmmanImg from './assets/images/regenerated_image_1783171439552.jpg';
+import luxuryBookingsImg from './assets/images/regenerated_image_1783339335005.png';
+import vipSClassAmmanImg from './assets/images/regenerated_image_1783340973728.png';
 import stariaVipAmmanImg from './assets/images/images/staria_vip_amman_1782232781113.jpg';
+import luxuryCarImg from './assets/images/regenerated_image_1783339331958.png';
 import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
 import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
-import limousineServiceImg from './assets/images/regenerated_image_1783198487098.jpg';
-import petraTourImg from './assets/images/regenerated_image_1782516369460.jpg';
+import limousineServiceImg from './assets/images/regenerated_image_1783340810361.png';
+const petraTourImg = 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=1200&q=80';
 const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
 import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
-import deadSeaRegeneratedImg from './assets/images/regenerated_image_1782559795596.jpg';
-import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783172233726.jpg';
-import damascusRegeneratedImg from './assets/images/regenerated_image_1782562221421.jpg';
-import beirutRegeneratedImg from './assets/images/regenerated_image_1782559795596.jpg';
-import aqabaRegeneratedImg from './assets/images/regenerated_image_1782561837164.jpg';
-import wadirumRegeneratedImg from './assets/images/regenerated_image_1782562449414.jpg';
-import ajlounRegeneratedImg from './assets/images/regenerated_image_1782560716241.jpg';
-import jerashRegeneratedImg from './assets/images/regenerated_image_1782560970591.jpg';
+import tourismPetraImg from './assets/images/regenerated_image_1782516369460.jpg';
+const deadSeaRegeneratedImg = 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f9c?auto=format&fit=crop&w=1200&q=80';
+const ammanRegeneratedNewImg = 'https://images.unsplash.com/photo-1548138014-ab744ad53b43?auto=format&fit=crop&w=1200&q=80';
+const damascusRegeneratedImg = 'https://images.unsplash.com/photo-1547886596-43b1a1329175?auto=format&fit=crop&w=1200&q=80';
+const beirutRegeneratedImg = 'https://images.unsplash.com/photo-1582201942988-13e60e4556ee?auto=format&fit=crop&w=1200&q=80';
+const aqabaRegeneratedImg = 'https://images.unsplash.com/photo-1627896157734-4d7d4388f24b?auto=format&fit=crop&w=1200&q=80';
+const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80';
+const ajlounRegeneratedImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=1200&q=80';
+const jerashRegeneratedImg = 'https://images.unsplash.com/photo-1512100356135-cc58b20e9854?auto=format&fit=crop&w=1200&q=80';
 import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.jpg';
-import comfortClassImg from './assets/images/regenerated_image_1783170968954.jpg';
-import newStariaVipImg from './assets/images/regenerated_image_1783017095551.jpg';
+import comfortClassImg from './assets/images/regenerated_image_1783359463566.png';
+import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
 import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.jpg';
 import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.jpg';
 import newBlogImg from './assets/images/regenerated_image_1782668125071.jpg';
 import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.jpg';
-import newServiceImg from './assets/images/regenerated_image_1783092504466.jpg';
+import newServiceImg from './assets/images/regenerated_image_1783339330850.png';
 
 // Helper to allow live administrative image customization/addition from client-side overrides
 const getOverride = (keyPath: string, defaultValue: string): string => {
@@ -44,12 +46,15 @@ const getOverride = (keyPath: string, defaultValue: string): string => {
           return defaultValue;
         }
       }
+
+      // Clear stale local override if the default has been updated to a web URL
+      if (defaultValue.includes('http') && (saved.includes('regenerated_image_') || saved.includes('src/'))) {
+        localStorage.removeItem(`rr_img_override_${keyPath}`);
+        return defaultValue;
+      }
       
       // Normalize backslashes to forward slashes
       let cleaned = saved.replace(/\\+/g, '/');
-      
-      // Convert stale png extensions to optimized jpg references
-      cleaned = cleaned.replace(/\.png/gi, '.jpg');
       
       // Ensure it starts with a single slash if it references src/
       if (cleaned.includes('src/') && !cleaned.startsWith('/')) {
@@ -93,7 +98,7 @@ export const images = {
     internationalTransit: getOverride('services_internationalTransit', newServiceImg),
     airportTransitJordan: getOverride('services_airportTransitJordan', airportTransitImg),
     corporateTransportation: getOverride('services_corporateTransportation', '/images/corporate_vip_cabin_1782298274501.jpg'),
-    carVanRentals: getOverride('services_carVanRentals', stariaVipAmmanImg),
+    carVanRentals: getOverride('services_carVanRentals', luxuryCarImg),
     airportMeetGreet: getOverride('services_airportMeetGreet', '/images/airport_meet_greet_1782298298272.jpg'),
     // Fallbacks or legacy service items
     luxuryHotelDining: getOverride('services_luxuryHotelDining', luxuryHotelDiningImg),

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Send, Phone, Mail, Calendar, Clock, User, CheckCircle, RefreshCw, History, Trash2, Instagram, Mic, Square, Play, Pause, Volume2, AlertCircle } from 'lucide-react';
+import { Send, Phone, Mail, Calendar, Clock, User, CheckCircle, RefreshCw, History, Trash2, Instagram, Mic, Square, Play, Pause, Volume2, AlertCircle, MapPin, Search, Navigation } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ShimmerHoverEffect from './ShimmerHoverEffect';
 import { VEHICLES, SERVICES, JORDAN_LOCATIONS } from '../data';
@@ -31,6 +31,48 @@ export default function ContactForm({ selectedServiceId, selectedVehicleId, onCl
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [notes, setNotes] = useState('');
+  
+  // Advanced Location States
+  const [locationMethod, setLocationMethod] = useState<'dropdown' | 'custom' | 'gps'>('dropdown');
+  const [customPickup, setCustomPickup] = useState('');
+  const [customDropoff, setCustomDropoff] = useState('');
+  const [isLocating, setIsLocating] = useState(false);
+
+  const handleGetGPSLocation = () => {
+    if (!navigator.geolocation) {
+      setFormError(language === 'en'
+        ? "Geolocation is not supported by your browser environment."
+        : "المتصفح أو النظام الحالي لا يدعم نظام تحديد المواقع الجغرافية GPS.");
+      setLocationMethod('dropdown');
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const gpsStr = `GPS Location: Latitude ${latitude.toFixed(5)}, Longitude ${longitude.toFixed(5)} (Direct Share)`;
+        setPickup(gpsStr);
+        setIsLocating(false);
+      },
+      (error) => {
+        setIsLocating(false);
+        let errorMsg = language === 'en' 
+          ? "Failed to acquire location. Please grant permission or type your address manually." 
+          : "لم نتمكن من الحصول على الإحداثيات المباشرة. يرجى تفعيل إذن الموقع بمتصفحك أو استخدام البحث اليدوي.";
+        
+        if (error.code === error.PERMISSION_DENIED) {
+          errorMsg = language === 'en'
+            ? "Location permission was denied. Please allow location access or switch to 'Search Address'."
+            : "تم رفض إذن تحديد الموقع. يرجى تفعيل الصلاحية من إعدادات المتصفح أو الانتقال لعلامة 'البحث عن موقع'.";
+        }
+        
+        setFormError(errorMsg);
+        setLocationMethod('dropdown');
+      },
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
+  };
   
   // Interactive UI States
   const [estimatedCost, setEstimatedCost] = useState(0);
@@ -642,43 +684,261 @@ Please confirm my reservation. Thank you!`;
                     </div>
                   </div>
 
-                  {/* Route location pickups */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-3 border-t border-royal-navy-850">
-                    <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
-                      <label htmlFor="pickupSelect" className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 block">
-                        {language === 'en' ? 'Pickup Location Coordinates *' : 'موقع وتنسيق إقلاع الركوب *'}
-                      </label>
-                      <select
-                        id="pickupSelect"
-                        value={pickup}
-                        onChange={(e) => setPickup(e.target.value)}
-                        className="w-full px-4 py-3 bg-royal-navy-950 border border-champagne-gold-500/25 hover:border-champagne-gold-500/60 focus:border-champagne-gold-400 focus:scale-[1.01] rounded text-xs text-[#FAF6ED] outline-none transition-all duration-300 cursor-pointer font-sans focus:shadow-[0_0_12px_rgba(197,168,92,0.22)]"
-                      >
-                        {JORDAN_LOCATIONS.map((loc) => (
-                          <option key={loc.nameEn} value={language === 'en' ? loc.nameEn : loc.nameAr} className="bg-royal-navy-950 text-xs">
-                            {language === 'en' ? loc.nameEn : loc.nameAr}
-                          </option>
-                        ))}
-                      </select>
+                  {/* Route location pickups - Advanced with Search and Live GPS */}
+                  <div className="pt-3 border-t border-royal-navy-850 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-champagne-gold-400">
+                        {language === 'en' ? 'Location Selector Option' : 'خيار تحديد موقع ومسار الرحلة'}
+                      </span>
+                      
+                      {/* Advanced Selector Toggles */}
+                      <div className="inline-flex rounded p-0.5 bg-royal-navy-950/80 border border-champagne-gold-500/10">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setLocationMethod('dropdown');
+                          }}
+                          className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-wider rounded transition-all duration-300 cursor-pointer ${
+                            locationMethod === 'dropdown'
+                              ? 'bg-[#C5A85C] text-black font-semibold shadow'
+                              : 'text-champagne-gold-300 hover:text-white'
+                          }`}
+                        >
+                          {language === 'en' ? 'Preset Cities' : 'الوجهات القياسية'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setLocationMethod('custom');
+                            if (!customPickup) {
+                              setCustomPickup(pickup);
+                            }
+                            if (!customDropoff) {
+                              setCustomDropoff(dropoff);
+                            }
+                          }}
+                          className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-wider rounded transition-all duration-300 cursor-pointer ${
+                            locationMethod === 'custom'
+                              ? 'bg-[#C5A85C] text-black font-semibold shadow'
+                              : 'text-champagne-gold-300 hover:text-white'
+                          }`}
+                        >
+                          {language === 'en' ? 'Search Address' : 'البحث عن موقع'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setLocationMethod('gps');
+                            handleGetGPSLocation();
+                          }}
+                          className={`px-3 py-1.5 text-[9px] uppercase font-mono tracking-wider rounded transition-all duration-300 cursor-pointer flex items-center gap-1 ${
+                            locationMethod === 'gps'
+                              ? 'bg-[#C5A85C] text-black font-semibold shadow'
+                              : 'text-champagne-gold-300 hover:text-white'
+                          }`}
+                        >
+                          <Navigation className="w-2.5 h-2.5" />
+                          {language === 'en' ? 'Live GPS' : 'بث مباشر (GPS)'}
+                        </button>
+                      </div>
                     </div>
 
-                    <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
-                      <label htmlFor="dropoffSelect" className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 block">
-                        {language === 'en' ? 'Dropoff Destination *' : 'وجهة ونقطة التوصيل النهائية *'}
-                      </label>
-                      <select
-                        id="dropoffSelect"
-                        value={dropoff}
-                        onChange={(e) => setDropoff(e.target.value)}
-                        className="w-full px-4 py-3 bg-royal-navy-950 border border-champagne-gold-500/25 hover:border-champagne-gold-500/60 focus:border-champagne-gold-400 focus:scale-[1.01] rounded text-xs text-[#FAF6ED] outline-none transition-all duration-300 cursor-pointer font-sans focus:shadow-[0_0_12px_rgba(197,168,92,0.22)]"
-                      >
-                        {JORDAN_LOCATIONS.map((loc) => (
-                          <option key={loc.nameEn} value={language === 'en' ? loc.nameEn : loc.nameAr} className="bg-royal-navy-950 text-xs">
-                            {language === 'en' ? loc.nameEn : loc.nameAr}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    {/* Geolocation Loading State */}
+                    {isLocating && (
+                      <div className="p-3 rounded border border-champagne-gold-500/20 bg-royal-navy-950 flex items-center gap-3 text-xs text-champagne-gold-200">
+                        <RefreshCw className="w-4 h-4 text-champagne-gold-400 animate-spin" />
+                        <span>{language === 'en' ? 'Connecting to GPS satellites...' : 'جاري استقبال وقراءة إشارات الموقع الجغرافي من الأقمار الصناعية...'}</span>
+                      </div>
+                    )}
+
+                    {/* RENDER METHOD A: PRESET DROP DOWNS */}
+                    {locationMethod === 'dropdown' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
+                          <label htmlFor="pickupSelect" className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 block">
+                            {language === 'en' ? 'Pickup Location Coordinates *' : 'موقع وتنسيق إقلاع الركوب *'}
+                          </label>
+                          <select
+                            id="pickupSelect"
+                            value={pickup}
+                            onChange={(e) => setPickup(e.target.value)}
+                            className="w-full px-4 py-3 bg-royal-navy-950 border border-champagne-gold-500/25 hover:border-champagne-gold-500/60 focus:border-champagne-gold-400 focus:scale-[1.01] rounded text-xs text-[#FAF6ED] outline-none transition-all duration-300 cursor-pointer font-sans focus:shadow-[0_0_12px_rgba(197,168,92,0.22)]"
+                          >
+                            {JORDAN_LOCATIONS.map((loc) => (
+                              <option key={loc.nameEn} value={language === 'en' ? loc.nameEn : loc.nameAr} className="bg-royal-navy-950 text-xs">
+                                {language === 'en' ? loc.nameEn : loc.nameAr}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
+                          <label htmlFor="dropoffSelect" className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 block">
+                            {language === 'en' ? 'Dropoff Destination *' : 'وجهة ونقطة التوصيل النهائية *'}
+                          </label>
+                          <select
+                            id="dropoffSelect"
+                            value={dropoff}
+                            onChange={(e) => setDropoff(e.target.value)}
+                            className="w-full px-4 py-3 bg-royal-navy-950 border border-champagne-gold-500/25 hover:border-champagne-gold-500/60 focus:border-champagne-gold-400 focus:scale-[1.01] rounded text-xs text-[#FAF6ED] outline-none transition-all duration-300 cursor-pointer font-sans focus:shadow-[0_0_12px_rgba(197,168,92,0.22)]"
+                          >
+                            {JORDAN_LOCATIONS.map((loc) => (
+                              <option key={loc.nameEn} value={language === 'en' ? loc.nameEn : loc.nameAr} className="bg-royal-navy-950 text-xs">
+                                {language === 'en' ? loc.nameEn : loc.nameAr}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* RENDER METHOD B: CUSTOM ADDRESS SEARCH INPUTS */}
+                    {locationMethod === 'custom' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className={`space-y-2 relative ${isRtl ? 'text-right' : 'text-left'}`}>
+                          <label htmlFor="customPickupInput" className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 flex items-center gap-1.5 justify-start">
+                            <Search className="w-3.5 h-3.5 text-champagne-gold-400" />
+                            <span>{language === 'en' ? 'Search / Type Pickup Place *' : 'ابحث أو اكتب موقع الإقلاع المخصص *'}</span>
+                          </label>
+                          <input
+                            id="customPickupInput"
+                            type="text"
+                            required
+                            value={customPickup}
+                            onChange={(e) => {
+                              setCustomPickup(e.target.value);
+                              setPickup(e.target.value);
+                            }}
+                            placeholder={language === 'en' ? 'e.g. Ritz-Carlton Amman, Abdali Blvd, Street Name...' : 'مثال: فندق ريتز كارلتون، بوليفارد العبدلي، اسم الشارع...'}
+                            className="w-full px-4 py-3 bg-royal-navy-950 border border-champagne-gold-500/25 hover:border-champagne-gold-500/60 focus:border-champagne-gold-400 focus:scale-[1.01] rounded text-xs text-[#FAF6ED] outline-none transition-all duration-300 font-sans focus:shadow-[0_0_12px_rgba(197,168,92,0.22)]"
+                          />
+                          
+                          {/* Search Auto-Suggestions dropdown filtered from JORDAN_LOCATIONS */}
+                          {customPickup.length > 0 && JORDAN_LOCATIONS.filter(l => 
+                            l.nameEn.toLowerCase().includes(customPickup.toLowerCase()) || 
+                            l.nameAr.includes(customPickup)
+                          ).length > 0 && (
+                            <div className="absolute left-0 right-0 mt-1 bg-royal-navy-950 border border-champagne-gold-500/20 rounded shadow-2xl z-30 max-h-[150px] overflow-y-auto gold-scrollbar text-xs">
+                              {JORDAN_LOCATIONS.filter(l => 
+                                l.nameEn.toLowerCase().includes(customPickup.toLowerCase()) || 
+                                l.nameAr.includes(customPickup)
+                              ).map((loc) => {
+                                const displayName = language === 'en' ? loc.nameEn : loc.nameAr;
+                                return (
+                                  <button
+                                    key={loc.nameEn}
+                                    type="button"
+                                    onClick={() => {
+                                      setCustomPickup(displayName);
+                                      setPickup(displayName);
+                                    }}
+                                    className="w-full px-3 py-2 text-left hover:bg-royal-navy-900 text-champagne-gold-200 hover:text-white transition-colors border-b border-royal-navy-900/40 block"
+                                  >
+                                    {displayName}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className={`space-y-2 relative ${isRtl ? 'text-right' : 'text-left'}`}>
+                          <label htmlFor="customDropoffInput" className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 flex items-center gap-1.5 justify-start">
+                            <Search className="w-3.5 h-3.5 text-champagne-gold-400" />
+                            <span>{language === 'en' ? 'Search / Type Dropoff Place *' : 'ابحث أو اكتب وجهة التوصيل المخصصة *'}</span>
+                          </label>
+                          <input
+                            id="customDropoffInput"
+                            type="text"
+                            required
+                            value={customDropoff}
+                            onChange={(e) => {
+                              setCustomDropoff(e.target.value);
+                              setDropoff(e.target.value);
+                            }}
+                            placeholder={language === 'en' ? 'e.g. Petra Guest House, Dead Sea Spa, Airport...' : 'مثال: بيت ضيافة البتراء، فندق كراون بلازا البحر الميت...'}
+                            className="w-full px-4 py-3 bg-royal-navy-950 border border-champagne-gold-500/25 hover:border-champagne-gold-500/60 focus:border-champagne-gold-400 focus:scale-[1.01] rounded text-xs text-[#FAF6ED] outline-none transition-all duration-300 font-sans focus:shadow-[0_0_12px_rgba(197,168,92,0.22)]"
+                          />
+
+                          {/* Search Auto-Suggestions dropdown filtered from JORDAN_LOCATIONS */}
+                          {customDropoff.length > 0 && JORDAN_LOCATIONS.filter(l => 
+                            l.nameEn.toLowerCase().includes(customDropoff.toLowerCase()) || 
+                            l.nameAr.includes(customDropoff)
+                          ).length > 0 && (
+                            <div className="absolute left-0 right-0 mt-1 bg-royal-navy-950 border border-champagne-gold-500/20 rounded shadow-2xl z-30 max-h-[150px] overflow-y-auto gold-scrollbar text-xs">
+                              {JORDAN_LOCATIONS.filter(l => 
+                                l.nameEn.toLowerCase().includes(customDropoff.toLowerCase()) || 
+                                l.nameAr.includes(customDropoff)
+                              ).map((loc) => {
+                                const displayName = language === 'en' ? loc.nameEn : loc.nameAr;
+                                return (
+                                  <button
+                                    key={loc.nameEn}
+                                    type="button"
+                                    onClick={() => {
+                                      setCustomDropoff(displayName);
+                                      setDropoff(displayName);
+                                    }}
+                                    className="w-full px-3 py-2 text-left hover:bg-royal-navy-900 text-champagne-gold-200 hover:text-white transition-colors border-b border-royal-navy-900/40 block"
+                                  >
+                                    {displayName}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* RENDER METHOD C: GEOLOCATION / GPS DIRECT LOCATION */}
+                    {locationMethod === 'gps' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
+                          <label className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 flex items-center gap-1.5 justify-start">
+                            <MapPin className="w-3.5 h-3.5 text-red-500 animate-pulse animate-duration-1000" />
+                            <span>{language === 'en' ? 'Direct GPS Coordinates *' : 'الإرسال المباشر للموقع الجغرافي (GPS) *'}</span>
+                          </label>
+                          <div className="relative">
+                            <input
+                              type="text"
+                              required
+                              readOnly
+                              value={pickup}
+                              className="w-full px-4 py-3 bg-royal-navy-950/80 border border-emerald-500/40 focus:border-emerald-400 rounded text-xs text-emerald-400 font-mono outline-none cursor-not-allowed"
+                            />
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping mr-1.5" />
+                              <span className="text-[9px] uppercase tracking-wider font-mono text-emerald-500 font-bold">{language === 'en' ? 'Live GPS' : 'بث مباشر'}</span>
+                            </div>
+                          </div>
+                          <span className="text-[9px] text-champagne-gold-100/50 block leading-normal mt-1">
+                            {language === 'en' 
+                              ? 'Your exact browser latitude and longitude were captured securely. This is transmitted directly to our VIP dispatch desk.'
+                              : 'تم استلام خطوط العرض والطول الدقيقة لمتصفحك بنجاح. سيتم إرسال هذا الرابط الجغرافي تلقائياً إلى خريطة السائق لتوصيلك.'}
+                          </span>
+                        </div>
+
+                        {/* Dropoff in GPS mode (remains standard select or custom typed input for flexibility) */}
+                        <div className={`space-y-2 ${isRtl ? 'text-right' : 'text-left'}`}>
+                          <label htmlFor="gpsDropoffSelect" className="text-[10px] font-sans uppercase tracking-wider text-champagne-gold-300 block">
+                            {language === 'en' ? 'Dropoff Destination *' : 'وجهة ونقطة التوصيل النهائية *'}
+                          </label>
+                          <select
+                            id="gpsDropoffSelect"
+                            value={dropoff}
+                            onChange={(e) => setDropoff(e.target.value)}
+                            className="w-full px-4 py-3 bg-royal-navy-950 border border-champagne-gold-500/25 hover:border-champagne-gold-500/60 focus:border-champagne-gold-400 focus:scale-[1.01] rounded text-xs text-[#FAF6ED] outline-none transition-all duration-300 cursor-pointer font-sans focus:shadow-[0_0_12px_rgba(197,168,92,0.22)]"
+                          >
+                            {JORDAN_LOCATIONS.map((loc) => (
+                              <option key={loc.nameEn} value={language === 'en' ? loc.nameEn : loc.nameAr} className="bg-royal-navy-950 text-xs">
+                                {language === 'en' ? loc.nameEn : loc.nameAr}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Dynamic Choices: Service & Vehicle selectors */}
