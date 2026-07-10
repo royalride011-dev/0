@@ -34,6 +34,38 @@ import newBlogImg from './assets/images/regenerated_image_1782668125071.jpg';
 import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.jpg';
 import newServiceImg from './assets/images/regenerated_image_1783339330850.png';
 
+// Map raw filename strings to their compiled ESM imports to ensure they load perfectly in production/Vercel
+const imageLookupMap: Record<string, string> = {
+  'regenerated_image_1782494533296.jpg': crossBorderTransitImg,
+  'luxury_hotel_dining_1782297400933.jpg': luxuryHotelDiningImg,
+  'regenerated_image_1783339335005.png': luxuryBookingsImg,
+  'regenerated_image_1783340973728.png': vipSClassAmmanImg,
+  'staria_vip_amman_1782232781113.jpg': stariaVipAmmanImg,
+  'regenerated_image_1783339331958.png': luxuryCarImg,
+  'staria_hourly_daily_1782296563411.jpg': stariaHourlyDailyImg,
+  'regenerated_image_1782490599935.jpg': airportTransitImg,
+  'regenerated_image_1783340810361.png': limousineServiceImg,
+  'regenerated_image_1782523407133.jpg': tourismAmmanImg,
+  'regenerated_image_1782516369460.jpg': tourismPetraImg,
+  'regenerated_image_1783693430307.png': deadSeaRegeneratedImg,
+  'regenerated_image_1783699790509.png': ammanRegeneratedNewImg,
+  'regenerated_image_1783695271320.png': petraRegeneratedImg,
+  'regenerated_image_1783695278185.png': wadiRumRegeneratedImg,
+  'regenerated_image_1783695771565.png': aqabaRegeneratedImg,
+  'regenerated_image_1783695774079.png': jerashRegeneratedImg,
+  'regenerated_image_1783695780655.png': beirutRegeneratedImg,
+  'regenerated_image_1783696245556.png': ajlounRegeneratedNewImg,
+  'regenerated_image_1783696258576.png': damascusRegeneratedNewImg,
+  'regenerated_image_1783707091017.png': comfortClassImg, // Map both recent versions of Comfort Class image
+  'regenerated_image_1783708263052.png': comfortClassImg,
+  'regenerated_image_1783503700776.png': newStariaVipImg,
+  'regenerated_image_1782434427794.jpg': luxuryGmcYukonImg,
+  'regenerated_image_1782486245190.jpg': toyotaCoasterImg,
+  'regenerated_image_1782668125071.jpg': newBlogImg,
+  'regenerated_image_1782668394792.jpg': crossBorderBlogImg,
+  'regenerated_image_1783339330850.png': newServiceImg,
+};
+
 // Helper to allow live administrative image customization/addition from client-side overrides
 const getOverride = (keyPath: string, defaultValue: string): string => {
   if (typeof window !== 'undefined') {
@@ -65,6 +97,16 @@ const getOverride = (keyPath: string, defaultValue: string): string => {
 
       // If it contains /src/, check if we are in production.
       if (cleaned.includes('/src/')) {
+        // Extract the filename from the path and resolve it to its compiled ESM module import
+        let fileName = cleaned;
+        const lastSlashIndex = cleaned.lastIndexOf('/');
+        if (lastSlashIndex !== -1) {
+          fileName = cleaned.substring(lastSlashIndex + 1);
+        }
+        if (imageLookupMap[fileName]) {
+          return imageLookupMap[fileName];
+        }
+
         // In production, raw /src/ paths will fail, so we return the compiled defaultValue
         const isProd = import.meta.env.PROD;
         if (isProd) {
