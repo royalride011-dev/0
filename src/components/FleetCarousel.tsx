@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../LanguageContext';
-import { images } from '../imageRegistry';
+import { images, rawImages } from '../imageRegistry';
 import { LazyImage } from './LazyImage';
 import { compressImageSource } from '../utils/imageCompressor';
 
@@ -35,132 +35,13 @@ const PRESETS_BY_VEHICLE: Record<string, { url: string; labelEn: string; labelAr
   ]
 };
 
-const VEHICLE_PACKAGES: Record<string, { titleEn: string; titleAr: string; price: string; descEn: string; descAr: string }[]> = {
-  'comfort-class': [
-    {
-      titleEn: 'Airport Protocol',
-      titleAr: 'بروتوكول المطار',
-      price: '25 JOD / $35',
-      descEn: 'One-way Amman Airport transfer with baggage assistance and flight tracking.',
-      descAr: 'توصيل اتجاه واحد من/إلى مطار الملكة علياء مع مساعدة الحقائب وتتبع الرحلة.'
-    },
-    {
-      titleEn: 'Amman Day Standby',
-      titleAr: 'اليومي المفتوح داخل عمان',
-      price: '60 JOD / $85',
-      descEn: '8 Hours continuous service in West Amman with elite local chauffeur.',
-      descAr: 'خدمة مستمرة لمدة ٨ ساعات داخل عمان مع سائق محلي خبير بالمسارات.'
-    },
-    {
-      titleEn: 'Dead Sea Escape',
-      titleAr: 'رحلة البحر الميت',
-      price: '40 JOD / $56',
-      descEn: 'Round-trip private transfer to spa resorts with flexible pickup timings.',
-      descAr: 'توصيل ذهاب وإياب لمنتجعات البحر الميت مع مرونة كاملة في أوقات الانتظار.'
-    }
-  ],
-  'staria': [
-    {
-      titleEn: 'Airport Lounge Transfer',
-      titleAr: 'توصيل المطار العائلي VIP',
-      price: '45 JOD / $63',
-      descEn: 'Prestige 7-passenger van transfer with extra large luggage holding capacity.',
-      descAr: 'توصيل عائلي فاخر لـ ٧ ركاب مع سعة حقائب هائلة وتكييف منعش.'
-    },
-    {
-      titleEn: 'Diplomatic Daily Standby',
-      titleAr: 'اليومي المفتوح للمجموعات',
-      price: '110 JOD / $155',
-      descEn: '8 Hours continuous group standby in Amman, complimentary Wi-Fi and chilled water.',
-      descAr: 'خدمة مستمرة لمدة ٨ ساعات للمجموعات مع إنترنت لاسلكي ومياه باردة مجانية.'
-    },
-    {
-      titleEn: 'Petra & South Jordan Tour',
-      titleAr: 'رحلة البتراء وجنوب الأردن',
-      price: '150 JOD / $212',
-      descEn: 'Full-day tour to historic Petra with safe mountain route driving experts.',
-      descAr: 'رحلة يوم كامل لمعالم البتراء الوردية مع سائق خبير بالمسارات الجبلية والوعرة.'
-    }
-  ],
-  'toyota-hiace': [
-    {
-      titleEn: 'Group Airport Shuttling',
-      titleAr: 'توصيل وفود المطار الجماعي',
-      price: '55 JOD / $77',
-      descEn: 'Accommodating up to 14 delegates and 13 bags with meet and greet protocol.',
-      descAr: 'يتسع لـ ١٤ راكباً و١٣ حقيبة مع استقبال رسمي بلا أي عناء من المطار.'
-    },
-    {
-      titleEn: 'Corporate Daily Standby',
-      titleAr: 'اليومي المفتوح للشركات والوفود',
-      price: '130 JOD / $183',
-      descEn: '8 Hours standby within Jordanian cities, perfect for team site inspections.',
-      descAr: 'خدمة مستمرة ٨ ساعات لوفود الشركات والمنظمات داخل المدن الأردنية.'
-    },
-    {
-      titleEn: 'Intercity Tourist Route',
-      titleAr: 'الرحلات السياحية للمحافظات',
-      price: '160 JOD / $225',
-      descEn: 'Full day multi-destination tour covering Jerash, Ajloun, or Baptism site.',
-      descAr: 'رحلة يوم كامل تغطي المواقع الأثرية في جرش وعجلون أو المغطس.'
-    }
-  ],
-  'toyota-coaster': [
-    {
-      titleEn: 'Prestige Delegation Airport',
-      titleAr: 'باص الوفود والمؤتمرات المطار',
-      price: '85 JOD / $120',
-      descEn: 'Heavyweight mass delegation shuttle, 18 passengers and 15 bags capability.',
-      descAr: 'نقل جماعي فخم للمؤتمرات والوفود الكبيرة من وإلى المطار بقمة الكفاءة.'
-    },
-    {
-      titleEn: 'Sovereign Full-Day Coach',
-      titleAr: 'اليومي المفتوح للأفواج الكبيرة',
-      price: '180 JOD / $254',
-      descEn: '8 Hours mass transit across Amman or Northern Jordan, deep baggage storage.',
-      descAr: 'خدمة مستمرة ٨ ساعات للأفواج والوفود السياحية الكبرى شاملة تكييف ومستودع أمتعة.'
-    },
-    {
-      titleEn: 'Wadi Rum & Aqaba Route',
-      titleAr: 'رحلة وادي رم وثغر العقبة الباسم',
-      price: '220 JOD / $310',
-      descEn: 'Golden luxury transit to southern camps and Red Sea coastal resorts.',
-      descAr: 'توصيل الوفود والأفواج السياحية الكبيرة لصحراء رم ومخيماتها ومنتجعات العقبة.'
-    }
-  ],
-  'luxury-cars': [
-    {
-      titleEn: 'Sovereign Airport Protocol',
-      titleAr: 'الاستقبال الملكي والدبلوماسي المطار',
-      price: '120 JOD / $169',
-      descEn: 'Five-star S-Class or GMC Yukon VIP meet & greet protocol directly at airport tarmac.',
-      descAr: 'استقبال فخم بمرسيدس S-Class أو يوكون VIP من أرض المطار وتقديم الضيافة الراقية.'
-    },
-    {
-      titleEn: 'Diplomatic 8-Hour Standby',
-      titleAr: 'اليومي الدبلوماسي والرئاسي الخاص',
-      price: '250 JOD / $352',
-      descEn: 'Continuous state-executive vehicle standby, suited polite driver, absolute privacy.',
-      descAr: 'مركبة رئاسية تحت الطلب المستمر ٨ ساعات مع سائق رسمي بزي رسمي لرجال الأعمال والوفود.'
-    },
-    {
-      titleEn: 'VIP Wedding / Special Event',
-      titleAr: 'باقة الأعراس والمناسبات الكبرى',
-      price: '300 JOD / $423',
-      descEn: 'Bespoke custom livery carriage styling, red carpet assistance, and premium features.',
-      descAr: 'تنسيق مخصص للمركبة الفارهة مع تزيين وزفة ملكية مجهزة بالكامل للمناسبات والأفراح.'
-    }
-  ]
-};
-
 interface FleetCarouselProps {
   onSelectVehicleAndInquire: (vehicleId: string) => void;
 }
 
 export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarouselProps) {
   const { language, t, isRtl, isAdmin } = useLanguage();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<'packages' | 'specs' | 'features' | 'photos'>('packages');
+  const [activeIndex, setActiveIndex] = useState(3);
   const [compareList, setCompareList] = useState<string[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
@@ -183,6 +64,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
       capacityPassengers: '4',
       capacityLuggage: '3',
       image: images.fleet.comfortClass,
+      version: '1783787901531',
       features: language === 'en'
         ? [
             'Ideal for small groups and families',
@@ -209,6 +91,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
       capacityPassengers: '7',
       capacityLuggage: '10',
       image: images.fleet.stariaVip,
+      version: '1783503700776',
       features: language === 'en'
         ? [
             'Luxurious and spacious multi-passenger lounge',
@@ -235,6 +118,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
       capacityPassengers: '14',
       capacityLuggage: '13',
       image: images.fleet.toyotaHiace,
+      version: '1783789250595',
       features: language === 'en'
         ? [
             'Comfortable seating accommodating up to 14 guests',
@@ -261,6 +145,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
       capacityPassengers: '18',
       capacityLuggage: '15',
       image: images.fleet.toyotaCoaster,
+      version: '1783793135115',
       features: language === 'en'
         ? [
             'Spacious luxury seating holding up to 18 delegates',
@@ -281,12 +166,13 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
       type: language === 'en' ? 'Sovereign Diplomatic Edition' : 'أفخم وأرقى خدمات الليموزين والنخبة',
       description: language === 'en'
         ? 'Bespoke legendary flagship sedans and elite SUVs like GMC Yukon VIP. Reserved upon inquiry for sovereign events, diplomatic transfers, and weddings requiring highest standards.'
-        : 'أفخم فئاتنا على الإطلاق من سيارات صالون فاخرة وسيارات جي إم سي يوكون الدبل VIP، المحفوظة للمناسبات الرسمية الكبرى واستقبال كبار الوفود الدبلوماسية ورجال الأعمال.',
+        : 'أفخم فئاتنا على الإطلاق من سيارات صالون فاخرة وسيارات جي إم سي يوكون الدبل VIP، المحفوظة للمناسبات الرسمية الكبرى واستقبل كبار الوفود الدبلوماسية ورجال الأعمال.',
       basePrice: '80',
       estimatedPricePerKm: '1.80',
       capacityPassengers: '4',
       capacityLuggage: '4',
       image: images.fleet.luxuryGmcYukon,
+      version: '1782434427794',
       features: language === 'en'
         ? [
             'Unmatched luxury reserved for VIP status & weddings',
@@ -324,9 +210,37 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
         'toyota-coaster': 'fleet_toyotaCoaster',
         'luxury-cars': 'fleet_luxuryGmcYukon'
       };
+      const codeDefaultImages: Record<string, string> = {
+        'comfort-class': rawImages.fleet.comfortClass,
+        'staria': rawImages.fleet.stariaVip,
+        'toyota-hiace': rawImages.fleet.toyotaHiace,
+        'toyota-coaster': rawImages.fleet.toyotaCoaster,
+        'luxury-cars': rawImages.fleet.luxuryGmcYukon
+      };
       Object.entries(vehicleKeys).forEach(([id, key]) => {
+        const rawDefault = codeDefaultImages[id] || '';
+        const savedDefaultRef = localStorage.getItem(`rr_img_default_ref_${key}`);
+        
+        // If the code reference for the image has changed (e.g., regenerated by AI Studio), 
+        // we must clear the old local storage override immediately to let the new code-defined image show!
+        if (savedDefaultRef && savedDefaultRef !== rawDefault) {
+          localStorage.removeItem(`rr_img_override_${key}`);
+          localStorage.setItem(`rr_img_default_ref_${key}`, rawDefault);
+          return;
+        }
+        
+        localStorage.setItem(`rr_img_default_ref_${key}`, rawDefault);
+
         const saved = localStorage.getItem(`rr_img_override_${key}`);
-        if (saved) {
+        if (saved && saved.trim()) {
+          if (saved.includes('regenerated_image_') && rawDefault.includes('regenerated_image_')) {
+            const savedMatch = saved.match(/regenerated_image_(\d+)/);
+            const defaultMatch = rawDefault.match(/regenerated_image_(\d+)/);
+            if (savedMatch && defaultMatch && savedMatch[1] !== defaultMatch[1]) {
+              localStorage.removeItem(`rr_img_override_${key}`);
+              return;
+            }
+          }
           overrides[id] = saved;
         }
       });
@@ -334,15 +248,23 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
     }
   }, []);
 
-  // Autoplay is disabled to ensure a stable ("ثابت") and stationary carousel experience,
-  // allowing visitors to read the VIP packages, specs, and details without sudden slides rotation.
+  // Autoplay disabled as requested. The carousel is now fully manually controlled via Next/Prev buttons and options.
   useEffect(() => {
-    // Static carousel mode: slide changes only occur via manual interaction for maximum stability.
-  }, []);
+    // Autoplay interval removed to allow manual user-driven navigation
+    // Reset image error state for the active vehicle so it gets a fresh try to load
+    setImageErrors((prev) => {
+      if (prev[currentVehicle.id]) {
+        const copy = { ...prev };
+        delete copy[currentVehicle.id];
+        return copy;
+      }
+      return prev;
+    });
+  }, [customizingVehicleId, activeIndex, currentVehicle.id]);
 
   const handleUpdateImage = async (vehicleId: string, newImage: string) => {
     try {
-      const compressedImage = await compressImageSource(newImage, 1000, 1000, 0.75);
+      let compressedImage = await compressImageSource(newImage, 1000, 1000, 0.75);
       
       const vehicleKeys: Record<string, string> = {
         'comfort-class': 'fleet_comfortClass',
@@ -354,7 +276,21 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
       
       const key = vehicleKeys[vehicleId];
       if (key) {
-        localStorage.setItem(`rr_img_override_${key}`, compressedImage);
+        try {
+          localStorage.setItem(`rr_img_override_${key}`, compressedImage);
+        } catch (storageError) {
+          console.warn('LocalStorage quota exceeded. Re-compressing to smaller dimensions...');
+          // Re-compress much more aggressively (600x600, quality 0.5) to fit under storage limits
+          compressedImage = await compressImageSource(newImage, 600, 600, 0.5);
+          try {
+            localStorage.setItem(`rr_img_override_${key}`, compressedImage);
+          } catch (secondError) {
+            console.error('Failed to save even with extreme compression:', secondError);
+            alert(language === 'en' 
+              ? 'Storage quota exceeded. Please clear some custom images or use web URLs instead of file uploads.' 
+              : 'تم تجاوز المساحة التخزينية المتاحة بالمتصفح. يرجى استخدام رابط ويب للصورة بدلاً من الرفع المباشر.');
+          }
+        }
       }
       
       setCustomOverrides((prev) => ({ ...prev, [vehicleId]: compressedImage }));
@@ -403,27 +339,53 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
     });
   };
 
-  const getVehicleImage = (vehicle: typeof currentVehicle) => {
-    if (imageErrors[vehicle.id]) {
+  const getVehicleImage = (vehicle: { id: string; image: string; version?: string }) => {
+    let imgPath = 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+    if (customOverrides[vehicle.id]) {
+      imgPath = customOverrides[vehicle.id];
+    } else if (imageErrors[vehicle.id]) {
       switch (vehicle.id) {
         case 'comfort-class':
-          return 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+          imgPath = 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+          break;
         case 'staria':
-          return 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop';
+          imgPath = 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=1200&auto=format&fit=crop';
+          break;
         case 'toyota-hiace':
-          return 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1200&auto=format&fit=crop';
+          imgPath = 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1200&auto=format&fit=crop';
+          break;
         case 'toyota-coaster':
-          return 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1200&auto=format&fit=crop';
+          imgPath = 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1200&auto=format&fit=crop';
+          break;
         case 'luxury-cars':
-          return 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop';
+          imgPath = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1200&auto=format&fit=crop';
+          break;
         default:
-          return 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+          imgPath = 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
       }
+    } else {
+      const codeDefaults: Record<string, string> = {
+        'comfort-class': rawImages.fleet.comfortClass,
+        'staria': rawImages.fleet.stariaVip,
+        'toyota-hiace': rawImages.fleet.toyotaHiace,
+        'toyota-coaster': rawImages.fleet.toyotaCoaster,
+        'luxury-cars': rawImages.fleet.luxuryGmcYukon
+      };
+      imgPath = codeDefaults[vehicle.id] || vehicle.image || 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
     }
-    if (customOverrides[vehicle.id]) {
-      return customOverrides[vehicle.id];
+
+    // Apply cache-busting version parameter automatically for non-base64 images
+    if (imgPath && !imgPath.startsWith('data:')) {
+      const v = vehicle.version || '1.0';
+      // Clean up any existing v= parameter to avoid multiple/stale parameters
+      let baseUrl = imgPath;
+      if (imgPath.includes('v=')) {
+        baseUrl = imgPath.replace(/([?&])v=[^&]*(&|$)/g, '$1').replace(/[?&]$/, '');
+      }
+      const joiner = baseUrl.includes('?') ? '&' : '?';
+      return `${baseUrl}${joiner}v=${v}`;
     }
-    return vehicle.image || 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop';
+    return imgPath;
   };
 
   // Preload image to speed up appearance
@@ -473,273 +435,310 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
         </motion.div>
 
         {/* Media Carousel Showcase */}
-        <div className="flex flex-col lg:flex-row justify-center items-stretch gap-8 lg:gap-12 max-w-[1100px] mx-auto mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
           
-          {/* Left Card: Symmetrical 500x500 Visual Container */}
+          {/* Left Column: Visual Media & Controls */}
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className={`w-full max-w-[500px] aspect-square mx-auto flex flex-col justify-between animate-gpu relative rounded-3xl overflow-hidden bg-royal-navy-950/95 border border-[#C5A85C]/35 group shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:border-[#C5A85C]/60 transition-all duration-500 ${isAdmin ? 'cursor-pointer' : 'cursor-default'}`}
-            onClick={() => {
-              if (isAdmin && customizingVehicleId !== currentVehicle.id) {
-                setCustomizingVehicleId(currentVehicle.id);
-                setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
-              }
-            }}
+            className="lg:col-span-6 flex flex-col space-y-5 animate-gpu"
           >
             
-            {/* Elegant Golden Double Corner Ornaments */}
-            <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none z-20" />
-            <div className="absolute top-2.5 right-2.5 w-4 h-4 border-t border-r border-[#C5A85C]/60 pointer-events-none z-20" />
-            <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b border-l border-[#C5A85C]/60 pointer-events-none z-20" />
-            <div className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b border-r border-[#C5A85C]/60 pointer-events-none z-20" />
+            {/* Main Visual Slider Frame with elegant gold decorative borders & artistic ornaments */}
+            <div 
+              onClick={() => {
+                if (isAdmin && customizingVehicleId !== currentVehicle.id) {
+                  setCustomizingVehicleId(currentVehicle.id);
+                  setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
+                }
+              }}
+              className={`relative rounded-xl overflow-hidden w-full max-w-[600px] aspect-[16/10] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center ${isAdmin && customizingVehicleId !== currentVehicle.id ? 'cursor-pointer' : ''}`}
+            >
+              
+              {/* Elegant Golden Double Corner Ornaments */}
+              <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none z-20" />
+              <div className="absolute top-2.5 right-2.5 w-4 h-4 border-t border-r border-[#C5A85C]/60 pointer-events-none z-20" />
+              <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b border-l border-[#C5A85C]/60 pointer-events-none z-20" />
+              <div className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b border-r border-[#C5A85C]/60 pointer-events-none z-20" />
 
-            {/* Dotted Accent Lights inside Corners */}
-            <div className="absolute top-[18px] left-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
-            <div className="absolute top-[18px] right-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
-            <div className="absolute bottom-[18px] left-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
-            <div className="absolute bottom-[18px] right-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
+              {/* Dotted Accent Lights inside Corners */}
+              <div className="absolute top-[18px] left-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
+              <div className="absolute top-[18px] right-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
+              <div className="absolute bottom-[18px] left-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
+              <div className="absolute bottom-[18px] right-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
 
-            {/* Exquisite Top-Centered Royal Crown Insignia Drawing */}
-            <div className="absolute top-5 left-1/2 -translate-x-1/2 opacity-35 group-hover:opacity-85 transition-opacity duration-500 text-[#C5A85C] scale-75 pointer-events-none z-20">
-              <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L15 7L21 4L18 10H6L3 4L9 7L12 2Z" fill="currentColor" />
-              </svg>
-            </div>
-
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentVehicle.id}
-                src={getVehicleImage(currentVehicle)}
-                alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
-                className={`w-full h-full object-cover absolute inset-0 transition-transform duration-700 ${isAdmin && customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.02 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                referrerPolicy="no-referrer"
-                onError={() => {
-                  console.warn(`Failed to load image for ${currentVehicle.id}. Healing state and falling back.`);
-                  if (customOverrides[currentVehicle.id]) {
-                    handleResetImage(currentVehicle.id);
-                  }
-                  setImageErrors((prev) => ({ ...prev, [currentVehicle.id]: true }));
-                }}
-              />
-            </AnimatePresence>
-
-            {/* Elegant always-visible Glassmorphic badge for flexible customization */}
-            {isAdmin && customizingVehicleId !== currentVehicle.id && (
-              <div className="absolute bottom-4 right-4 z-20">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCustomizingVehicleId(currentVehicle.id);
-                    setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
-                  }}
-                  className="px-3 py-1.5 rounded-lg border border-[#C5A85C]/35 bg-black/85 text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-xs font-sans font-extrabold flex items-center gap-1.5 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
-                >
-                  <Camera className="w-3.5 h-3.5 animate-pulse" />
-                  <span>{language === 'en' ? 'Change Photo' : 'تغيير الصورة'}</span>
-                </button>
+              {/* Exquisite Top-Centered Royal Crown Insignia Drawing */}
+              <div className="absolute top-5 left-1/2 -translate-x-1/2 opacity-35 group-hover:opacity-85 transition-opacity duration-500 text-[#C5A85C] scale-75 pointer-events-none z-20">
+                <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L15 7L21 4L18 10H6L3 4L9 7L12 2Z" fill="currentColor" />
+                </svg>
               </div>
-            )}
 
-            {/* Absolute embedded uploader panel */}
-            {isAdmin && customizingVehicleId === currentVehicle.id && (
-              <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-6 flex flex-col justify-between z-30 animate-fadeIn border border-[#C5A85C]/45 rounded-3xl text-left">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-2">
-                    <span className="text-xs font-mono font-bold text-[#C5A85C] uppercase tracking-wider">
-                      {language === 'en' ? 'Configure Vehicle Image' : 'تعديل صورة المركبة'}
-                    </span>
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentVehicle.id}
+                  src={getVehicleImage(currentVehicle)}
+                  alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
+                  className={`w-full h-full object-cover transition-transform duration-700 ${customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                  onError={() => {
+                    console.warn(`Failed to load image for ${currentVehicle.id}. Healing state and falling back.`);
+                    if (customOverrides[currentVehicle.id]) {
+                      // If a custom override failed, reset it back to default and clear the error state so default can try to load
+                      handleResetImage(currentVehicle.id);
+                    } else {
+                      // If default image failed, set image error to trigger the Unsplash fallback
+                      setImageErrors((prev) => ({ ...prev, [currentVehicle.id]: true }));
+                    }
+                  }}
+                />
+              </AnimatePresence>
+
+              {/* Elegant always-visible Glassmorphic badge for flexible customization */}
+              {isAdmin && customizingVehicleId !== currentVehicle.id && (
+                <div className="absolute bottom-4 right-4 z-20">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCustomizingVehicleId(currentVehicle.id);
+                      setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
+                    }}
+                    className="px-3 py-1.5 rounded-lg border border-[#C5A85C]/35 bg-black/85 text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-xs font-sans font-extrabold flex items-center gap-1.5 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
+                  >
+                    <Camera className="w-3.5 h-3.5 animate-pulse" />
+                    <span>{language === 'en' ? 'Change Photo' : 'تغيير الصورة'}</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Absolute embedded uploader panel */}
+              {isAdmin && customizingVehicleId === currentVehicle.id && (
+                <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-6 flex flex-col justify-between z-30 animate-fadeIn border border-[#C5A85C]/45 rounded-xl text-left">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-2">
+                      <span className="text-xs font-mono font-bold text-[#C5A85C] uppercase tracking-wider">
+                        {language === 'en' ? 'Configure Vehicle Image' : 'تعديل صورة المركبة'}
+                      </span>
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCustomizingVehicleId(null);
+                        }}
+                        className="text-stone-400 hover:text-white transition-colors cursor-pointer text-sm font-bold animate-pulse"
+                      >
+                        ✕
+                      </button>
+                    </div>
+
+                    {/* URL Paste */}
+                    <div className="space-y-1.5 text-left">
+                      <label className="text-[10px] text-stone-400 font-sans block">
+                        {language === 'en' ? 'Option 1: Paste Image Web Address' : 'الخيار 1: لصق رابط الصورة'}
+                      </label>
+                      <div className="flex gap-2 items-center">
+                        <div className="relative flex-1">
+                          <Link className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
+                          <input 
+                            type="text" 
+                            value={customUrl}
+                            onClick={(e) => e.stopPropagation()}
+                            onChange={(e) => setCustomUrl(e.target.value)}
+                            placeholder="https://images.unsplash.com/photo-..."
+                            className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-[#C5A85C]/60"
+                          />
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (customUrl.trim()) {
+                              handleUpdateImage(currentVehicle.id, customUrl.trim());
+                              setCustomizingVehicleId(null);
+                            }
+                          }}
+                          className="bg-[#C5A85C] text-black text-xs px-4 py-2 rounded-xl font-bold hover:bg-white transition-colors cursor-pointer shrink-0"
+                        >
+                          {language === 'en' ? 'Apply' : 'تطبيق'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* File upload */}
+                    <div className="space-y-1.5 text-left">
+                      <label className="text-[10px] text-stone-400 font-sans block">
+                        {language === 'en' ? 'Option 2: Drag & Drop or Upload Local File' : 'الخيار 2: سحب أو تحميل ملف صورة'}
+                      </label>
+                      <div className="relative border border-dashed border-[#C5A85C]/35 rounded-xl p-4 hover:border-[#C5A85C] transition-all bg-stone-900/60 flex flex-col items-center justify-center space-y-2">
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              handleFileUpload(currentVehicle.id, file);
+                              setCustomizingVehicleId(null);
+                            }
+                          }}
+                          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                        />
+                        <Upload className="w-6 h-6 text-[#C5A85C]" />
+                        <span className="text-xs font-semibold text-stone-300">
+                          {language === 'en' ? 'Upload Local Photo' : 'تحميل صورة من جهازك'}
+                        </span>
+                        <span className="text-[9px] text-stone-500 font-sans">
+                          Supports JPG, PNG, WebP (instant local cache)
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Curated Presets */}
+                    <div className="space-y-1.5 pt-1 text-left">
+                      <span className="text-[10px] font-mono text-[#C5A85C]/75 block uppercase tracking-wider">
+                        {language === 'en' ? 'Option 3: Select a Premium Preset' : 'الخيار 3: اختر من الباقة الفاخرة'}
+                      </span>
+                      <div className="grid grid-cols-3 gap-2">
+                        {PRESETS_BY_VEHICLE[currentVehicle.id]?.map((preset, idx) => (
+                          <button
+                            key={idx}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateImage(currentVehicle.id, preset.url);
+                              setCustomizingVehicleId(null);
+                            }}
+                            className="group/preset relative aspect-video rounded-xl overflow-hidden border border-stone-850 hover:border-[#C5A85C] transition-all bg-stone-950 cursor-pointer"
+                            title={language === 'en' ? preset.labelEn : preset.labelAr}
+                          >
+                            <img 
+                              src={preset.url} 
+                              alt={preset.labelEn}
+                              className="w-full h-full object-cover group-hover/preset:scale-110 transition-transform duration-300"
+                              referrerPolicy="no-referrer"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/40 group-hover/preset:bg-black/10 transition-colors" />
+                            <span className="absolute bottom-1 left-1.5 right-1.5 text-[8px] text-white/95 font-sans font-medium line-clamp-1 bg-black/65 px-1 rounded backdrop-blur-[2px]">
+                              {language === 'en' ? preset.labelEn : preset.labelAr}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 justify-end border-t border-stone-900 pt-3">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleResetImage(currentVehicle.id);
+                        setCustomizingVehicleId(null);
+                      }}
+                      className="px-3 py-1.5 bg-red-950/40 hover:bg-red-900 border border-red-800/40 hover:border-red-600 rounded-lg text-[10px] font-mono text-red-200 transition-all cursor-pointer"
+                    >
+                      {language === 'en' ? 'Reset to Default' : 'إعادة ضبط'}
+                    </button>
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
                         setCustomizingVehicleId(null);
                       }}
-                      className="text-stone-400 hover:text-white transition-colors cursor-pointer text-sm font-bold animate-pulse"
+                      className="px-3 py-1.5 bg-stone-900 hover:bg-stone-850 border border-stone-800 rounded-lg text-[10px] font-mono text-stone-300 transition-all cursor-pointer"
                     >
-                      ✕
+                      {language === 'en' ? 'Close' : 'إغلاق'}
                     </button>
                   </div>
-
-                  {/* URL Paste */}
-                  <div className="space-y-1.5 text-left">
-                    <label className="text-[10px] text-stone-400 font-sans block">
-                      {language === 'en' ? 'Option 1: Paste Image Web Address' : 'الخيار 1: لصق رابط الصورة'}
-                    </label>
-                    <div className="flex gap-2 items-center">
-                      <div className="relative flex-1">
-                        <Link className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
-                        <input 
-                          type="text" 
-                          value={customUrl}
-                          onClick={(e) => e.stopPropagation()}
-                          onChange={(e) => setCustomUrl(e.target.value)}
-                          placeholder="https://images.unsplash.com/photo-..."
-                          className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-[#C5A85C]/60"
-                        />
-                      </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (customUrl.trim()) {
-                            handleUpdateImage(currentVehicle.id, customUrl.trim());
-                            setCustomizingVehicleId(null);
-                          }
-                        }}
-                        className="bg-[#C5A85C] text-black text-xs px-4 py-2 rounded-xl font-bold hover:bg-white transition-colors cursor-pointer shrink-0"
-                      >
-                        {language === 'en' ? 'Apply' : 'تطبيق'}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* File upload */}
-                  <div className="space-y-1.5 text-left">
-                    <label className="text-[10px] text-stone-400 font-sans block">
-                      {language === 'en' ? 'Option 2: Drag & Drop or Upload Local File' : 'الخيار 2: سحب أو تحميل ملف صورة'}
-                    </label>
-                    <div className="relative border border-dashed border-[#C5A85C]/35 rounded-xl p-4 hover:border-[#C5A85C] transition-all bg-stone-900/60 flex flex-col items-center justify-center space-y-2">
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            handleFileUpload(currentVehicle.id, file);
-                            setCustomizingVehicleId(null);
-                          }
-                        }}
-                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                      />
-                      <Upload className="w-6 h-6 text-[#C5A85C]" />
-                      <span className="text-xs font-semibold text-stone-300">
-                        {language === 'en' ? 'Upload Local Photo' : 'تحميل صورة من جهازك'}
-                      </span>
-                      <span className="text-[9px] text-stone-500 font-sans">
-                        Supports JPG, PNG, WebP (instant local cache)
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Curated Presets */}
-                  <div className="space-y-1.5 pt-1 text-left">
-                    <span className="text-[10px] font-mono text-[#C5A85C]/75 block uppercase tracking-wider">
-                      {language === 'en' ? 'Option 3: Select a Premium Preset' : 'الخيار 3: اختر من الباقة الفاخرة'}
-                    </span>
-                    <div className="grid grid-cols-3 gap-2">
-                      {PRESETS_BY_VEHICLE[currentVehicle.id]?.map((preset, idx) => (
-                        <button
-                          key={idx}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleUpdateImage(currentVehicle.id, preset.url);
-                            setCustomizingVehicleId(null);
-                          }}
-                          className="group/preset relative aspect-video rounded-xl overflow-hidden border border-stone-850 hover:border-[#C5A85C] transition-all bg-stone-950 cursor-pointer"
-                          title={language === 'en' ? preset.labelEn : preset.labelAr}
-                        >
-                          <img 
-                            src={preset.url} 
-                            alt={preset.labelEn}
-                            className="w-full h-full object-cover group-hover/preset:scale-110 transition-transform duration-300"
-                            referrerPolicy="no-referrer"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 bg-black/40 group-hover/preset:bg-black/10 transition-colors" />
-                          <span className="absolute bottom-1 left-1.5 right-1.5 text-[8px] text-white/95 font-sans font-medium line-clamp-1 bg-black/65 px-1 rounded backdrop-blur-[2px]">
-                            {language === 'en' ? preset.labelEn : preset.labelAr}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </div>
+              )}
 
-                <div className="flex gap-2 justify-end border-t border-stone-900 pt-3">
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleResetImage(currentVehicle.id);
-                      setCustomizingVehicleId(null);
-                    }}
-                    className="px-3 py-1.5 bg-red-950/40 hover:bg-red-900 border border-red-800/40 hover:border-red-600 rounded-lg text-[10px] font-mono text-red-200 transition-all cursor-pointer"
-                  >
-                    {language === 'en' ? 'Reset to Default' : 'إعادة ضبط'}
-                  </button>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCustomizingVehicleId(null);
-                    }}
-                    className="px-3 py-1.5 bg-stone-900 hover:bg-stone-850 border border-stone-800 rounded-lg text-[10px] font-mono text-stone-300 transition-all cursor-pointer"
-                  >
-                    {language === 'en' ? 'Close' : 'إغلاق'}
-                  </button>
+              {/* Gradient Shading Underlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-royal-navy-950/85 via-transparent to-transparent pointer-events-none" />
+
+              {/* Vehicle Title Tag on Media Frame */}
+              <div className="absolute top-6 left-6 bg-royal-navy-950/95 border border-[#C5A85C]/35 px-4 py-2.5 rounded backdrop-blur-md z-20 shadow-md">
+                <span className="text-[10px] font-mono tracking-[0.2em] text-[#C5A85C] uppercase block mb-0.5">
+                  {language === 'en' ? 'CATEGORY STYLE' : 'نوع فئة الأسطول'}
+                </span>
+                <span className="font-serif text-sm font-bold text-champagne-gold-200">
+                  {currentVehicle.type}
+                </span>
+              </div>
+
+              {/* Slide Navigation Triggers inside Frame */}
+              <button
+                onClick={prevVehicle}
+                className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded border border-[#C5A85C]/30 bg-royal-navy-950/90 hover:bg-[#C5A85C] text-[#C5A85C] hover:text-royal-navy-950 transition-all duration-300 z-20 cursor-pointer shadow-lg"
+                aria-label="Previous fleet car"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={nextVehicle}
+                className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded border border-[#C5A85C]/30 bg-royal-navy-950/90 hover:bg-[#C5A85C] text-[#C5A85C] hover:text-royal-navy-950 transition-all duration-300 z-20 cursor-pointer shadow-lg"
+                aria-label="Next fleet car"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              {/* Capacity overlay tags */}
+              <div className={`absolute bottom-6 flex space-x-3 z-20 ${isRtl ? 'right-6 space-x-reverse' : 'left-6'}`}>
+                <div className="flex items-center space-x-2 bg-royal-navy-950/95 border border-[#C5A85C]/20 px-3 py-1.5 rounded text-xs text-champagne-gold-100 backdrop-blur shadow">
+                  <Users className="w-3.5 h-3.5 text-[#C5A85C]" />
+                  <span>{currentVehicle.capacityPassengers} {t('fleet.capacity')}</span>
+                </div>
+                <div className="flex items-center space-x-2 bg-royal-navy-950/95 border border-[#C5A85C]/20 px-3 py-1.5 rounded text-xs text-champagne-gold-100 backdrop-blur shadow">
+                  <Briefcase className="w-3.5 h-3.5 text-[#C5A85C]" />
+                  <span>{currentVehicle.capacityLuggage} {t('fleet.luggage')}</span>
                 </div>
               </div>
-            )}
 
-            {/* Gradient Shading Underlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-royal-navy-950/90 via-transparent to-black/35 pointer-events-none z-10" />
-
-            {/* Vehicle Title Tag on Media Frame */}
-            <div className="absolute top-6 left-6 bg-royal-navy-950/95 border border-[#C5A85C]/35 px-4 py-2.5 rounded-xl backdrop-blur-md z-20 shadow-md">
-              <span className="text-[9px] font-mono tracking-[0.2em] text-[#C5A85C] uppercase block mb-0.5">
-                {language === 'en' ? 'CATEGORY STYLE' : 'نوع فئة الأسطول'}
-              </span>
-              <span className="font-serif text-xs font-bold text-champagne-gold-200">
-                {currentVehicle.type}
-              </span>
             </div>
 
-            {/* Slide Navigation Triggers inside Frame */}
-            <button
-              onClick={(e) => { e.stopPropagation(); prevVehicle(); }}
-              className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full border border-[#C5A85C]/30 bg-royal-navy-950/90 hover:bg-[#C5A85C] text-[#C5A85C] hover:text-royal-navy-950 transition-all duration-300 z-20 cursor-pointer shadow-lg"
-              aria-label="Previous fleet car"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); nextVehicle(); }}
-              className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded-full border border-[#C5A85C]/30 bg-royal-navy-950/90 hover:bg-[#C5A85C] text-[#C5A85C] hover:text-royal-navy-950 transition-all duration-300 z-20 cursor-pointer shadow-lg"
-              aria-label="Next fleet car"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-
-            {/* Capacity overlay tags */}
-            <div className={`absolute bottom-6 flex space-x-3 z-20 ${isRtl ? 'right-6 space-x-reverse' : 'left-6'}`}>
-              <div className="flex items-center space-x-2 bg-royal-navy-950/95 border border-[#C5A85C]/20 px-3 py-1.5 rounded-lg text-xs text-champagne-gold-100 backdrop-blur shadow">
-                <Users className="w-3.5 h-3.5 text-[#C5A85C]" />
-                <span>{currentVehicle.capacityPassengers} {t('fleet.capacity')}</span>
-              </div>
-              <div className="flex items-center space-x-2 bg-royal-navy-950/95 border border-[#C5A85C]/20 px-3 py-1.5 rounded-lg text-xs text-champagne-gold-100 backdrop-blur shadow">
-                <Briefcase className="w-3.5 h-3.5 text-[#C5A85C]" />
-                <span>{currentVehicle.capacityLuggage} {t('fleet.luggage')}</span>
-              </div>
+            {/* Thumbnail Pickers for high end UI (5 columns) */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pb-2">
+              {VEHICLES_LOCALIZED.map((veh, idx) => (
+                <button
+                  key={veh.id}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`relative cursor-pointer py-3.5 px-3 rounded-md border text-center transition-all duration-300 flex flex-col justify-center ${
+                    activeIndex === idx
+                      ? 'border-[#C5A85C] bg-[#C5A85C]/15 shadow-[0_5px_15px_rgba(197,168,92,0.15)] ring-1 ring-[#C5A85C]/40'
+                      : 'border-[#C5A85C]/20 bg-royal-navy-900/40 hover:border-[#C5A85C]/50 hover:bg-royal-navy-900/90'
+                  }`}
+                >
+                  <span className={`text-[9px] font-mono tracking-widest uppercase block mb-1 ${
+                    activeIndex === idx ? 'text-[#C5A85C] font-bold' : 'text-slate-400'
+                  }`}>
+                    {language === 'en' ? `Option 0${idx + 1}` : `الخيار 0${idx + 1}`}
+                  </span>
+                  <span className={`font-serif text-[11px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis ${
+                    activeIndex === idx ? 'text-champagne-gold-100 font-bold' : 'text-slate-400'
+                  }`}>
+                    {veh.name}
+                  </span>
+                </button>
+              ))}
             </div>
 
           </motion.div>
 
-          {/* Right Card: Symmetrical 500x500 Information & Packages Container */}
+          {/* Right Column: Fleet Specs & Estimator (Wrapped in Royal Decorated Golden Frame Card) */}
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-[500px] aspect-square mx-auto flex flex-col justify-between animate-gpu bg-royal-navy-950/95 p-6 md:p-8 rounded-3xl border border-[#C5A85C]/35 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:border-[#C5A85C]/60 transition-all duration-500 group"
+            className="lg:col-span-6 flex flex-col justify-between h-full space-y-8 animate-gpu bg-royal-navy-950/95 p-6 sm:p-8 rounded-xl border border-[#C5A85C]/30 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] hover:border-[#C5A85C]/60 transition-all duration-500 group"
           >
             {/* Majestic Radial Golden Glow */}
             <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#C5A85C]/5 rounded-full blur-3xl pointer-events-none group-hover:bg-[#C5A85C]/12 transition-all duration-700" />
             
-            {/* Elegant Golden Double Corner Ornaments / Drawings */}
+            {/* Elegant Golden Double Corner Ornaments / Drawings (Handcrafted Line Art) */}
             <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none" />
             <div className="absolute top-2.5 right-2.5 w-4 h-4 border-t border-r border-[#C5A85C]/60 pointer-events-none" />
             <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b border-l border-[#C5A85C]/60 pointer-events-none" />
@@ -750,284 +749,73 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
             <div className="absolute bottom-3.5 left-3.5 w-2 h-2 border-b border-l border-[#C5A85C]/30 pointer-events-none" />
             <div className="absolute bottom-3.5 right-3.5 w-2 h-2 border-b border-r border-[#C5A85C]/30 pointer-events-none" />
 
-            <div className="absolute inset-1.5 border border-[#C5A85C]/15 pointer-events-none rounded-3xl" />
+            <div className="absolute inset-1.5 border border-[#C5A85C]/15 pointer-events-none rounded" />
+            <div className="absolute inset-2.5 border border-dashed border-[#C5A85C]/5 pointer-events-none rounded" />
 
-            {/* Top Navigation Tabs */}
-            <div className="flex border-b border-[#C5A85C]/20 pb-3 relative z-10 gap-2 overflow-x-auto justify-between select-none">
-              <button
-                onClick={() => setActiveTab('packages')}
-                className={`relative px-3 py-1.5 rounded-lg text-[11px] font-sans font-extrabold tracking-wide uppercase cursor-pointer transition-all duration-300 flex items-center gap-1.5 shrink-0 ${
-                  activeTab === 'packages'
-                    ? 'text-[#C5A85C] bg-[#C5A85C]/10 border border-[#C5A85C]/35'
-                    : 'text-champagne-gold-100/50 hover:text-champagne-gold-100'
-                }`}
-              >
-                <Crown className="w-3.5 h-3.5" />
-                <span>{language === 'en' ? 'VIP Packages' : 'باقات الـ VIP'}</span>
-                {activeTab === 'packages' && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#C5A85C] rounded-full animate-ping" />
-                )}
-              </button>
-
-              <button
-                onClick={() => setActiveTab('specs')}
-                className={`relative px-3 py-1.5 rounded-lg text-[11px] font-sans font-extrabold tracking-wide uppercase cursor-pointer transition-all duration-300 flex items-center gap-1.5 shrink-0 ${
-                  activeTab === 'specs'
-                    ? 'text-[#C5A85C] bg-[#C5A85C]/10 border border-[#C5A85C]/35'
-                    : 'text-champagne-gold-100/50 hover:text-champagne-gold-100'
-                }`}
-              >
-                <Scale className="w-3.5 h-3.5" />
-                <span>{language === 'en' ? 'Specifications' : 'المواصفات'}</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('features')}
-                className={`relative px-3 py-1.5 rounded-lg text-[11px] font-sans font-extrabold tracking-wide uppercase cursor-pointer transition-all duration-300 flex items-center gap-1.5 shrink-0 ${
-                  activeTab === 'features'
-                    ? 'text-[#C5A85C] bg-[#C5A85C]/10 border border-[#C5A85C]/35'
-                    : 'text-champagne-gold-100/50 hover:text-champagne-gold-100'
-                }`}
-              >
-                <CheckSquare className="w-3.5 h-3.5" />
-                <span>{language === 'en' ? 'Features' : 'الميزات'}</span>
-              </button>
+            {/* Little Royal Insignia at Card Top */}
+            <div className="absolute top-3.5 right-3.5 opacity-25 group-hover:opacity-60 transition-opacity duration-500 text-[#C5A85C] scale-75 pointer-events-none">
+              <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L15 7L21 4L18 10H6L3 4L9 7L12 2Z" fill="currentColor" />
+              </svg>
             </div>
 
-            {/* Scrollable Content Area */}
-            <div className="flex-1 overflow-y-auto pr-1 my-4 relative z-10 text-left gold-scrollbar">
-              <AnimatePresence mode="wait">
-                {activeTab === 'packages' && (
-                  <motion.div
-                    key="packages-tab"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-3.5"
-                  >
-                    <span className="text-[10px] font-mono text-[#C5A85C] tracking-widest block uppercase mb-1">
-                      {language === 'en' ? 'EXCLUSIVE TRANSPORTATION OPTIONS' : 'خيارات التوصيل والباقات الحصرية'}
-                    </span>
-                    {(VEHICLE_PACKAGES[currentVehicle.id] || []).map((pkg, idx) => (
-                      <div key={idx} className="p-3 rounded-xl bg-royal-navy-900/60 border border-[#C5A85C]/20 hover:border-[#C5A85C]/45 transition-all duration-300 flex items-center justify-between gap-4">
-                        <div className="space-y-1 flex-1">
-                          <span className="font-serif text-xs font-bold text-champagne-gold-200 block">
-                            {language === 'en' ? pkg.titleEn : pkg.titleAr}
-                          </span>
-                          <span className="text-[10px] text-champagne-gold-100/70 block leading-relaxed">
-                            {language === 'en' ? pkg.descEn : pkg.descAr}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="flex items-start text-[10px] text-champagne-gold-100/40 mt-3 pt-2 border-t border-royal-navy-900">
-                      <AlertCircle className="w-3.5 h-3.5 shrink-0 text-[#C5A85C] mr-1.5 ml-1.5 mt-0.5" />
-                      <p>{language === 'en' ? 'Taxes, toll permits, chilled bottled mineral water, and professional chauffeur services are fully included with our bookings.' : 'الضرائب، ورسوم بوابات العبور والوقود والسائق بزي بروتوكول رسمي مشمولة بالكامل في كافة حجوزاتنا.'}</p>
-                    </div>
-                  </motion.div>
-                )}
+            <div className="space-y-4 relative z-10">
+              <span className="inline-flex items-center space-x-1 bg-[#C5A85C]/10 border border-[#C5A85C]/35 px-2.5 py-1 rounded">
+                <Sparkles className="w-3 h-3 text-[#C5A85C] animate-pulse mr-1" />
+                <span className="text-[9px] font-mono text-champagne-gold-200 uppercase tracking-widest">{language === 'en' ? 'VIP SPEC SHEET' : 'مواصفات الـ VIP الخاصة'}</span>
+              </span>
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-champagne-gold-300 mt-2 uppercase tracking-tight">
+                {currentVehicle.name}
+              </h3>
+              <p className="font-sans text-xs text-[#FAF6ED]/75 leading-relaxed mt-1">
+                {currentVehicle.description}
+              </p>
+            </div>
 
-                {activeTab === 'specs' && (
-                  <motion.div
-                    key="specs-tab"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    <div>
-                      <h3 className="font-serif text-lg font-bold text-champagne-gold-300">
-                        {currentVehicle.name}
-                      </h3>
-                      <p className="font-sans text-xs text-[#FAF6ED]/75 leading-relaxed mt-1.5">
-                        {currentVehicle.description}
-                      </p>
-                    </div>
+            {/* Vehicle Features Checklist */}
+            <div className="relative z-10 pt-1 border-t border-royal-navy-850">
+              <span className="text-[10px] font-mono text-[#C5A85C] uppercase tracking-wider block mb-3.5">
+                {t('fleet.features')}
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {currentVehicle.features.map((feature) => (
+                  <div key={feature} className={`flex items-start text-xs text-champagne-gold-100/85 ${isRtl ? 'space-x-reverse' : ''}`}>
+                    <CheckSquare className="w-3.5 h-3.5 text-[#C5A85C] mr-2.5 ml-2.5 mt-0.5 flex-shrink-0" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-                    <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#C5A85C]/15">
-                      <div className="p-3 bg-royal-navy-900/50 rounded-xl border border-royal-navy-800 flex items-center gap-3">
-                        <Users className="w-4 h-4 text-[#C5A85C]" />
-                        <div>
-                          <span className="text-[9px] text-stone-400 font-mono block uppercase">
-                            {language === 'en' ? 'Capacity' : 'سعة الأفراد'}
-                          </span>
-                          <span className="text-xs font-bold text-white">{currentVehicle.capacityPassengers} Guests</span>
-                        </div>
-                      </div>
-
-                      <div className="p-3 bg-royal-navy-900/50 rounded-xl border border-royal-navy-800 flex items-center gap-3">
-                        <Briefcase className="w-4 h-4 text-[#C5A85C]" />
-                        <div>
-                          <span className="text-[9px] text-stone-400 font-mono block uppercase">
-                            {language === 'en' ? 'Luggage' : 'الحقائب'}
-                          </span>
-                          <span className="text-xs font-bold text-white">{currentVehicle.capacityLuggage} Large Bags</span>
-                        </div>
-                      </div>
-
-                      <div className="p-3 bg-royal-navy-900/50 rounded-xl border border-royal-navy-800 flex items-center gap-3">
-                        <Crown className="w-4 h-4 text-[#C5A85C]" />
-                        <div>
-                          <span className="text-[9px] text-stone-400 font-mono block uppercase">
-                            {language === 'en' ? 'Chauffeur' : 'السائق الخاص'}
-                          </span>
-                          <span className="text-xs font-bold text-white">
-                            {language === 'en' ? 'Professional Chauffeur' : 'سائق محترف ومؤهل'}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="p-3 bg-royal-navy-900/50 rounded-xl border border-royal-navy-800 flex items-center gap-3">
-                        <Sparkles className="w-4 h-4 text-[#C5A85C]" />
-                        <div>
-                          <span className="text-[9px] text-stone-400 font-mono block uppercase">
-                            {language === 'en' ? 'Services' : 'الخدمات الإضافية'}
-                          </span>
-                          <span className="text-xs font-bold text-white">
-                            {language === 'en' ? 'Complimentary Wi-Fi & Water' : 'إنترنت ومياه باردة مجاناً'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeTab === 'features' && (
-                  <motion.div
-                    key="features-tab"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    <span className="text-[10px] font-mono text-[#C5A85C] uppercase tracking-wider block">
-                      {language === 'en' ? 'PRESTIGE CABIN HIGHLIGHTS' : 'أبرز مميزات مقصورة الهيبة والرفاهية'}
-                    </span>
-                    <div className="grid grid-cols-1 gap-2">
-                      {currentVehicle.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-start text-xs text-champagne-gold-100/85">
-                          <CheckSquare className="w-4 h-4 text-[#C5A85C] mr-2 ml-2 mt-0.5 shrink-0" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeTab === 'photos' && (
-                  <motion.div
-                    key="photos-tab"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    <div className="flex justify-between items-center pb-1">
-                      <span className="text-[10px] font-mono text-[#C5A85C] uppercase tracking-wider block">
-                        {language === 'en' ? 'VEHICLE GALLERY & CUSTOMIZER' : 'معرض صور السيارة وخيارات التخصيص'}
-                      </span>
-                      {customOverrides[currentVehicle.id] && (
-                        <button
-                          onClick={() => handleResetImage(currentVehicle.id)}
-                          className="text-[10px] text-red-400 hover:text-red-300 transition-colors flex items-center gap-1 cursor-pointer bg-red-500/10 px-2 py-0.5 rounded border border-red-500/25"
-                        >
-                          <X className="w-3 h-3" />
-                          <span>{language === 'en' ? 'Reset' : 'إعادة تعيين'}</span>
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2 max-h-[180px] overflow-y-auto pr-1 select-none gold-scrollbar">
-                      {/* Original Base Image */}
-                      <button
-                        onClick={() => handleResetImage(currentVehicle.id)}
-                        className={`relative aspect-video rounded-xl overflow-hidden border transition-all duration-300 group/item cursor-pointer ${
-                          !customOverrides[currentVehicle.id]
-                            ? 'border-[#C5A85C] ring-2 ring-[#C5A85C]/30'
-                            : 'border-[#C5A85C]/20 hover:border-[#C5A85C]/50'
-                        }`}
-                      >
-                        <img 
-                          src={currentVehicle.image} 
-                          alt="Original" 
-                          className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-300"
-                          referrerPolicy="no-referrer"
-                        />
-                        <div className="absolute inset-x-0 bottom-0 bg-black/60 py-1 px-1.5 flex items-center justify-center">
-                          <span className="text-[9px] font-sans font-bold text-white truncate text-center leading-none">
-                            {language === 'en' ? 'Official / الأصلي' : 'الرسمية / الأصلي'}
-                          </span>
-                        </div>
-                      </button>
-
-                      {/* Presets */}
-                      {(PRESETS_BY_VEHICLE[currentVehicle.id] || []).map((preset, idx) => {
-                        const isSelected = customOverrides[currentVehicle.id] === preset.url;
-                        return (
-                          <button
-                            key={idx}
-                            onClick={() => handleUpdateImage(currentVehicle.id, preset.url)}
-                            className={`relative aspect-video rounded-xl overflow-hidden border transition-all duration-300 group/item cursor-pointer ${
-                              isSelected
-                                ? 'border-[#C5A85C] ring-2 ring-[#C5A85C]/30'
-                                : 'border-[#C5A85C]/20 hover:border-[#C5A85C]/50'
-                            }`}
-                          >
-                            <img 
-                              src={preset.url} 
-                              alt={preset.labelEn} 
-                              className="w-full h-full object-cover group-hover/item:scale-105 transition-transform duration-300"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="absolute inset-x-0 bottom-0 bg-black/60 py-1 px-1.5 flex items-center justify-center">
-                              <span className="text-[9px] font-sans font-bold text-white truncate text-center leading-none">
-                                {language === 'en' ? preset.labelEn : preset.labelAr}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Custom Uploader triggers inside the carousel right card */}
-                    <div className="pt-2.5 border-t border-[#C5A85C]/15 flex flex-col gap-1.5">
-                      <div className="flex items-center gap-1.5">
-                        <Camera className="w-3.5 h-3.5 text-[#C5A85C]" />
-                        <span className="text-[10px] text-champagne-gold-200/90 font-bold">
-                          {language === 'en' ? 'WANT TO SEE YOUR OWN VEHICLE?' : 'هل تريد معاينة سيارتك الخاصة؟'}
-                        </span>
-                      </div>
-                      <p className="text-[9.5px] text-champagne-gold-100/50 leading-relaxed font-sans">
-                        {language === 'en' 
-                          ? 'Upload an image or drag & drop to dynamically visualize the vehicle customization in real-time!' 
-                          : 'قم برفع ملف صورة من جهازك لمعاينتها فوراً وتخصيص مظهر المركبة في نفس اللحظة!'}
-                      </p>
-                      
-                      <button
-                        onClick={() => setCustomizingVehicleId(currentVehicle.id)}
-                        className="w-full py-2 px-3 rounded-xl bg-royal-navy-900/90 border border-[#C5A85C]/25 text-champagne-gold-200 hover:bg-[#C5A85C]/10 transition-all text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-center gap-1.5 cursor-pointer hover:border-[#C5A85C]/60"
-                      >
-                        <Upload className="w-3.5 h-3.5 text-[#C5A85C]" />
-                        <span>{language === 'en' ? 'Upload Custom Photo' : 'تحميل صورة مخصصة'}</span>
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            {/* Fare Architecture Box */}
+            <div className="p-5 rounded bg-royal-navy-900 border border-[#C5A85C]/20 space-y-3.5 relative z-10 shadow-inner">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-champagne-gold-200">{language === 'en' ? 'Base Activation Rate' : 'تعرفة فتح العداد وحجز المركبة'}</span>
+                <span className="font-serif text-xs text-[#C5A85C] font-bold">
+                  {language === 'en' ? 'Custom Quote' : 'تسعير مخصص عند التواصل'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between border-t border-royal-navy-800 pt-3">
+                <span className="text-xs text-champagne-gold-200">{language === 'en' ? 'Interstate Route Rate' : 'تعرفة المسافات الطويلة والمدن'}</span>
+                <span className="font-serif text-xs text-[#C5A85C] font-bold">
+                  {language === 'en' ? 'Tailored per Route' : 'أسعار مخصصة حسب الطلب'}
+                </span>
+              </div>
+              <div className={`flex items-start space-x-2 pt-1 border-t border-royal-navy-800 text-[10px] text-champagne-gold-100/50 ${isRtl ? 'space-x-reverse' : ''}`}>
+                <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 mr-1 ml-1 text-[#C5A85C]" />
+                <p>{language === 'en' ? 'Tax, border permits, bottled mineral water, and luxury chauffeur charges are fully included in all tailored plans.' : 'الضرائب، أذونات المرور الحدودية، المياه المعدنية المبردة، وتكاليف السائق المحترف مشمولة بالكامل عند تأكيد طلب الحجز.'}</p>
+              </div>
             </div>
 
             {/* Chauffeur actions with rich gold button & Compare toggle */}
-            <div className="pt-3 border-t border-[#C5A85C]/15 relative z-10">
-              <div className="flex flex-col sm:flex-row gap-2.5">
+            <div className="pt-3 relative z-10">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => onSelectVehicleAndInquire(currentVehicle.id)}
-                  className="flex-1 text-center btn-metallic-gold text-royal-navy-950 font-sans text-xs uppercase tracking-widest font-extrabold py-3.5 px-5 rounded-xl cursor-pointer transition-all duration-300 hover:shadow-[0_0_20px_rgba(197,168,92,0.35)] transform hover:-translate-y-0.5 active:translate-y-0"
+                  tabIndex={0}
+                  className="flex-1 text-center btn-metallic-gold text-royal-navy-950 font-sans text-xs uppercase tracking-widest font-extrabold py-4 px-6 rounded cursor-pointer transition-all duration-300 hover:shadow-[0_0_25px_rgba(197,168,92,0.4)] transform hover:-translate-y-0.5"
                 >
-                  {language === 'en' ? `Book Now` : `احجز الآن`}
+                  {language === 'en' ? `Book ${currentVehicle.name} Now` : `احجز ${currentVehicle.name} الآن`}
                 </button>
                 <button
                   onClick={() => {
@@ -1037,18 +825,18 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                       setCompareList(prev => [...prev, currentVehicle.id]);
                     }
                   }}
-                  className={`px-4 py-3 rounded-xl border text-[10px] font-mono tracking-widest uppercase font-extrabold transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 ${
+                  className={`px-6 py-4 rounded border text-xs font-mono tracking-widest uppercase font-extrabold transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 ${
                     compareList.includes(currentVehicle.id)
                       ? 'border-[#C5A85C] bg-[#C5A85C]/20 text-champagne-gold-100 hover:bg-[#C5A85C]/30'
                       : 'border-[#C5A85C]/30 hover:border-[#C5A85C] hover:bg-white/5 text-[#C5A85C]'
                   }`}
                   title={language === 'en' ? 'Add or remove model from specs comparison matrix' : 'إضافة أو إزالة هذا الموديل من جدول مقارنة المواصفات'}
                 >
-                  <Scale className="w-3.5 h-3.5 shrink-0" />
+                  <Scale className="w-4 h-4 shrink-0" />
                   <span>
                     {compareList.includes(currentVehicle.id)
-                      ? (language === 'en' ? 'Compared' : 'مضاف')
-                      : (language === 'en' ? 'Compare' : 'مقارنة')}
+                      ? (language === 'en' ? 'Compared' : 'مضاف للمقارنة')
+                      : (language === 'en' ? 'Compare Specs' : 'مقارنة المواصفات')}
                   </span>
                 </button>
               </div>
@@ -1124,7 +912,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                     return v ? (
                       <div key={id}>
                         <LazyImage
-                          src={v.image}
+                          src={getVehicleImage(v)}
                           alt={v.name}
                           className="w-8 h-8 rounded-full border border-[#C5A85C] object-cover ring-2 ring-[#0A0A0A]"
                         />
@@ -1239,7 +1027,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                               <X className="w-3 h-3" />
                             </button>
                             <LazyImage
-                              src={veh.image}
+                              src={getVehicleImage(veh)}
                               alt={veh.name}
                               className="w-full h-24 object-cover rounded border border-[#C5A85C]/20 mb-3 grayscale-[0.1] hover:grayscale-0 transition-all duration-500"
                             />

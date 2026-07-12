@@ -545,9 +545,10 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
           <div className="corner br"></div>
           <img 
             src={cardImages['limousine-passenger']} 
-            alt="" 
+            alt={language === 'en' ? 'Elite limousine passenger transfer by Royal Ride Jordan' : 'نقل الركاب بالليموزين الفاخر من رويال رايد الأردن'} 
             className="himg animate-slowzoom" 
             referrerPolicy="no-referrer"
+            loading="lazy"
           />
           <div className="vignette"></div>
           <div className="scrim"></div>
@@ -642,7 +643,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['airport-transit-jordan']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['airport-transit-jordan']} 
+                alt={language === 'en' ? 'Jordan airports VIP transfer service by Royal Ride Jordan' : 'تغطية خدمة التوصيل للمطارات الأردنية من رويال رايد'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button
@@ -697,7 +704,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['border-crossings-jordan']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['border-crossings-jordan']} 
+                alt={language === 'en' ? 'Border and bridge crossing transport services in Jordan' : 'خدمات التوصيل للمعابر الحدودية والجسور بالأردن'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button
@@ -752,7 +765,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['international-transit']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['international-transit']} 
+                alt={language === 'en' ? 'International cross-border luxury transit service' : 'خدمة النقل الدولي الفاخر العابر للحدود'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button
@@ -807,7 +826,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['airport-meet-greet']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['airport-meet-greet']} 
+                alt={language === 'en' ? 'Airport hall VIP meet and greet concierge in Amman' : 'استقبال كبار الشخصيات ومساعد الكونسيرج بصالة المطار في عمان'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button
@@ -875,7 +900,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['car-van-rentals']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['car-van-rentals']} 
+                alt={language === 'en' ? 'Luxury VIP sedan and multi-passenger van rentals' : 'تأجير سيارات وفانات ليموزين VIP فاخرة بالأردن'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button
@@ -930,7 +961,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['daily-hourly-rentals']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['daily-hourly-rentals']} 
+                alt={language === 'en' ? 'Flexible daily and hourly luxury executive driver hire' : 'تأجير يومي وبالساعة لليموزين مع سائق خاص لرجال الأعمال'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button
@@ -998,7 +1035,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['corporate-transportation']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['corporate-transportation']} 
+                alt={language === 'en' ? 'Corporate and business VIP logistics solutions' : 'حلول وخدمات النقل اللوجستي الفاخر للشركات والهيئات'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button
@@ -1054,7 +1097,13 @@ export default function ServicesShowcase({ onSelectServiceAndInquire, preSelecte
               <div className="corner tr"></div>
               <div className="corner bl"></div>
               <div className="corner br"></div>
-              <img src={cardImages['hotel-restaurant-bookings']} alt="" className="cimg" referrerPolicy="no-referrer" />
+              <img 
+                src={cardImages['hotel-restaurant-bookings']} 
+                alt={language === 'en' ? 'Five-star hotel and priority dining reservations concierge' : 'حجوزات كونسيرج فنادق خمس نجوم ومطاعم فاخرة بالأردن'} 
+                className="cimg" 
+                referrerPolicy="no-referrer" 
+                loading="lazy"
+              />
               <div className="cscrim"></div>
 
               <button

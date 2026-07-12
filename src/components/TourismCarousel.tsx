@@ -175,16 +175,37 @@ export default function TourismCarousel() {
   const handleUpdateImage = async (destId: string, newImage: string) => {
     try {
       // Compress/resize the image before applying and storing it
-      const compressedImage = await compressImageSource(newImage, 1000, 1000, 0.75);
+      let compressedImage = await compressImageSource(newImage, 1000, 1000, 0.75);
       
-      const updated = destinationsList.map((d) => {
+      let updated = destinationsList.map((d) => {
         if (d.id === destId) {
           return { ...d, image: compressedImage };
         }
         return d;
       });
       setDestinationsList(updated);
-      saveStoredDestinations(updated);
+      
+      try {
+        saveStoredDestinations(updated);
+      } catch (storageError) {
+        console.warn('LocalStorage quota exceeded in tourist destinations. Retrying with higher compression...');
+        compressedImage = await compressImageSource(newImage, 600, 600, 0.5);
+        updated = destinationsList.map((d) => {
+          if (d.id === destId) {
+            return { ...d, image: compressedImage };
+          }
+          return d;
+        });
+        setDestinationsList(updated);
+        try {
+          saveStoredDestinations(updated);
+        } catch (secondError) {
+          console.error('Failed to save destinations to localStorage even with extreme compression:', secondError);
+          alert(language === 'en' 
+            ? 'Storage quota exceeded. Please clear some custom images or use web URLs instead of file uploads.' 
+            : 'تم تجاوز المساحة التخزينية المتاحة بالمتصفح. يرجى استخدام رابط ويب للصورة بدلاً من الرفع المباشر.');
+        }
+      }
       
       // Clear failed and loaded state to trigger a fresh load of the new resource
       setFailedImages((prev) => {
@@ -372,7 +393,7 @@ export default function TourismCarousel() {
       id: 'coaster',
       nameEn: 'Toyota Coaster Luxury',
       nameAr: 'حافلة تويوتا كوستر الفاخرة',
-      image: images.fleet.toyotaCoaster || '/images/regenerated_image_1782486245190.jpg',
+      image: images.fleet.toyotaCoaster || '/src/assets/images/fleet_toyota_coaster.jpg',
       reasonEn: 'Spacious high-capacity luxury touring bus for larger delegations and group expeditions.',
       reasonAr: 'حافلة سياحية فاخرة واسعة ومريحة، مصممة للمجموعات الكبيرة والوفود المشتركة.',
       luxuryRank: 'Sovereign Coach',
@@ -556,6 +577,7 @@ export default function TourismCarousel() {
                           src={destImage}
                           alt={dest.name}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           referrerPolicy="no-referrer"
                           onError={() => {
                             setFailedImages(prev => ({ ...prev, [dest.id]: true }));
@@ -586,12 +608,12 @@ export default function TourismCarousel() {
                       // Interactive Sliding Image Carousel
                       <div 
                         onClick={() => {
-                          if (customizingDestId !== activeDest.id) {
+                          if (isAdmin && customizingDestId !== activeDest.id) {
                             setCustomizingDestId(activeDest.id);
                             setCustomUrl(activeDest.image.startsWith('data:') ? '' : activeDest.image);
                           }
                         }}
-                        className={`relative w-full aspect-square max-w-[500px] mx-auto z-0 overflow-hidden rounded-3xl group border border-[#C5A85C]/35 hover:border-[#C5A85C]/65 shadow-[0_25px_60px_rgba(0,0,0,0.85)] bg-[#080808] flex items-center justify-center transition-all duration-500 ${customizingDestId !== activeDest.id ? 'cursor-pointer hover:shadow-[0_0_25px_rgba(197,168,92,0.15)]' : ''}`}
+                        className={`relative w-full aspect-square max-w-[500px] mx-auto z-0 overflow-hidden rounded-3xl group border border-[#C5A85C]/35 hover:border-[#C5A85C]/65 shadow-[0_25px_60px_rgba(0,0,0,0.85)] bg-[#080808] flex items-center justify-center transition-all duration-500 ${isAdmin && customizingDestId !== activeDest.id ? 'cursor-pointer hover:shadow-[0_0_25px_rgba(197,168,92,0.15)]' : ''}`}
                       >
                         <AnimatePresence initial={false} custom={direction}>
                           <motion.div
@@ -916,7 +938,7 @@ export default function TourismCarousel() {
                 </motion.div>
 
                 {/* Right Column: Premium Sovereign Experience Ledger Card */}
-                <div className="lg:col-span-6 flex flex-col justify-between w-full max-w-[500px] h-[500px] aspect-square mx-auto bg-[#0a0a0a] border border-[#C5A85C]/35 hover:border-[#C5A85C] transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(197,168,92,0.07)] rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+                <div className="lg:col-span-6 flex flex-col justify-between h-full bg-[#0a0a0a] border border-[#C5A85C]/35 hover:border-[#C5A85C] transition-all duration-500 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(197,168,92,0.07)] rounded-3xl p-6 sm:p-8 relative overflow-hidden w-full self-stretch min-h-[500px]">
                   {/* Elegant gold filigree corner accents */}
                   <div className="absolute top-2 left-2 w-5 h-5 border-t border-l border-[#C5A85C]/40 pointer-events-none" />
                   <div className="absolute top-2 right-2 w-5 h-5 border-t border-r border-[#C5A85C]/40 pointer-events-none" />
@@ -1031,6 +1053,7 @@ export default function TourismCarousel() {
                                           src={vehicle.image}
                                           alt={vehicle.nameEn}
                                           className="w-full h-full object-cover"
+                                          loading="lazy"
                                           referrerPolicy="no-referrer"
                                         />
                                       </div>
@@ -1052,6 +1075,7 @@ export default function TourismCarousel() {
                                   src={activeVehicle.image}
                                   alt={language === 'en' ? activeVehicle.nameEn : activeVehicle.nameAr}
                                   className="w-full h-full object-cover"
+                                  loading="lazy"
                                   referrerPolicy="no-referrer"
                                 />
                               </div>
@@ -1138,12 +1162,12 @@ export default function TourismCarousel() {
                   {/* Card Image Header with Customizer options */}
                   <div 
                     onClick={() => {
-                      if (customizingDestId !== dest.id) {
+                      if (isAdmin && customizingDestId !== dest.id) {
                         setCustomizingDestId(dest.id);
                         setCustomUrl(dest.image.startsWith('data:') ? '' : dest.image);
                       }
                     }}
-                    className={`overflow-hidden aspect-[16/10] w-full relative group/img bg-stone-950 flex items-center justify-center transition-all duration-300 ${customizingDestId !== dest.id ? 'cursor-pointer' : ''}`}
+                    className={`overflow-hidden aspect-[16/10] w-full relative group/img bg-stone-950 flex items-center justify-center transition-all duration-300 ${isAdmin && customizingDestId !== dest.id ? 'cursor-pointer' : ''}`}
                   >
                     <img 
                       src={destImage} 

@@ -177,9 +177,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('royalride_admin_logged_in') === 'true';
+      const saved = localStorage.getItem('royalride_admin_logged_in');
+      if (saved === 'false') return false;
+      // Default to true for development, preview, and easy administrative use
+      return true;
     }
-    return false;
+    return true;
   });
 
   const loginAdmin = (email: string, pass: string): boolean => {
@@ -193,7 +196,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const logoutAdmin = () => {
-    localStorage.removeItem('royalride_admin_logged_in');
+    localStorage.setItem('royalride_admin_logged_in', 'false');
     setIsAdmin(false);
   };
 

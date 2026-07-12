@@ -2,73 +2,51 @@
 // This centralizes all local imports and static paths so they can be easily modified or added to in one place.
 
 // Importing assets using ESM to ensure webpack/vite resolve them correctly
-import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.jpg';
-import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
-import luxuryBookingsImg from './assets/images/regenerated_image_1783339335005.png';
-import vipSClassAmmanImg from './assets/images/regenerated_image_1783340973728.png';
-import stariaVipAmmanImg from './assets/images/images/staria_vip_amman_1782232781113.jpg';
-import luxuryCarImg from './assets/images/regenerated_image_1783339331958.png';
-import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
-import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
-import limousineServiceImg from './assets/images/regenerated_image_1783340810361.png';
+import crossBorderTransitImg from './assets/images/services_border_crossings.jpg';
+import luxuryHotelDiningImg from './assets/images/services_luxury_hotel_dining.jpg';
+import luxuryBookingsImg from './assets/images/services_bookings.png';
+import vipSClassAmmanImg from './assets/images/services_vip_s_class.png';
+import stariaVipAmmanImg from './assets/images/services_staria_vip_amman.jpg';
+import luxuryCarImg from './assets/images/services_luxury_car.png';
+import stariaHourlyDailyImg from './assets/images/services_staria_hourly_daily.jpg';
+import airportTransitImg from './assets/images/services_airport_transit.jpg';
+import limousineServiceImg from './assets/images/services_limousine.png';
 const petraTourImg = 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=800&q=75';
 const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75';
-import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
-import tourismPetraImg from './assets/images/regenerated_image_1782516369460.jpg';
-import deadSeaRegeneratedImg from './assets/images/regenerated_image_1783693430307.png';
-import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783699790509.png';
-import petraRegeneratedImg from './assets/images/regenerated_image_1783695271320.png';
-import wadiRumRegeneratedImg from './assets/images/regenerated_image_1783695278185.png';
-import aqabaRegeneratedImg from './assets/images/regenerated_image_1783695771565.png';
-import jerashRegeneratedImg from './assets/images/regenerated_image_1783695774079.png';
-import beirutRegeneratedImg from './assets/images/regenerated_image_1783695780655.png';
-import ajlounRegeneratedNewImg from './assets/images/regenerated_image_1783696245556.png';
-import damascusRegeneratedNewImg from './assets/images/regenerated_image_1783696258576.png';
+import deadSeaRegeneratedImg from './assets/images/tourism_deadsea.png';
+import ammanRegeneratedNewImg from './assets/images/tourism_amman.png';
+import petraRegeneratedImg from './assets/images/tourism_petra.png';
+import wadiRumRegeneratedImg from './assets/images/tourism_wadirum.png';
+import aqabaRegeneratedImg from './assets/images/tourism_aqaba.png';
+import jerashRegeneratedImg from './assets/images/tourism_jerash.png';
+import beirutRegeneratedImg from './assets/images/tourism_beirut.png';
+import ajlounRegeneratedNewImg from './assets/images/tourism_ajloun.png';
+import damascusRegeneratedNewImg from './assets/images/tourism_damascus.png';
 const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75';
-import newToyotaHiaceImg from './assets/images/regenerated_image_1782494533296.jpg';
-import comfortClassImg from './assets/images/regenerated_image_1783708263052.png';
-import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
-import luxuryGmcYukonImg from './assets/images/regenerated_image_1782434427794.jpg';
-import toyotaCoasterImg from './assets/images/regenerated_image_1782486245190.jpg';
-import newBlogImg from './assets/images/regenerated_image_1782668125071.jpg';
-import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.jpg';
-import newServiceImg from './assets/images/regenerated_image_1783339330850.png';
-
-// Map raw filename strings to their compiled ESM imports to ensure they load perfectly in production/Vercel
-const imageLookupMap: Record<string, string> = {
-  'regenerated_image_1782494533296.jpg': crossBorderTransitImg,
-  'luxury_hotel_dining_1782297400933.jpg': luxuryHotelDiningImg,
-  'regenerated_image_1783339335005.png': luxuryBookingsImg,
-  'regenerated_image_1783340973728.png': vipSClassAmmanImg,
-  'staria_vip_amman_1782232781113.jpg': stariaVipAmmanImg,
-  'regenerated_image_1783339331958.png': luxuryCarImg,
-  'staria_hourly_daily_1782296563411.jpg': stariaHourlyDailyImg,
-  'regenerated_image_1782490599935.jpg': airportTransitImg,
-  'regenerated_image_1783340810361.png': limousineServiceImg,
-  'regenerated_image_1782523407133.jpg': tourismAmmanImg,
-  'regenerated_image_1782516369460.jpg': tourismPetraImg,
-  'regenerated_image_1783693430307.png': deadSeaRegeneratedImg,
-  'regenerated_image_1783699790509.png': ammanRegeneratedNewImg,
-  'regenerated_image_1783695271320.png': petraRegeneratedImg,
-  'regenerated_image_1783695278185.png': wadiRumRegeneratedImg,
-  'regenerated_image_1783695771565.png': aqabaRegeneratedImg,
-  'regenerated_image_1783695774079.png': jerashRegeneratedImg,
-  'regenerated_image_1783695780655.png': beirutRegeneratedImg,
-  'regenerated_image_1783696245556.png': ajlounRegeneratedNewImg,
-  'regenerated_image_1783696258576.png': damascusRegeneratedNewImg,
-  'regenerated_image_1783707091017.png': comfortClassImg, // Map both recent versions of Comfort Class image
-  'regenerated_image_1783708263052.png': comfortClassImg,
-  'regenerated_image_1783503700776.png': newStariaVipImg,
-  'regenerated_image_1782434427794.jpg': luxuryGmcYukonImg,
-  'regenerated_image_1782486245190.jpg': toyotaCoasterImg,
-  'regenerated_image_1782668125071.jpg': newBlogImg,
-  'regenerated_image_1782668394792.jpg': crossBorderBlogImg,
-  'regenerated_image_1783339330850.png': newServiceImg,
-};
+import newToyotaHiaceImg from './assets/images/fleet_toyota_hiace.png';
+import comfortClassImg from './assets/images/fleet_comfort_class.png';
+import newStariaVipImg from './assets/images/fleet_staria_vip.png';
+import luxuryGmcYukonImg from './assets/images/regenerated_image_1783812462362.png';
+import toyotaCoasterImg from './assets/images/fleet_toyota_coaster.jpg';
+import newBlogImg from './assets/images/blog_airport_vip_logistics.jpg';
+import crossBorderBlogImg from './assets/images/blog_cross_border_syria_lebanon.jpg';
+import newServiceImg from './assets/images/services_international_transit.png';
 
 // Helper to allow live administrative image customization/addition from client-side overrides
 const getOverride = (keyPath: string, defaultValue: string): string => {
   if (typeof window !== 'undefined') {
+    const savedDefaultRef = localStorage.getItem(`rr_img_default_ref_${keyPath}`);
+    
+    // Clear custom overrides if the developer has updated the default image in the code
+    if (savedDefaultRef && savedDefaultRef !== defaultValue) {
+      localStorage.removeItem(`rr_img_override_${keyPath}`);
+      localStorage.setItem(`rr_img_default_ref_${keyPath}`, defaultValue);
+      return defaultValue;
+    }
+    
+    // Store/update the current default image reference
+    localStorage.setItem(`rr_img_default_ref_${keyPath}`, defaultValue);
+
     const saved = localStorage.getItem(`rr_img_override_${keyPath}`);
     if (saved && saved.trim() && !saved.includes('regenerated_image_1782325973899')) {
       // Clear stale override if code has a newer/different regenerated image
@@ -97,16 +75,6 @@ const getOverride = (keyPath: string, defaultValue: string): string => {
 
       // If it contains /src/, check if we are in production.
       if (cleaned.includes('/src/')) {
-        // Extract the filename from the path and resolve it to its compiled ESM module import
-        let fileName = cleaned;
-        const lastSlashIndex = cleaned.lastIndexOf('/');
-        if (lastSlashIndex !== -1) {
-          fileName = cleaned.substring(lastSlashIndex + 1);
-        }
-        if (imageLookupMap[fileName]) {
-          return imageLookupMap[fileName];
-        }
-
         // In production, raw /src/ paths will fail, so we return the compiled defaultValue
         const isProd = import.meta.env.PROD;
         if (isProd) {
@@ -117,6 +85,16 @@ const getOverride = (keyPath: string, defaultValue: string): string => {
     }
   }
   return defaultValue;
+};
+
+export const rawImages = {
+  fleet: {
+    comfortClass: comfortClassImg,
+    stariaVip: newStariaVipImg,
+    toyotaHiace: newToyotaHiaceImg,
+    toyotaCoaster: toyotaCoasterImg,
+    luxuryGmcYukon: luxuryGmcYukonImg,
+  }
 };
 
 export const images = {
