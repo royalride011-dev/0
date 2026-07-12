@@ -5,6 +5,7 @@
  */
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Header from './components/Header';
 import JordanClock from './components/JordanClock';
 import Hero from './components/Hero';
@@ -227,6 +228,9 @@ export default function App() {
 
       {/* Floating Back to Top Button */}
       <BackToTop />
+
+      {/* Vercel Speed Insights */}
+      <SpeedInsights />
     </div>
   );
 }
