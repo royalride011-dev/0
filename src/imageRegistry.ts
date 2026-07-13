@@ -2,35 +2,40 @@
 // This centralizes all local imports and static paths so they can be easily modified or added to in one place.
 
 // Importing assets using ESM to ensure webpack/vite resolve them correctly
-import crossBorderTransitImg from './assets/images/services_border_crossings.jpg';
-import luxuryHotelDiningImg from './assets/images/services_luxury_hotel_dining.jpg';
-import luxuryBookingsImg from './assets/images/services_bookings.png';
-import vipSClassAmmanImg from './assets/images/services_vip_s_class.png';
-import stariaVipAmmanImg from './assets/images/services_staria_vip_amman.jpg';
-import luxuryCarImg from './assets/images/services_luxury_car.png';
-import stariaHourlyDailyImg from './assets/images/services_staria_hourly_daily.jpg';
-import airportTransitImg from './assets/images/services_airport_transit.jpg';
-import limousineServiceImg from './assets/images/services_limousine.png';
+import crossBorderTransitImg from './assets/images/regenerated_image_1782494533296.jpg';
+import luxuryHotelDiningImg from './assets/images/images/luxury_hotel_dining_1782297400933.jpg';
+import luxuryBookingsImg from './assets/images/regenerated_image_1783339335005.png';
+import vipSClassAmmanImg from './assets/images/regenerated_image_1783340973728.png';
+import stariaVipAmmanImg from './assets/images/images/staria_vip_amman_1782232781113.jpg';
+import luxuryCarImg from './assets/images/regenerated_image_1783339331958.png';
+import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
+import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
+import limousineServiceImg from './assets/images/regenerated_image_1783340810361.png';
 const petraTourImg = 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=800&q=75';
 const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75';
-import deadSeaRegeneratedImg from './assets/images/tourism_deadsea.png';
-import ammanRegeneratedNewImg from './assets/images/tourism_amman.png';
-import petraRegeneratedImg from './assets/images/tourism_petra.png';
-import wadiRumRegeneratedImg from './assets/images/tourism_wadirum.png';
-import aqabaRegeneratedImg from './assets/images/tourism_aqaba.png';
-import jerashRegeneratedImg from './assets/images/tourism_jerash.png';
-import beirutRegeneratedImg from './assets/images/tourism_beirut.png';
-import ajlounRegeneratedNewImg from './assets/images/tourism_ajloun.png';
-import damascusRegeneratedNewImg from './assets/images/tourism_damascus.png';
+import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
+import tourismPetraImg from './assets/images/regenerated_image_1782516369460.jpg';
+import deadSeaRegeneratedImg from './assets/images/regenerated_image_1783693430307.png';
+import ammanRegeneratedNewImg from './assets/images/regenerated_image_1783699790509.png';
+import petraRegeneratedImg from './assets/images/regenerated_image_1783950362008.png';
+import wadiRumRegeneratedImg from './assets/images/regenerated_image_1783695278185.png';
+import aqabaRegeneratedImg from './assets/images/regenerated_image_1783695771565.png';
+import jerashRegeneratedImg from './assets/images/regenerated_image_1783695774079.png';
+import beirutRegeneratedImg from './assets/images/regenerated_image_1783695780655.png';
+import ajlounRegeneratedNewImg from './assets/images/regenerated_image_1783696245556.png';
+import damascusRegeneratedNewImg from './assets/images/regenerated_image_1783696258576.png';
+import madabaRegeneratedImg from './assets/images/regenerated_image_1783885757343.png';
+import mujibRegeneratedImg from './assets/images/regenerated_image_1783886578549.png';
+import almaghtasRegeneratedImg from './assets/images/regenerated_image_1783885643534.png';
 const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75';
-import newToyotaHiaceImg from './assets/images/fleet_toyota_hiace.png';
-import comfortClassImg from './assets/images/fleet_comfort_class.png';
-import newStariaVipImg from './assets/images/fleet_staria_vip.png';
-import luxuryGmcYukonImg from './assets/images/regenerated_image_1783812462362.png';
-import toyotaCoasterImg from './assets/images/fleet_toyota_coaster.jpg';
-import newBlogImg from './assets/images/blog_airport_vip_logistics.jpg';
-import crossBorderBlogImg from './assets/images/blog_cross_border_syria_lebanon.jpg';
-import newServiceImg from './assets/images/services_international_transit.png';
+import newToyotaHiaceImg from './assets/images/regenerated_image_1783789250595.png';
+import comfortClassImg from './assets/images/regenerated_image_1783944902635.png';
+import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
+import luxuryGmcYukonImg from './assets/images/regenerated_image_1783943957288.png';
+import toyotaCoasterImg from './assets/images/regenerated_image_1783791446538.png';
+import newBlogImg from './assets/images/regenerated_image_1782668125071.jpg';
+import crossBorderBlogImg from './assets/images/regenerated_image_1782668394792.jpg';
+import newServiceImg from './assets/images/regenerated_image_1783339330850.png';
 
 // Helper to allow live administrative image customization/addition from client-side overrides
 const getOverride = (keyPath: string, defaultValue: string): string => {
@@ -136,10 +141,12 @@ export const images = {
     deadsea: getOverride('tourism_deadsea', deadSeaRegeneratedImg),
     aqaba: getOverride('tourism_aqaba', aqabaRegeneratedImg),
     jerash: getOverride('tourism_jerash', jerashRegeneratedImg),
-    madaba: getOverride('tourism_madaba', 'https://images.unsplash.com/photo-1608958416806-039cfffa68b9?auto=format&fit=crop&w=800&q=75'),
+    madaba: getOverride('tourism_madaba', madabaRegeneratedImg),
     damascus: getOverride('tourism_damascus', damascusRegeneratedNewImg),
     beirut: getOverride('tourism_beirut', beirutRegeneratedImg),
     ajloun: getOverride('tourism_ajloun', ajlounRegeneratedNewImg),
+    mujib: getOverride('tourism_mujib', mujibRegeneratedImg),
+    almaghtas: getOverride('tourism_almaghtas', almaghtasRegeneratedImg),
   },
 
   // About Page

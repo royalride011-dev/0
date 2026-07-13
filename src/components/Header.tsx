@@ -6,6 +6,7 @@ import { useLanguage } from '../LanguageContext';
 import AmmanWeatherWidget from './AmmanWeatherWidget';
 import WhatsAppIcon from './WhatsAppIcon';
 import LanguageSwitcher from './LanguageSwitcher';
+import { prefetch } from '../utils/prefetch';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,9 +28,9 @@ export default function Header() {
 
   const navItems = [
     { name: language === 'en' ? 'Home' : 'الصفحة الرئيسية', href: '#/', ariaLabel: language === 'en' ? 'Go to Home' : 'الذهاب إلى الصفحة الرئيسية' },
-    { name: language === 'en' ? 'About Us' : 'معلومات عنا', href: '#/about', ariaLabel: language === 'en' ? 'About Us' : 'من نحن' },
-    { name: language === 'en' ? 'Services' : 'الخدمات', href: '#/services', hasDropdown: true, ariaLabel: language === 'en' ? 'Explore Our Services' : 'استكشف خدماتنا' },
-    { name: language === 'en' ? 'Contact Us' : 'اتصل بنا', href: '#/contact', ariaLabel: language === 'en' ? 'Contact Us' : 'اتصل بنا' },
+    { name: language === 'en' ? 'About Us' : 'معلومات عنا', href: '#/about', ariaLabel: language === 'en' ? 'About Us' : 'من نحن', prefetchKey: 'about' },
+    { name: language === 'en' ? 'Services' : 'الخدمات', href: '#/services', hasDropdown: true, ariaLabel: language === 'en' ? 'Explore Our Services' : 'استكشف خدماتنا', prefetchKey: 'services' },
+    { name: language === 'en' ? 'Contact Us' : 'اتصل بنا', href: '#/contact', ariaLabel: language === 'en' ? 'Contact Us' : 'اتصل بنا', prefetchKey: 'contact' },
   ];
 
   const subServices = [
@@ -98,7 +99,6 @@ export default function Header() {
               </span>
             </div>
           </a>
-
           {/* Desktop Navigation */}
           <nav aria-label="Main Navigation" className={`hidden lg:flex items-center ${isRtl ? 'space-x-reverse' : ''}`} id="desktop-nav">
             <ul className={`flex items-center ${isRtl ? 'space-x-reverse' : ''} space-x-6`}>
@@ -111,7 +111,10 @@ export default function Header() {
                 <li
                   key={item.name}
                   className="relative"
-                  onMouseEnter={() => item.hasDropdown && setServicesDropdownOpen(true)}
+                  onMouseEnter={() => {
+                    if (item.hasDropdown) setServicesDropdownOpen(true);
+                    if (item.prefetchKey) prefetch(item.prefetchKey as any);
+                  }}
                   onMouseLeave={() => item.hasDropdown && setServicesDropdownOpen(false)}
                 >
                   {item.hasDropdown ? (
@@ -120,6 +123,8 @@ export default function Header() {
                         window.location.hash = item.href;
                         setServicesDropdownOpen(!servicesDropdownOpen);
                       }}
+                      onMouseEnter={() => item.prefetchKey && prefetch(item.prefetchKey as any)}
+                      onTouchStart={() => item.prefetchKey && prefetch(item.prefetchKey as any)}
                       aria-label={item.ariaLabel}
                       className="relative pb-1 flex items-center font-sans text-[11px] uppercase tracking-wider text-champagne-gold-100 hover:text-champagne-gold-400 transition-colors duration-300 cursor-pointer after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-champagne-gold-400 after:to-champagne-gold-600 after:transition-all after:duration-300"
                     >
@@ -129,6 +134,8 @@ export default function Header() {
                   ) : (
                     <a
                       href={item.href}
+                      onMouseEnter={() => item.prefetchKey && prefetch(item.prefetchKey as any)}
+                      onTouchStart={() => item.prefetchKey && prefetch(item.prefetchKey as any)}
                       aria-label={item.ariaLabel}
                       className="relative pb-1 flex items-center font-sans text-[11px] uppercase tracking-wider text-champagne-gold-100 hover:text-champagne-gold-400 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-champagne-gold-400 after:to-champagne-gold-600 after:transition-all after:duration-300"
                     >

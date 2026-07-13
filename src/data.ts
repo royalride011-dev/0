@@ -1,9 +1,5 @@
 import { Vehicle, ServiceType, Testimonial } from './types';
-import luxuryCarsImg from './assets/images/fleet_luxury_gmc_yukon.jpg';
-
-const luxuryTourJordanImg = '/images/luxury_tour_jordan_1782232796504.jpg';
-const vipSClassAmmanImg = '/images/vip_s_class_amman_1782232812410.jpg';
-const stariaHourlyDailyImg = '/images/staria_hourly_daily_1782296563411.jpg';
+import { images } from './imageRegistry';
 
 export interface LocalizedLocation {
   nameEn: string;
@@ -16,7 +12,7 @@ export const VEHICLES: Vehicle[] = [
     id: 'comfort-class',
     name: 'Comfort Class (Camry, Sonata, Accord...)',
     type: 'Comfort Executive Sedan',
-    image: '/images/comfort_class_fleet_1782258340226.jpg',
+    image: images.fleet.comfortClass,
     capacityPassengers: 4,
     capacityLuggage: 3,
     features: [
@@ -33,7 +29,7 @@ export const VEHICLES: Vehicle[] = [
     id: 'staria',
     name: 'Hyundai Staria VIP',
     type: 'Elite Family Lounge Van',
-    image: '/images/staria_vip_amman_1782232781113.jpg',
+    image: images.fleet.stariaVip,
     capacityPassengers: 7,
     capacityLuggage: 10,
     features: [
@@ -50,7 +46,7 @@ export const VEHICLES: Vehicle[] = [
     id: 'toyota-hiace',
     name: 'Toyota Hiace Tourer',
     type: 'Executive Passenger Van',
-    image: '/images/royal_ride_hero_1781696285755.jpg',
+    image: images.fleet.toyotaHiace,
     capacityPassengers: 14,
     capacityLuggage: 13,
     features: [
@@ -67,7 +63,7 @@ export const VEHICLES: Vehicle[] = [
     id: 'toyota-coaster',
     name: 'TOYOTA COASTER LUXURY VIP',
     type: 'Sovereign Group Coach',
-    image: luxuryTourJordanImg,
+    image: images.fleet.toyotaCoaster,
     capacityPassengers: 18,
     capacityLuggage: 15,
     features: [
@@ -84,7 +80,7 @@ export const VEHICLES: Vehicle[] = [
     id: 'luxury-cars',
     name: 'VIP LUXURY CARS',
     type: 'Elite Presidential Sovereign',
-    image: luxuryCarsImg,
+    image: images.fleet.luxuryGmcYukon,
     capacityPassengers: 4,
     capacityLuggage: 4,
     features: [
@@ -107,7 +103,7 @@ export const SERVICES: ServiceType[] = [
     detailedDescription: 'تسهيل العبور والاستقبال الدبلوماسي الفاخر • Direct tracking of flight statuses and custom fast-track border facilitation. Meet and greet inside AMM arrival terminal with professional baggage handling, custom-clearest priorities, premium refreshments, and smooth transition to vehicle.',
     icon: 'Plane',
     features: ['Real-time Flight Coordinates Tracking', 'Inside Terminal Meet & Greet assistance', 'Fast-Track Border Support & Custom Clear'],
-    image: '/images/royal_ride_hero_1781696285755.jpg'
+    image: images.services.airportTransitJordan
   },
   {
     id: 'car-rental-driver',
@@ -116,7 +112,7 @@ export const SERVICES: ServiceType[] = [
     detailedDescription: 'حجز سيارة فاخرة مع أو بدون سائق للرحلات وسياحة الأفراد • Select elite sedans for supreme Amman business dispatch. Choose a professional certified local chauffeur for safe, stress-free routes, or select a self-drive rental for your independent private journeys and long-term residency.',
     icon: 'Compass',
     features: ['With Driver: Certified Safe Navigation', 'Without Driver: Perfect Mechanical Condition', 'Comprehensive Insurance Coverages'],
-    image: '/images/comfort_class_fleet_1782258340226.jpg'
+    image: images.fleet.comfortClass
   },
   {
     id: 'van-rental-driver',
@@ -125,7 +121,7 @@ export const SERVICES: ServiceType[] = [
     detailedDescription: 'حجز فان فاخر مع أو بدون سائق للوفود والرحلات العائلية • Experience first-class travel together in spacious Mercedes V-Class or futuristic Hyundai Staria Lounge. Perfect with a suited executive driver managing coordinates, or as independent rental for high-privacy delegations.',
     icon: 'Globe',
     features: ['7-Seat Premium Captain Conference Configuration', 'Full climate isolation and interior Wi-Fi', 'Daily disinfection & absolute pristine cabin'],
-    image: '/images/staria_vip_amman_1782232781113.jpg'
+    image: images.fleet.stariaVip
   },
   {
     id: 'business-travel',
@@ -134,7 +130,7 @@ export const SERVICES: ServiceType[] = [
     detailedDescription: 'حلول ذكية وراقية لنقل الموظفين والوفود الدبلوماسية • Meticulous corporate logistics with post-paid monthly billing, priority bookings, dedicated dispatcher hotlines, multi-lingual drivers fluent in business diplomacy, and premium privacy and confidentiality guaranteed.',
     icon: 'Briefcase',
     features: ['Custom Corporate Account Billing Option', 'Polite, Suited (Suit & Tie) Executive Drivers', 'Absolute Privacy & Silent Mobile-Office cabins'],
-    image: vipSClassAmmanImg
+    image: images.services.vipSClassAmman
   },
   {
     id: 'hourly-daily-standby',
@@ -143,7 +139,7 @@ export const SERVICES: ServiceType[] = [
     detailedDescription: 'حجوزات مرنة بالساعات أو بنظام اليوم الكامل لمرافقتكم • Experience total schedule luxury. Your VIP driver remains on instant standby parked outside your appointments, moving on your command. Ideal for continuous meetings, shopping sprees, or highly unpredictable schedules inside Amman.',
     icon: 'Clock',
     features: ['Infinite Standby Outside Appointments', 'Unlimited Stops & Fluid routes change', 'Fully inclusive fuel and toll packages'],
-    image: stariaHourlyDailyImg
+    image: images.services.stariaHourlyDaily
   }
 ];
 

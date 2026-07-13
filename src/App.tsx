@@ -5,12 +5,12 @@
  */
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import Header from './components/Header';
 import JordanClock from './components/JordanClock';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
+import { prefetchIdle } from './utils/prefetch';
 
 // Lazy load below-the-fold and sub-route components for lightning-fast loading (under 1 sec)
 const SovereignReviewsCarousel = lazy(() => import('./components/SovereignReviewsCarousel'));
@@ -109,6 +109,14 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  // Prefetch other chunks on background idle to optimize load times
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      prefetchIdle();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -172,8 +180,8 @@ export default function App() {
                   />
                   <SovereignReviewsCarousel />
                   <Services onSelectServiceAndInquire={handleSelectService} />
-                  <TourismCarousel />
                   <FleetCarousel onSelectVehicleAndInquire={handleSelectVehicle} />
+                  <TourismCarousel />
                   <About />
                   <Reviews />
                 </>
@@ -228,9 +236,6 @@ export default function App() {
 
       {/* Floating Back to Top Button */}
       <BackToTop />
-
-      {/* Vercel Speed Insights */}
-      <SpeedInsights />
     </div>
   );
 }

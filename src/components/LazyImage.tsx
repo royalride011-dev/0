@@ -34,7 +34,8 @@ export function LazyImage({ src, srcSet, sizes, placeholder, alt, className, wid
           };
           
           tempImg.onerror = () => {
-            setCurrentSrc(src);
+            // Set high-definition luxury gold-accented fallback
+            setCurrentSrc('https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=800');
             setIsLoaded(true);
           };
 

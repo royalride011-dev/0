@@ -41,7 +41,7 @@ interface FleetCarouselProps {
 
 export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarouselProps) {
   const { language, t, isRtl, isAdmin } = useLanguage();
-  const [activeIndex, setActiveIndex] = useState(3);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [compareList, setCompareList] = useState<string[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
@@ -64,7 +64,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
       capacityPassengers: '4',
       capacityLuggage: '3',
       image: images.fleet.comfortClass,
-      version: '1783787901531',
+      version: '1783944902635',
       features: language === 'en'
         ? [
             'Ideal for small groups and families',
@@ -82,22 +82,22 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
     {
       id: 'staria',
       name: language === 'en' ? 'Hyundai Staria VIP' : 'هيونداي ستاريا VIP',
-      type: language === 'en' ? 'Elite Family Lounge Van' : 'ڤان فاخر وواسع للمجموعات المتوسطة',
+      type: language === 'en' ? 'Luxury Multi-Purpose (MPV)' : 'ڤان فاخر وواسع للمجموعات المتوسطة',
       description: language === 'en'
-        ? 'A striking statement of contemporary passenger volume. Tailored for family groups and executive tours across Jordan. Features massive ambient ergonomics and luggage spaces.'
+        ? 'Designed for premium executive group travel. Offering state-of-the-art futuristic design, VIP captain lounge seating, and elite business class convenience perfectly matching corporate or luxury family missions.'
         : 'ڤان فاخر وواسع يلبي متطلبات الرفاهية للمجموعات المتوسطة والعائلات. يتسع براحة كبيرة لـ 7 ركاب و10 حقائب في آن واحد مع مقاعد جلدية وراقية.',
       basePrice: '35',
       estimatedPricePerKm: '0.80',
       capacityPassengers: '7',
-      capacityLuggage: '10',
+      capacityLuggage: '5',
       image: images.fleet.stariaVip,
       version: '1783503700776',
       features: language === 'en'
         ? [
-            'Luxurious and spacious multi-passenger lounge',
-            'Stunning interior design with premium leather chairs',
-            'Outstandingly suited for long routes & tours',
-            'Equipped with free Wi-Fi and 24/7 client care'
+            'Luxury Captain seats with electronic leg rests',
+            'Spacious interior for high-profile business groups',
+            'Dual-zone automatic climate controls',
+            'Full privacy window shades and ambient lighting'
           ]
         : [
             'ڤان فاخر وواسع للمجموعات المتوسطة والعائلات',
@@ -136,22 +136,22 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
     {
       id: 'toyota-coaster',
       name: language === 'en' ? 'TOYOTA COASTER LUXURY VIP' : 'باص تويوتا كوستر لاكشري VIP',
-      type: language === 'en' ? 'Elite Passenger Coach' : 'باص فخم متكامل للأفواج الكبيرة والرحلات',
+      type: language === 'en' ? 'Luxury Mid-Bus / Coach' : 'باص فخم متكامل للأفواج الكبيرة والرحلات',
       description: language === 'en'
-        ? 'The gold standard for mass group transport. Premium comfort chassis, extensive space, luxury leather seating option, and superb intercity travel capabilities.'
+        ? 'The ultimate solution for delegations and large luxury group tours across Jordan. Upgraded VIP interior setup offering maximum space, robust reliability, and premium high-altitude climate control.'
         : 'باص فخم متسع مخصص للأفواج الكبيرة والرحلات الطويلة بين المحافظات. يحتوي على مقاعد وثيرة ومريحة مع تكييف متطور، ومستودع أمتعة سفلي كبير يستوعب الكثير من الحقائب.',
       basePrice: '65',
       estimatedPricePerKm: '1.40',
-      capacityPassengers: '18',
-      capacityLuggage: '15',
+      capacityPassengers: '22',
+      capacityLuggage: '20',
       image: images.fleet.toyotaCoaster,
-      version: '1783793135115',
+      version: '1783791446538',
       features: language === 'en'
         ? [
-            'Spacious luxury seating holding up to 18 delegates',
-            'Rich leather craftsmanship with grand legroom option',
-            'Designed for country-wide sightseeing & group transit',
-            'Continuous real-time dispatch monitoring & support'
+            'Perfect for large tourist groups and official delegations',
+            'Premium high-back reclinable seating configurations',
+            'Ample under-seat and rear luggage optimization',
+            'Advanced PA microphone audio system for tour guiding'
           ]
         : [
             'باص فاخر للمجموعات الكبيرة والرحلات الطويلة عبر مدن الأردن',
@@ -163,22 +163,22 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
     {
       id: 'luxury-cars',
       name: language === 'en' ? 'VIP LUXURY CARS' : 'جي إم سي يوكون VIP والسيارات الفارهة كبار الشخصيات',
-      type: language === 'en' ? 'Sovereign Diplomatic Edition' : 'أفخم وأرقى خدمات الليموزين والنخبة',
+      type: language === 'en' ? 'Elite SUV & Flagship Sedan' : 'أفخم وأرقى خدمات الليموزين والنخبة',
       description: language === 'en'
-        ? 'Bespoke legendary flagship sedans and elite SUVs like GMC Yukon VIP. Reserved upon inquiry for sovereign events, diplomatic transfers, and weddings requiring highest standards.'
+        ? 'Experience the pinnacle of presidential and royal transportation. Featuring flagship top-tier vehicles like the GMC Yukon Denali and Mercedes-Benz S-Class, meticulously customized for absolute security and diplomatic prestige.'
         : 'أفخم فئاتنا على الإطلاق من سيارات صالون فاخرة وسيارات جي إم سي يوكون الدبل VIP، المحفوظة للمناسبات الرسمية الكبرى واستقبل كبار الوفود الدبلوماسية ورجال الأعمال.',
       basePrice: '80',
       estimatedPricePerKm: '1.80',
       capacityPassengers: '4',
       capacityLuggage: '4',
       image: images.fleet.luxuryGmcYukon,
-      version: '1782434427794',
+      version: '1783943957288',
       features: language === 'en'
         ? [
-            'Unmatched luxury reserved for VIP status & weddings',
-            'Select premium flagships (GMC Yukon VIP & Mercedes S-Class)',
-            'Five-star custom livery chauffeur services',
-            'Tailored elite packages that exceed expectation'
+            'Flagship elite vehicles (GMC Yukon Denali / Mercedes S-Class)',
+            'Chauffeurs highly trained in VIP and diplomatic protocol',
+            'Ultimate acoustic soundproofing and executive prestige',
+            'Complimentary premium refreshments and VIP amenities'
           ]
         : [
             'أفخم سياراتنا للمناسبات الخاصة ونقل كبار الشخصيات (جي إم سي يوكون ومرسيدس S-Class)',
@@ -400,7 +400,7 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
   }, []);
 
   return (
-    <section id="fleet-showcase" ref={sectionRef} className="relative py-24 bg-black overflow-hidden text-left text-[#FAF6ED]">
+    <section id="fleet-section" ref={sectionRef} className="relative py-16 bg-black overflow-hidden text-left text-[#FAF6ED]">
       
       {/* Legacy target anchor for #fleet scroll links */}
       <div id="fleet" className="absolute top-0 left-0 w-full h-0 pointer-events-none" />
@@ -411,438 +411,210 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Heading with Framer Motion scroll-trigger */}
-        <motion.div 
-          initial={{ opacity: 0, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
-        >
-          <div className="max-w-2xl">
-            <span className="text-xs font-mono uppercase tracking-[0.3em] text-[#C5A85C]">
+        {/* 1. الهيدر والوصف النصي المستخرج من التصميم */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12 items-end">
+          <div className="lg:col-span-5 text-left">
+            <span className="text-[#C5A85C] font-semibold tracking-wider text-xs uppercase block mb-1">
               {t('fleet.badge')}
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-champagne-gold-100 mt-3">
-              <a href="https://royalridejordan.com/fleet" target="_blank" rel="noopener noreferrer">Our Fleet</a>
+            <h2 className="text-4xl font-bold text-white font-serif tracking-tight">
+              <a href="https://royalridejordan.com/fleet" target="_blank" rel="noopener noreferrer">
+                {language === 'en' ? 'Our Fleet' : 'أسطولنا الفاخر'}
+              </a>
             </h2>
-
-            <div className="w-16 h-[1.5px] bg-[#C5A85C] mt-5" />
+            <div className="h-[2px] w-16 bg-[#C5A85C] mt-3"></div>
           </div>
-          <p className="font-sans text-sm text-champagne-gold-100/75 max-w-xl leading-relaxed">
-            {t('fleet.desc')}
-          </p>
-        </motion.div>
+          <div className="lg:col-span-7 text-justify">
+            <p className="text-gray-400 text-sm leading-relaxed">
+              {t('fleet.desc')}
+            </p>
+          </div>
+        </div>
 
-        {/* Media Carousel Showcase */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+        {/* 2. أزرار تبويب الخيارات (Options 01 - 05) */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          {VEHICLES_LOCALIZED.map((veh, idx) => {
+            const isActive = idx === activeIndex;
+            return (
+              <button
+                key={veh.id}
+                onClick={() => setActiveIndex(idx)}
+                className={`flex-1 min-w-[120px] text-center p-3 border rounded text-xs font-bold uppercase transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? 'bg-zinc-900 text-[#C5A85C] border-[#C5A85C]'
+                    : 'bg-transparent text-zinc-500 border-zinc-800 hover:text-white'
+                }`}
+              >
+                {language === 'en' ? `OPTION 0${idx + 1}` : `الخيار 0${idx + 1}`}
+                <br />
+                <span className="text-[10px] font-normal block mt-0.5">{veh.name}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 3. حاوية العرض الرئيسية (مربع الصورة ومربع المواصفات) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 justify-center max-w-6xl mx-auto">
           
-          {/* Left Column: Visual Media & Controls */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-120px" }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 flex flex-col space-y-5 animate-gpu"
-          >
-            
-            {/* Main Visual Slider Frame with elegant gold decorative borders & artistic ornaments */}
+          {/* المربع الأول: كاروسيل الصور الحديث المقفل بأبعاد 500x500 */}
+          <div className="lg:col-span-6 flex justify-center">
             <div 
               onClick={() => {
-                if (isAdmin && customizingVehicleId !== currentVehicle.id) {
-                  setCustomizingVehicleId(currentVehicle.id);
-                  setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
-                }
+                nextVehicle();
               }}
-              className={`relative rounded-xl overflow-hidden w-full max-w-[600px] aspect-[16/10] mx-auto bg-royal-navy-950/95 border border-[#C5A85C]/30 group shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-[#C5A85C]/60 flex items-center justify-center ${isAdmin && customizingVehicleId !== currentVehicle.id ? 'cursor-pointer' : ''}`}
+              className="w-full max-w-[500px] h-[350px] sm:h-[450px] md:h-[500px] md:w-[500px] relative rounded-xl overflow-hidden border border-zinc-800/80 shadow-2xl bg-zinc-950 flex items-center justify-center hover:border-[#C5A85C]/45 hover:shadow-[0_15px_40px_rgba(197,168,92,0.12)] transition-all duration-500 cursor-pointer group"
             >
-              
-              {/* Elegant Golden Double Corner Ornaments */}
-              <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none z-20" />
-              <div className="absolute top-2.5 right-2.5 w-4 h-4 border-t border-r border-[#C5A85C]/60 pointer-events-none z-20" />
-              <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b border-l border-[#C5A85C]/60 pointer-events-none z-20" />
-              <div className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b border-r border-[#C5A85C]/60 pointer-events-none z-20" />
-
-              {/* Dotted Accent Lights inside Corners */}
-              <div className="absolute top-[18px] left-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
-              <div className="absolute top-[18px] right-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
-              <div className="absolute bottom-[18px] left-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
-              <div className="absolute bottom-[18px] right-[18px] w-1 h-1 bg-[#C5A85C] rounded-full pointer-events-none z-20" />
-
-              {/* Exquisite Top-Centered Royal Crown Insignia Drawing */}
-              <div className="absolute top-5 left-1/2 -translate-x-1/2 opacity-35 group-hover:opacity-85 transition-opacity duration-500 text-[#C5A85C] scale-75 pointer-events-none z-20">
-                <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L15 7L21 4L18 10H6L3 4L9 7L12 2Z" fill="currentColor" />
-                </svg>
-              </div>
-
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentVehicle.id}
                   src={getVehicleImage(currentVehicle)}
-                  alt={`Luxury ${currentVehicle.name} vehicle from Royal Ride Jordan fleet`}
-                  className={`w-full h-full object-cover transition-transform duration-700 ${customizingVehicleId === currentVehicle.id ? 'blur-sm brightness-50' : 'group-hover:scale-105'}`}
+                  alt={`Luxury ${currentVehicle.name} vehicle`}
+                  className="w-full object-cover transition-all duration-700 hover:scale-105"
+                  style={{ height: "400px" }}
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.02 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                   referrerPolicy="no-referrer"
-                  loading="lazy"
                   onError={() => {
-                    console.warn(`Failed to load image for ${currentVehicle.id}. Healing state and falling back.`);
                     if (customOverrides[currentVehicle.id]) {
-                      // If a custom override failed, reset it back to default and clear the error state so default can try to load
                       handleResetImage(currentVehicle.id);
                     } else {
-                      // If default image failed, set image error to trigger the Unsplash fallback
                       setImageErrors((prev) => ({ ...prev, [currentVehicle.id]: true }));
                     }
                   }}
                 />
               </AnimatePresence>
-
-              {/* Elegant always-visible Glassmorphic badge for flexible customization */}
-              {isAdmin && customizingVehicleId !== currentVehicle.id && (
-                <div className="absolute bottom-4 right-4 z-20">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCustomizingVehicleId(currentVehicle.id);
-                      setCustomUrl(getVehicleImage(currentVehicle).startsWith('data:') ? '' : getVehicleImage(currentVehicle));
-                    }}
-                    className="px-3 py-1.5 rounded-lg border border-[#C5A85C]/35 bg-black/85 text-[#C5A85C] hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] text-xs font-sans font-extrabold flex items-center gap-1.5 shadow-lg backdrop-blur-[6px] transition-all duration-300 cursor-pointer active:scale-95 animate-fadeIn"
-                  >
-                    <Camera className="w-3.5 h-3.5 animate-pulse" />
-                    <span>{language === 'en' ? 'Change Photo' : 'تغيير الصورة'}</span>
-                  </button>
-                </div>
-              )}
-
-              {/* Absolute embedded uploader panel */}
-              {isAdmin && customizingVehicleId === currentVehicle.id && (
-                <div className="absolute inset-0 bg-black/95 backdrop-blur-md p-6 flex flex-col justify-between z-30 animate-fadeIn border border-[#C5A85C]/45 rounded-xl text-left">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between border-b border-[#C5A85C]/25 pb-2">
-                      <span className="text-xs font-mono font-bold text-[#C5A85C] uppercase tracking-wider">
-                        {language === 'en' ? 'Configure Vehicle Image' : 'تعديل صورة المركبة'}
-                      </span>
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCustomizingVehicleId(null);
-                        }}
-                        className="text-stone-400 hover:text-white transition-colors cursor-pointer text-sm font-bold animate-pulse"
-                      >
-                        ✕
-                      </button>
-                    </div>
-
-                    {/* URL Paste */}
-                    <div className="space-y-1.5 text-left">
-                      <label className="text-[10px] text-stone-400 font-sans block">
-                        {language === 'en' ? 'Option 1: Paste Image Web Address' : 'الخيار 1: لصق رابط الصورة'}
-                      </label>
-                      <div className="flex gap-2 items-center">
-                        <div className="relative flex-1">
-                          <Link className="absolute left-3 top-2.5 w-4 h-4 text-stone-500" />
-                          <input 
-                            type="text" 
-                            value={customUrl}
-                            onClick={(e) => e.stopPropagation()}
-                            onChange={(e) => setCustomUrl(e.target.value)}
-                            placeholder="https://images.unsplash.com/photo-..."
-                            className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-[#C5A85C]/60"
-                          />
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (customUrl.trim()) {
-                              handleUpdateImage(currentVehicle.id, customUrl.trim());
-                              setCustomizingVehicleId(null);
-                            }
-                          }}
-                          className="bg-[#C5A85C] text-black text-xs px-4 py-2 rounded-xl font-bold hover:bg-white transition-colors cursor-pointer shrink-0"
-                        >
-                          {language === 'en' ? 'Apply' : 'تطبيق'}
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* File upload */}
-                    <div className="space-y-1.5 text-left">
-                      <label className="text-[10px] text-stone-400 font-sans block">
-                        {language === 'en' ? 'Option 2: Drag & Drop or Upload Local File' : 'الخيار 2: سحب أو تحميل ملف صورة'}
-                      </label>
-                      <div className="relative border border-dashed border-[#C5A85C]/35 rounded-xl p-4 hover:border-[#C5A85C] transition-all bg-stone-900/60 flex flex-col items-center justify-center space-y-2">
-                        <input 
-                          type="file" 
-                          accept="image/*"
-                          onClick={(e) => e.stopPropagation()}
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              handleFileUpload(currentVehicle.id, file);
-                              setCustomizingVehicleId(null);
-                            }
-                          }}
-                          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                        />
-                        <Upload className="w-6 h-6 text-[#C5A85C]" />
-                        <span className="text-xs font-semibold text-stone-300">
-                          {language === 'en' ? 'Upload Local Photo' : 'تحميل صورة من جهازك'}
-                        </span>
-                        <span className="text-[9px] text-stone-500 font-sans">
-                          Supports JPG, PNG, WebP (instant local cache)
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Curated Presets */}
-                    <div className="space-y-1.5 pt-1 text-left">
-                      <span className="text-[10px] font-mono text-[#C5A85C]/75 block uppercase tracking-wider">
-                        {language === 'en' ? 'Option 3: Select a Premium Preset' : 'الخيار 3: اختر من الباقة الفاخرة'}
-                      </span>
-                      <div className="grid grid-cols-3 gap-2">
-                        {PRESETS_BY_VEHICLE[currentVehicle.id]?.map((preset, idx) => (
-                          <button
-                            key={idx}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleUpdateImage(currentVehicle.id, preset.url);
-                              setCustomizingVehicleId(null);
-                            }}
-                            className="group/preset relative aspect-video rounded-xl overflow-hidden border border-stone-850 hover:border-[#C5A85C] transition-all bg-stone-950 cursor-pointer"
-                            title={language === 'en' ? preset.labelEn : preset.labelAr}
-                          >
-                            <img 
-                              src={preset.url} 
-                              alt={preset.labelEn}
-                              className="w-full h-full object-cover group-hover/preset:scale-110 transition-transform duration-300"
-                              referrerPolicy="no-referrer"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 bg-black/40 group-hover/preset:bg-black/10 transition-colors" />
-                            <span className="absolute bottom-1 left-1.5 right-1.5 text-[8px] text-white/95 font-sans font-medium line-clamp-1 bg-black/65 px-1 rounded backdrop-blur-[2px]">
-                              {language === 'en' ? preset.labelEn : preset.labelAr}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 justify-end border-t border-stone-900 pt-3">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleResetImage(currentVehicle.id);
-                        setCustomizingVehicleId(null);
-                      }}
-                      className="px-3 py-1.5 bg-red-950/40 hover:bg-red-900 border border-red-800/40 hover:border-red-600 rounded-lg text-[10px] font-mono text-red-200 transition-all cursor-pointer"
-                    >
-                      {language === 'en' ? 'Reset to Default' : 'إعادة ضبط'}
-                    </button>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCustomizingVehicleId(null);
-                      }}
-                      className="px-3 py-1.5 bg-stone-900 hover:bg-stone-850 border border-stone-800 rounded-lg text-[10px] font-mono text-stone-300 transition-all cursor-pointer"
-                    >
-                      {language === 'en' ? 'Close' : 'إغلاق'}
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Gradient Shading Underlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-royal-navy-950/85 via-transparent to-transparent pointer-events-none" />
-
-              {/* Vehicle Title Tag on Media Frame */}
-              <div className="absolute top-6 left-6 bg-royal-navy-950/95 border border-[#C5A85C]/35 px-4 py-2.5 rounded backdrop-blur-md z-20 shadow-md">
-                <span className="text-[10px] font-mono tracking-[0.2em] text-[#C5A85C] uppercase block mb-0.5">
-                  {language === 'en' ? 'CATEGORY STYLE' : 'نوع فئة الأسطول'}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+              
+              {/* شارة التصنيف (Category Style) */}
+              <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md border border-zinc-800 px-4 py-2 rounded-md text-left z-10 pointer-events-none">
+                <span className="text-[10px] text-zinc-400 block uppercase tracking-wider font-semibold">
+                  {language === 'en' ? 'Category Style' : 'نمط الفئة'}
                 </span>
-                <span className="font-serif text-sm font-bold text-champagne-gold-200">
+                <span className="text-xs font-bold text-white tracking-wide">
                   {currentVehicle.type}
                 </span>
               </div>
 
-              {/* Slide Navigation Triggers inside Frame */}
-              <button
-                onClick={prevVehicle}
-                className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded border border-[#C5A85C]/30 bg-royal-navy-950/90 hover:bg-[#C5A85C] text-[#C5A85C] hover:text-royal-navy-950 transition-all duration-300 z-20 cursor-pointer shadow-lg"
-                aria-label="Previous fleet car"
+              {/* عدادات السعة والحقائب المباشرة على الصورة */}
+              <div className={`absolute bottom-4 flex gap-2 z-15 pointer-events-none ${isRtl ? 'right-4' : 'left-4'}`}>
+                <span className="bg-black/70 backdrop-blur-sm text-[11px] text-white px-3 py-2 rounded border border-zinc-800/80 flex items-center gap-2">
+                  <Users className="w-3.5 h-3.5 text-[#C5A85C]" />
+                  <span className="font-bold">{currentVehicle.capacityPassengers}</span> {language === 'en' ? 'Passengers' : 'ركاب'}
+                </span>
+                <span className="bg-black/70 backdrop-blur-sm text-[11px] text-white px-3 py-2 rounded border border-zinc-800/80 flex items-center gap-2">
+                  <Briefcase className="w-3.5 h-3.5 text-[#C5A85C]" />
+                  <span className="font-bold">{currentVehicle.capacityLuggage}</span> {language === 'en' ? 'Big Bags' : 'حقائب كبيرة'}
+                </span>
+              </div>
+
+              {/* أزرار التحكم اليدوية الجانبية */}
+              <button 
+                onClick={(e) => { e.stopPropagation(); prevVehicle(); }} 
+                className={`absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 text-white flex items-center justify-center border border-zinc-800 opacity-0 group-hover:opacity-100 hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] transition-all duration-300 z-20 cursor-pointer ${
+                  isRtl ? 'right-4' : 'left-4'
+                }`}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <button
-                onClick={nextVehicle}
-                className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center justify-center w-11 h-11 rounded border border-[#C5A85C]/30 bg-royal-navy-950/90 hover:bg-[#C5A85C] text-[#C5A85C] hover:text-royal-navy-950 transition-all duration-300 z-20 cursor-pointer shadow-lg"
-                aria-label="Next fleet car"
+              <button 
+                onClick={(e) => { e.stopPropagation(); nextVehicle(); }} 
+                className={`absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 text-white flex items-center justify-center border border-zinc-800 opacity-0 group-hover:opacity-100 hover:bg-[#C5A85C] hover:text-black hover:border-[#C5A85C] transition-all duration-300 z-20 cursor-pointer ${
+                  isRtl ? 'left-4' : 'right-4'
+                }`}
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
+            </div>
+          </div>
 
-              {/* Capacity overlay tags */}
-              <div className={`absolute bottom-6 flex space-x-3 z-20 ${isRtl ? 'right-6 space-x-reverse' : 'left-6'}`}>
-                <div className="flex items-center space-x-2 bg-royal-navy-950/95 border border-[#C5A85C]/20 px-3 py-1.5 rounded text-xs text-champagne-gold-100 backdrop-blur shadow">
-                  <Users className="w-3.5 h-3.5 text-[#C5A85C]" />
-                  <span>{currentVehicle.capacityPassengers} {t('fleet.capacity')}</span>
+          {/* Mربع تفاصيل المواصفات الفنية المأخوذة من التصميم الحالي */}
+          <div className="lg:col-span-6">
+            <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-8 min-h-[500px] flex flex-col justify-between relative text-left">
+              <div>
+                <div className="inline-block bg-zinc-900 border border-zinc-800 px-3 py-1 rounded text-[10px] font-semibold text-[#c5a880] tracking-wider mb-3">
+                  <Crown className="inline-block mr-1 w-3.5 h-3.5" /> {language === 'en' ? 'VIP SPEC SHEET' : 'جدول المواصفات الفاخرة'}
                 </div>
-                <div className="flex items-center space-x-2 bg-royal-navy-950/95 border border-[#C5A85C]/20 px-3 py-1.5 rounded text-xs text-champagne-gold-100 backdrop-blur shadow">
-                  <Briefcase className="w-3.5 h-3.5 text-[#C5A85C]" />
-                  <span>{currentVehicle.capacityLuggage} {t('fleet.luggage')}</span>
+                
+                <h2 className="text-2xl font-bold tracking-wide text-white uppercase mb-4">
+                  {currentVehicle.name}
+                </h2>
+                <p className="text-zinc-400 text-xs leading-relaxed mb-6">
+                  {currentVehicle.description}
+                </p>
+
+                <span className="text-[10px] font-bold text-zinc-500 tracking-wider uppercase block mb-3">
+                  {language === 'en' ? 'Key Luxury Amenities' : 'أبرز مزايا الفخامة والراحة'}
+                </span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-zinc-300">
+                  {currentVehicle.features.map((feature, fIdx) => (
+                    <div key={fIdx} className={`flex items-start gap-2 ${isRtl ? 'flex-row-reverse text-right' : ''}`}>
+                      <CheckSquare className="w-3.5 h-3.5 text-[#c5a880] mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-            </div>
-
-            {/* Thumbnail Pickers for high end UI (5 columns) */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pb-2">
-              {VEHICLES_LOCALIZED.map((veh, idx) => (
-                <button
-                  key={veh.id}
-                  onClick={() => setActiveIndex(idx)}
-                  className={`relative cursor-pointer py-3.5 px-3 rounded-md border text-center transition-all duration-300 flex flex-col justify-center ${
-                    activeIndex === idx
-                      ? 'border-[#C5A85C] bg-[#C5A85C]/15 shadow-[0_5px_15px_rgba(197,168,92,0.15)] ring-1 ring-[#C5A85C]/40'
-                      : 'border-[#C5A85C]/20 bg-royal-navy-900/40 hover:border-[#C5A85C]/50 hover:bg-royal-navy-900/90'
-                  }`}
-                >
-                  <span className={`text-[9px] font-mono tracking-widest uppercase block mb-1 ${
-                    activeIndex === idx ? 'text-[#C5A85C] font-bold' : 'text-slate-400'
-                  }`}>
-                    {language === 'en' ? `Option 0${idx + 1}` : `الخيار 0${idx + 1}`}
+              {/* قسم الأسعار والشروط الثابت من التصميم الفاخر */}
+              <div className="mt-6 pt-4 border-t border-zinc-900 space-y-4">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-zinc-500">{language === 'en' ? 'Base Activation Rate' : 'تعرفة فتح العداد وحجز المركبة'}</span>
+                  <span className="font-bold text-white">
+                    {language === 'en' ? 'Custom Quote' : 'تسعير مخصص عند التواصل'}
                   </span>
-                  <span className={`font-serif text-[11px] font-semibold whitespace-nowrap overflow-hidden text-ellipsis ${
-                    activeIndex === idx ? 'text-champagne-gold-100 font-bold' : 'text-slate-400'
-                  }`}>
-                    {veh.name}
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-zinc-500">{language === 'en' ? 'Interstate Route Rate' : 'تعرفة المسافات الطويلة والمدن'}</span>
+                  <span className="font-bold text-[#c5a880]">
+                    {language === 'en' ? 'Tailored per Route' : 'أسعار مخصصة حسب الطلب'}
                   </span>
-                </button>
-              ))}
-            </div>
+                </div>
+                
+                {/* ملاحظة الضرائب والخدمات التلقائية */}
+                <div className="bg-zinc-900/50 border border-zinc-900 rounded p-3 text-[10px] text-zinc-400 flex items-start gap-2">
+                  <AlertCircle className="text-[#c5a880] w-3.5 h-3.5 mt-0.5 shrink-0" />
+                  <p>
+                    {language === 'en'
+                      ? 'Tax, border permits, bottled mineral water, and luxury chauffeur charges are fully included in all tailored plans.'
+                      : 'الضرائب، أذونات المرور الحدودية، المياه المعدنية المبردة، وتكاليف السائق المحترف مشمولة بالكامل عند تأكيد طلب الحجز.'}
+                  </p>
+                </div>
 
-          </motion.div>
-
-          {/* Right Column: Fleet Specs & Estimator (Wrapped in Royal Decorated Golden Frame Card) */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-120px" }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 flex flex-col justify-between h-full space-y-8 animate-gpu bg-royal-navy-950/95 p-6 sm:p-8 rounded-xl border border-[#C5A85C]/30 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] hover:border-[#C5A85C]/60 transition-all duration-500 group"
-          >
-            {/* Majestic Radial Golden Glow */}
-            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 bg-[#C5A85C]/5 rounded-full blur-3xl pointer-events-none group-hover:bg-[#C5A85C]/12 transition-all duration-700" />
-            
-            {/* Elegant Golden Double Corner Ornaments / Drawings (Handcrafted Line Art) */}
-            <div className="absolute top-2.5 left-2.5 w-4 h-4 border-t border-l border-[#C5A85C]/60 pointer-events-none" />
-            <div className="absolute top-2.5 right-2.5 w-4 h-4 border-t border-r border-[#C5A85C]/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b border-l border-[#C5A85C]/60 pointer-events-none" />
-            <div className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b border-r border-[#C5A85C]/60 pointer-events-none" />
-            
-            <div className="absolute top-3.5 left-3.5 w-2 h-2 border-t border-l border-[#C5A85C]/30 pointer-events-none" />
-            <div className="absolute top-3.5 right-3.5 w-2 h-2 border-t border-r border-[#C5A85C]/30 pointer-events-none" />
-            <div className="absolute bottom-3.5 left-3.5 w-2 h-2 border-b border-l border-[#C5A85C]/30 pointer-events-none" />
-            <div className="absolute bottom-3.5 right-3.5 w-2 h-2 border-b border-r border-[#C5A85C]/30 pointer-events-none" />
-
-            <div className="absolute inset-1.5 border border-[#C5A85C]/15 pointer-events-none rounded" />
-            <div className="absolute inset-2.5 border border-dashed border-[#C5A85C]/5 pointer-events-none rounded" />
-
-            {/* Little Royal Insignia at Card Top */}
-            <div className="absolute top-3.5 right-3.5 opacity-25 group-hover:opacity-60 transition-opacity duration-500 text-[#C5A85C] scale-75 pointer-events-none">
-              <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L15 7L21 4L18 10H6L3 4L9 7L12 2Z" fill="currentColor" />
-              </svg>
-            </div>
-
-            <div className="space-y-4 relative z-10">
-              <span className="inline-flex items-center space-x-1 bg-[#C5A85C]/10 border border-[#C5A85C]/35 px-2.5 py-1 rounded">
-                <Sparkles className="w-3 h-3 text-[#C5A85C] animate-pulse mr-1" />
-                <span className="text-[9px] font-mono text-champagne-gold-200 uppercase tracking-widest">{language === 'en' ? 'VIP SPEC SHEET' : 'مواصفات الـ VIP الخاصة'}</span>
-              </span>
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-champagne-gold-300 mt-2 uppercase tracking-tight">
-                {currentVehicle.name}
-              </h3>
-              <p className="font-sans text-xs text-[#FAF6ED]/75 leading-relaxed mt-1">
-                {currentVehicle.description}
-              </p>
-            </div>
-
-            {/* Vehicle Features Checklist */}
-            <div className="relative z-10 pt-1 border-t border-royal-navy-850">
-              <span className="text-[10px] font-mono text-[#C5A85C] uppercase tracking-wider block mb-3.5">
-                {t('fleet.features')}
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {currentVehicle.features.map((feature) => (
-                  <div key={feature} className={`flex items-start text-xs text-champagne-gold-100/85 ${isRtl ? 'space-x-reverse' : ''}`}>
-                    <CheckSquare className="w-3.5 h-3.5 text-[#C5A85C] mr-2.5 ml-2.5 mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </div>
-                ))}
+                {/* أزرار الإجراءات الفاخرة */}
+                <div className="flex gap-3 pt-2">
+                  <button 
+                    onClick={() => onSelectVehicleAndInquire(currentVehicle.id)}
+                    className="flex-1 bg-white hover:bg-gray-200 text-black font-semibold text-xs py-3 rounded uppercase transition-colors cursor-pointer"
+                  >
+                    {language === 'en' ? `Book ${currentVehicle.name} Now` : `احجز ${currentVehicle.name} الآن`}
+                  </button>
+                  <button 
+                    onClick={() => {
+                      if (compareList.includes(currentVehicle.id)) {
+                        setCompareList(prev => prev.filter(id => id !== currentVehicle.id));
+                      } else {
+                        setCompareList(prev => [...prev, currentVehicle.id]);
+                      }
+                    }}
+                    className={`border text-xs font-semibold px-4 rounded uppercase transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
+                      compareList.includes(currentVehicle.id)
+                        ? 'border-[#C5A85C] bg-[#C5A85C]/20 text-white hover:bg-[#C5A85C]/30'
+                        : 'border-zinc-700 hover:border-white text-white'
+                    }`}
+                  >
+                    <Scale className="w-3.5 h-3.5" />
+                    <span>
+                      {compareList.includes(currentVehicle.id)
+                        ? (language === 'en' ? 'Compared' : 'مضاف للمقارنة')
+                        : (language === 'en' ? 'Compare Specs' : 'مقارنة المواصفات')}
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
-
-            {/* Fare Architecture Box */}
-            <div className="p-5 rounded bg-royal-navy-900 border border-[#C5A85C]/20 space-y-3.5 relative z-10 shadow-inner">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-champagne-gold-200">{language === 'en' ? 'Base Activation Rate' : 'تعرفة فتح العداد وحجز المركبة'}</span>
-                <span className="font-serif text-xs text-[#C5A85C] font-bold">
-                  {language === 'en' ? 'Custom Quote' : 'تسعير مخصص عند التواصل'}
-                </span>
-              </div>
-              <div className="flex items-center justify-between border-t border-royal-navy-800 pt-3">
-                <span className="text-xs text-champagne-gold-200">{language === 'en' ? 'Interstate Route Rate' : 'تعرفة المسافات الطويلة والمدن'}</span>
-                <span className="font-serif text-xs text-[#C5A85C] font-bold">
-                  {language === 'en' ? 'Tailored per Route' : 'أسعار مخصصة حسب الطلب'}
-                </span>
-              </div>
-              <div className={`flex items-start space-x-2 pt-1 border-t border-royal-navy-800 text-[10px] text-champagne-gold-100/50 ${isRtl ? 'space-x-reverse' : ''}`}>
-                <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 mr-1 ml-1 text-[#C5A85C]" />
-                <p>{language === 'en' ? 'Tax, border permits, bottled mineral water, and luxury chauffeur charges are fully included in all tailored plans.' : 'الضرائب، أذونات المرور الحدودية، المياه المعدنية المبردة، وتكاليف السائق المحترف مشمولة بالكامل عند تأكيد طلب الحجز.'}</p>
-              </div>
-            </div>
-
-            {/* Chauffeur actions with rich gold button & Compare toggle */}
-            <div className="pt-3 relative z-10">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={() => onSelectVehicleAndInquire(currentVehicle.id)}
-                  tabIndex={0}
-                  className="flex-1 text-center btn-metallic-gold text-royal-navy-950 font-sans text-xs uppercase tracking-widest font-extrabold py-4 px-6 rounded cursor-pointer transition-all duration-300 hover:shadow-[0_0_25px_rgba(197,168,92,0.4)] transform hover:-translate-y-0.5"
-                >
-                  {language === 'en' ? `Book ${currentVehicle.name} Now` : `احجز ${currentVehicle.name} الآن`}
-                </button>
-                <button
-                  onClick={() => {
-                    if (compareList.includes(currentVehicle.id)) {
-                      setCompareList(prev => prev.filter(id => id !== currentVehicle.id));
-                    } else {
-                      setCompareList(prev => [...prev, currentVehicle.id]);
-                    }
-                  }}
-                  className={`px-6 py-4 rounded border text-xs font-mono tracking-widest uppercase font-extrabold transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 ${
-                    compareList.includes(currentVehicle.id)
-                      ? 'border-[#C5A85C] bg-[#C5A85C]/20 text-champagne-gold-100 hover:bg-[#C5A85C]/30'
-                      : 'border-[#C5A85C]/30 hover:border-[#C5A85C] hover:bg-white/5 text-[#C5A85C]'
-                  }`}
-                  title={language === 'en' ? 'Add or remove model from specs comparison matrix' : 'إضافة أو إزالة هذا الموديل من جدول مقارنة المواصفات'}
-                >
-                  <Scale className="w-4 h-4 shrink-0" />
-                  <span>
-                    {compareList.includes(currentVehicle.id)
-                      ? (language === 'en' ? 'Compared' : 'مضاف للمقارنة')
-                      : (language === 'en' ? 'Compare Specs' : 'مقارنة المواصفات')}
-                  </span>
-                </button>
-              </div>
-            </div>
-
-          </motion.div>
+          </div>
 
         </div>
 

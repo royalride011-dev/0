@@ -20,6 +20,14 @@
   --color-champagne-gold-400: #D8BD7E;
   --color-champagne-gold-450: #CEB46C;
   --color-champagne-gold-500: #C5A85C; /* Base Brand Gold (#C6A467 equivalent) */
+  --color-gold-100: #FAF6ED;
+  --color-gold-200: #F4EAD4;
+  --color-gold-300: #EAD39E;
+  --color-gold-400: #D8BD7E;
+  --color-gold-500: #C5A85C;
+  --color-gold-600: #A88640;
+  --color-gold-700: #85652E;
+  --color-gold-800: #624821;
   --color-champagne-gold-600: #A88640;
   --color-champagne-gold-700: #85652E;
   --color-champagne-gold-800: #624821;
@@ -747,27 +755,6 @@ img {
   gap: 20px;
 }
 
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(7) > div:nth-of-type(1) > img:nth-of-type(1) {
-  height: 300px;
-  object-fit: cover;
-}
-
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(5) > div:nth-of-type(1) > img:nth-of-type(1) {
-  height: 300px;
-  object-fit: cover;
-}
-
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) {
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > img:nth-of-type(1) {
-  height: 500px;
-  width: 500px;
-  object-fit: cover;
-}
 
 /* High-fidelity digital display optimization for all images */
 img {
@@ -815,8 +802,7 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > header#main-header:nth-of-type(1)
 }
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#services:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > h1:nth-of-type(1),
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > h2:nth-of-type(1),
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-showcase:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > h2:nth-of-type(1) > a:nth-of-type(1),
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-section:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > h2:nth-of-type(1) > a:nth-of-type(1),
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(6) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > h2:nth-of-type(1),
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(6) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > h2:nth-of-type(1),
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(6) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(3) > h2:nth-of-type(1),
@@ -837,14 +823,12 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
   font-family: 'Playfair Display', 'Cinzel', 'Cormorant Garamond', 'Cairo', serif !important;
 }
 
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#services:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(5),
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > button:nth-of-type(1) {
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#services:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(5) {
   display: none !important;
 }
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > div#jordan-clock-container:nth-of-type(2) > div#jordan-clock-expanded:nth-of-type(1),
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(2),
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(4),
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-section:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(2),
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(6) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1),
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(6) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(2),
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about:nth-of-type(6) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(3),
@@ -856,19 +840,30 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(197, 168, 92, 0.08) !important;
 }
 
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-showcase:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) {
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-section:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) {
   aspect-ratio: 16/10 !important;
   max-width: 600px !important;
   width: 100% !important;
 }
 
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-showcase:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > img:nth-of-type(1) {
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-section:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > img:nth-of-type(1) {
   image-rendering: -webkit-optimize-contrast !important;
   image-rendering: crisp-edges !important;
   filter: contrast(1.02) brightness(0.99) !important;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease !important;
 }
 
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-section:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2) {
+  background: linear-gradient(145deg, #020409 0%, #0c1222 100%) !important;
+  border: 1px solid rgba(197, 168, 92, 0.45) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 25px rgba(197, 168, 92, 0.05) !important;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#fleet-section:nth-of-type(5) > div:nth-of-type(4) > div:nth-of-type(2):hover {
+  border-color: rgba(197, 168, 92, 0.75) !important;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 35px rgba(197, 168, 92, 0.18) !important;
+}
 
 /* ==========================================================================
    GOLD & BLACK PREMIUM HARMONY OVERRIDES
@@ -898,7 +893,7 @@ section h1, section h2, .section-title {
 .text-gold-gradient, 
 .text-luxury-gradient,
 .services-showcase-container .head h1,
-#tourism h2, #fleet-showcase h2, #about h2, #book h2 {
+#tourism-section h2, #fleet-section h2, #about h2, #book h2 {
   background: linear-gradient(135deg, #FAF6ED 10%, #D8BD7E 50%, #C5A85C 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
@@ -1335,19 +1330,6 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
   box-shadow: 0 0 20px rgba(197, 168, 92, 0.3) !important;
 }
 
-/* Premium Royal Golden Glow for the first fleet option icon */
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) {
-  border: 2.5px solid #C5A85C !important;
-  box-shadow: 0 0 15px rgba(197, 168, 92, 0.75) !important;
-  transition: all 0.3s ease-in-out !important;
-  transform: scale(1.05) !important;
-}
-
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1):hover {
-  box-shadow: 0 0 22px rgba(197, 168, 92, 0.95) !important;
-  transform: scale(1.12) !important;
-}
-
 /* Unify gold colors in the About section (Robust selectors that work on both Home and About route) */
 #about h1,
 #about h2,
@@ -1384,11 +1366,6 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
   color: #C5A85C !important;
 }
 
-/* Hide the Luxury Fleet option button in the tourism tab switcher */
-div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism:nth-of-type(4) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(6) > button:nth-of-type(3) {
-  display: none !important;
-}
-
 /* Premium styling for About Us section container to perfect the visual flow */
 section#about,
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#about,
@@ -1398,3 +1375,26 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
   border-bottom: 1px solid rgba(197, 168, 92, 0.1) !important;
   background: #000000 !important;
 }
+
+/* User focused design refinement: custom height for the Tourism Carousel showcase image */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > img#fleet-style-tour-img:nth-of-type(1) {
+  height: 500px !important;
+}
+
+/* User focused design refinement: main showcase display grid container border & shadows */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3) {
+  border: 1px solid rgba(197, 168, 92, 0.15) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(197, 168, 92, 0.03) !important;
+  transition: all 0.4s ease-in-out !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) {
+  background: #000000 !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3):hover {
+  border-color: rgba(197, 168, 92, 0.25) !important;
+  box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 168, 92, 0.05) !important;
+}
+
+
