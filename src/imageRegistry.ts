@@ -11,8 +11,8 @@ import luxuryCarImg from './assets/images/regenerated_image_1783339331958.png';
 import stariaHourlyDailyImg from './assets/images/images/staria_hourly_daily_1782296563411.jpg';
 import airportTransitImg from './assets/images/regenerated_image_1782490599935.jpg';
 import limousineServiceImg from './assets/images/regenerated_image_1783340810361.png';
-const petraTourImg = 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fit=crop&w=800&q=75';
-const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=800&q=75';
+const petraTourImg = 'https://images.unsplash.com/photo-1501232479008-56c59344e2e4?auto=format&fm=webp&fit=crop&w=800&q=65';
+const ajlounCastleImg = 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fm=webp&fit=crop&w=800&q=65';
 import tourismAmmanImg from './assets/images/regenerated_image_1782523407133.jpg';
 import tourismPetraImg from './assets/images/regenerated_image_1782516369460.jpg';
 import deadSeaRegeneratedImg from './assets/images/regenerated_image_1783693430307.png';
@@ -27,7 +27,7 @@ import damascusRegeneratedNewImg from './assets/images/regenerated_image_1783696
 import madabaRegeneratedImg from './assets/images/regenerated_image_1783885757343.png';
 import mujibRegeneratedImg from './assets/images/regenerated_image_1783886578549.png';
 import almaghtasRegeneratedImg from './assets/images/regenerated_image_1783885643534.png';
-const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=75';
+const wadirumRegeneratedImg = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fm=webp&fit=crop&w=800&q=65';
 import newToyotaHiaceImg from './assets/images/regenerated_image_1783789250595.png';
 import comfortClassImg from './assets/images/regenerated_image_1783944902635.png';
 import newStariaVipImg from './assets/images/regenerated_image_1783503700776.png';
@@ -164,9 +164,9 @@ export const images = {
 
   // Testimonials Avatars
   avatars: {
-    richardHarrington: getOverride('avatars_richardHarrington', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=70'),
-    elenaRostova: getOverride('avatars_elenaRostova', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=80&h=80&q=70'),
-    tariqAlSaeed: getOverride('avatars_tariqAlSaeed', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&h=80&q=70'),
-    marcusSophiaVance: getOverride('avatars_marcusSophiaVance', 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=80&h=80&q=70'),
+    richardHarrington: getOverride('avatars_richardHarrington', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fm=webp&fit=crop&w=80&h=80&q=65'),
+    elenaRostova: getOverride('avatars_elenaRostova', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fm=webp&fit=crop&w=80&h=80&q=65'),
+    tariqAlSaeed: getOverride('avatars_tariqAlSaeed', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fm=webp&fit=crop&w=80&h=80&q=65'),
+    marcusSophiaVance: getOverride('avatars_marcusSophiaVance', 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fm=webp&fit=crop&w=80&h=80&q=65'),
   }
 };

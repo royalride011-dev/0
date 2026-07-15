@@ -1,4 +1,6 @@
 node_modules/
+dist/
+.vercel/
 build/
 coverage/
 .DS_Store

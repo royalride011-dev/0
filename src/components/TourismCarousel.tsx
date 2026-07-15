@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Calendar, Info, CheckCircle, Clock, Shield } from 'lucide-react';
+import { Calendar, Info, CheckCircle, Clock, Shield, Compass } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
+import { LazyImage } from './LazyImage';
 import { 
   getStoredDestinations, 
   FALLBACK_DESTINATION, 
@@ -192,29 +193,26 @@ export default function TourismCarousel() {
           })}
         </div>
 
-        {/* MAIN DISPLAY: Left Image, Right Text (Fleet Match) */}
+        {/* MAIN DISPLAY: Left Image, Right Text */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-zinc-950 border border-zinc-900 rounded-xl p-6 shadow-2xl items-stretch">
           
-          {/* LEFT COLUMN: Image Box */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
-            <div className="relative w-full h-[360px] md:h-[500px] rounded-lg overflow-hidden border border-zinc-900 bg-zinc-900 group">
-              <img 
-                id="fleet-style-tour-img" 
-                src={activeDest.image} 
-                alt={language === 'en' ? activeDest.name : activeDest.nameAr} 
-                onClick={nextDestination} 
-                loading="lazy"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.onerror = null;
-                  target.src = "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=800";
-                }}
-                className="w-full h-full object-cover cursor-pointer transition-all duration-700 hover:scale-105" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/10 to-transparent pointer-events-none"></div>
+          {/* LEFT COLUMN: 500x500 Premium Image Box */}
+          <div className="lg:col-span-5 flex items-center justify-center">
+            <div className="relative w-full max-w-[500px] aspect-square rounded-2xl overflow-hidden border border-gold-500/20 bg-zinc-900/40 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_20px_rgba(197,168,92,0.05)] group transition-all duration-500 hover:border-gold-500/40">
+              <div onClick={nextDestination} className="w-full h-full cursor-pointer">
+                <LazyImage 
+                  id="fleet-style-tour-img" 
+                  src={activeDest.image} 
+                  alt={language === 'en' ? activeDest.name : activeDest.nameAr} 
+                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110" 
+                />
+              </div>
+              {/* Luxury gold gradient overlays & frames */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 border border-gold-500/10 rounded-2xl pointer-events-none group-hover:border-gold-500/30 transition-colors duration-500" />
               
-              <div className="absolute top-4 left-4 rtl:left-auto rtl:right-4 bg-black/80 backdrop-blur-md border border-zinc-800 px-2.5 py-1 rounded z-10">
-                <span className="text-[9px] text-gold-500 font-bold uppercase tracking-wider" id="fleet-style-tour-badge">
+              <div className="absolute top-4 left-4 rtl:left-auto rtl:right-4 bg-black/90 backdrop-blur-md border border-gold-500/30 px-3 py-1.5 rounded-lg z-10 shadow-lg">
+                <span className="text-[10px] text-gold-500 font-extrabold uppercase tracking-widest" id="fleet-style-tour-badge">
                   {getTourBadge()}
                 </span>
               </div>
@@ -222,7 +220,7 @@ export default function TourismCarousel() {
           </div>
 
           {/* RIGHT COLUMN: Content & SEO Tab Engine */}
-          <div className="lg:col-span-7 flex flex-col justify-between min-h-[500px] bg-zinc-900/20 border border-zinc-900/60 rounded-xl p-6 text-left">
+          <div className="lg:col-span-7 flex flex-col justify-between min-h-[450px] bg-zinc-900/20 border border-zinc-900/60 rounded-xl p-6 text-left">
             <div>
               <div className="flex justify-between items-center mb-1">
                 <span id="fleet-style-tour-serial" className="text-[10px] font-mono text-gold-500 font-bold tracking-widest">
@@ -311,21 +309,14 @@ export default function TourismCarousel() {
             </div>
 
             {/* Action Area */}
-            <div className="pt-4 border-t border-zinc-900 mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-[10px] text-zinc-500 leading-tight flex items-start gap-1.5">
-                <Shield className="w-3.5 h-3.5 text-gold-500 shrink-0 mt-0.5" />
-                <span>
-                  {language === 'en'
-                    ? 'Private tours include professional local drivers, premium tracking & climate controls.'
-                    : 'تشمل الجولات الخاصة سائقين محليين محترفين، وتتبعاً حيوياً ممتازاً وأنظمة تحكم كاملة في المناخ.'}
-                </span>
-              </div>
+            <div className="pt-4 border-t border-zinc-900 mt-4 flex flex-col sm:flex-row items-center justify-end gap-4">
               <button 
                 id="fleet-style-action-btn" 
                 onClick={() => handleBookDestination(activeDest.name, activeDest.nameAr)}
-                className="w-full sm:w-auto bg-white hover:bg-zinc-200 text-black text-xs font-bold uppercase px-6 py-3 rounded tracking-widest transition-colors shrink-0 cursor-pointer"
+                className="w-full sm:w-auto bg-transparent hover:bg-[#C5A85C]/5 border border-[#C5A85C]/30 hover:border-[#C5A85C] text-[#C5A85C] text-xs font-bold uppercase px-6 py-3 rounded tracking-widest transition-all duration-300 shrink-0 cursor-pointer hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
               >
-                {language === 'en' ? `Book ${getShortName(activeDest.id, activeDest.name, activeDest.nameAr)} Tour` : `حجز جولة ${getShortName(activeDest.id, activeDest.name, activeDest.nameAr)}`}
+                <Compass className="w-4 h-4 text-[#C5A85C] shrink-0" />
+                <span>{language === 'en' ? `Book ${getShortName(activeDest.id, activeDest.name, activeDest.nameAr)} Tour` : `حجز جولة ${getShortName(activeDest.id, activeDest.name, activeDest.nameAr)}`}</span>
               </button>
             </div>
           </div>

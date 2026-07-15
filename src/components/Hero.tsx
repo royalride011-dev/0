@@ -104,16 +104,29 @@ export default function Hero({ onExploreFleetClicked, onBookNowClicked }: HeroPr
           </div>
 
           {/* Majestic Hero Headings */}
-          <h1 className="hero-title opacity-0 font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-luxury-gradient leading-tight mb-6">
+          <h1 
+            className="hero-title opacity-0 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-luxury-gradient leading-tight mb-6"
+            style={{ fontFamily: "'Playfair Display', 'Cairo', serif" }}
+          >
             {language === 'en' ? (
               <>
                 Luxury Transportation <br />
-                <span className="text-gold-gradient font-serif italic">Services in Jordan</span>
+                <span 
+                  className="text-gold-gradient"
+                  style={{ fontFamily: "'Playfair Display', 'Cairo', serif" }}
+                >
+                  Services in Jordan
+                </span>
               </>
             ) : (
               <>
                 خدمات النقل الفاخرة <br />
-                <span className="text-gold-gradient font-serif italic">في الأردن</span>
+                <span 
+                  className="text-gold-gradient"
+                  style={{ fontFamily: "'Cairo', 'Playfair Display', serif" }}
+                >
+                  في الأردن
+                </span>
               </>
             )}
           </h1>

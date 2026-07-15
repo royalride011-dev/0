@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&family=Montserrat:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&family=Montserrat:wght@300;400;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Cairo", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Montserrat", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-serif: "Playfair Display", "Cairo", serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* Premium Obsidian & Pitch Black Theme with Gold Accents */
@@ -51,7 +51,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cairo', 'Playfair Display', 'Cinzel', serif;
+  font-family: 'Playfair Display', 'Cairo', serif;
   color: #C5A85C;
   letter-spacing: 0.05em;
   line-height: 1.3;
@@ -218,7 +218,7 @@ html {
 .font-arabic-adjust h3,
 .font-arabic-adjust h4,
 .font-arabic-adjust .font-serif {
-  font-family: "Cairo", "Cormorant Garamond", "Playfair Display", serif !important;
+  font-family: 'Playfair Display', 'Cairo', serif !important;
   line-height: 1.4 !important;
 }
 
@@ -820,7 +820,7 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
 }
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#services:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > h1:nth-of-type(1) {
-  font-family: 'Playfair Display', 'Cinzel', 'Cormorant Garamond', 'Cairo', serif !important;
+  font-family: 'Playfair Display', 'Cairo', serif !important;
 }
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#services:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(5) {
@@ -986,7 +986,7 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
 
 /* Make sure the text elements inside are perfectly stylized and legible */
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) h1 {
-  font-family: 'Playfair Display', 'Cinzel', 'Cormorant Garamond', 'Cairo', serif !important;
+  font-family: 'Playfair Display', 'Cairo', serif !important;
   font-size: clamp(2.5rem, 5.5vw, 4.25rem) !important;
   line-height: 1.15 !important;
   letter-spacing: -0.02em !important;
@@ -1063,7 +1063,7 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
 
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) h1,
 div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) h1 span {
-  font-family: 'Playfair Display', 'Cinzel', 'Cairo', serif !important;
+  font-family: 'Playfair Display', 'Cairo', serif !important;
   font-weight: 900 !important;
   letter-spacing: -0.02em !important;
   background: linear-gradient(135deg, #FFFFFF 30%, #EAD39E 75%, #C5A85C 100%) !important;
@@ -1396,5 +1396,168 @@ div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-
   border-color: rgba(197, 168, 92, 0.25) !important;
   box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 168, 92, 0.05) !important;
 }
+
+/* Luxury Interactive Styles & Cinematic Scroll Reveal */
+html {
+  scroll-behavior: smooth;
+}
+
+/* تأثير الاستشعار البصري عند التمرير (Scroll Reveal) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* تأثير تلامسي حركي للأزرار الفاخرة (Premium Button Interactions) */
+.premium-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: translateZ(0); /* تسريع الرندرة عبر كرت الشاشة */
+}
+
+/* توهج ذهبي خفيف عند ملامسة الزر */
+.premium-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(197, 168, 128, 0.15);
+  border-color: #c5a880 !important;
+}
+
+/* تأثير الضغط الثقيل (Haptic Feel) */
+.premium-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 4px 10px rgba(197, 168, 128, 0.1);
+}
+
+/* تأثير بصري لكروت السيارات والمعالم (Luxury Card Hover) */
+.luxury-card {
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.luxury-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(197, 168, 128, 0.3) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(197, 168, 128, 0.03);
+}
+
+/* زووم انسيابي سينمائي للصور */
+.cinematic-img {
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.luxury-card:hover .cinematic-img,
+.group:hover .cinematic-img {
+  transform: scale(1.06);
+}
+
+/* تأثير انتقال ناعم جداً خاص بالتبويبات (Tab Text Fade) */
+.tab-fade-effect {
+  animation: tabTextReveal 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes tabTextReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 500x500 Symmetrical Alignment for Tourism Section Details Card */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3) {
+  min-height: 548px !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) {
+  min-height: 500px !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > img#fleet-style-tour-img:nth-of-type(1) {
+  height: 500px !important;
+}
+
+@media (min-width: 1024px) {
+  div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3) {
+    height: 548px !important;
+  }
+  div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#tourism-section:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) {
+    height: 500px !important;
+  }
+}
+
+/* Luxury Transportation Brand Typography - Unified Elegant Playfair Display style for all main section titles on the site */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > h1:nth-of-type(1),
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > h1:nth-of-type(1) span,
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > h1:nth-of-type(1) > span:nth-of-type(1),
+section#services h1,
+section#services .head h1,
+.services-showcase-container .head h1,
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > section#services:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > h1:nth-of-type(1),
+section#fleet-section h2,
+section#fleet-section h2 span,
+section#about h2,
+section#about h2 span,
+div#partners h2,
+div#blog h2,
+section#book h2,
+section#book h2 span,
+section#reviews h2,
+section#reviews h2 span {
+  font-family: 'Playfair Display', 'Cairo', serif !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Artistic and Responsive scale-down adjustments for Amman Clock on mobile devices */
+@media (max-width: 767px) {
+  div#root:nth-of-type(1) > div:nth-of-type(1) > div#jordan-clock-container:nth-of-type(2) > div#jordan-clock-expanded:nth-of-type(1) {
+    transform: scale(0.82) !important;
+    transform-origin: top right !important;
+    margin-top: -10px !important;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.95), 0 0 20px rgba(197, 168, 92, 0.25) !important;
+    border-radius: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  div#root:nth-of-type(1) > div:nth-of-type(1) > div#jordan-clock-container:nth-of-type(2) > div#jordan-clock-expanded:nth-of-type(1) {
+    transform: scale(0.74) !important;
+    transform-origin: top right !important;
+    margin-top: -15px !important;
+  }
+}
+
+/* Custom override for the targeted WhatsApp button to have transparent background and gold text */
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > section#book:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(4) > a:nth-of-type(1) {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #C5A85C !important;
+  border: 1px solid rgba(197, 168, 92, 0.3) !important;
+  box-shadow: none !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > section#book:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(4) > a:nth-of-type(1) svg {
+  color: #C5A85C !important;
+  fill: #C5A85C !important;
+}
+
+div#root:nth-of-type(1) > div:nth-of-type(1) > main:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > section#book:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(4) > a:nth-of-type(1):hover {
+  background: rgba(197, 168, 92, 0.08) !important;
+  border-color: #C5A85C !important;
+}
+
+
+
 
 

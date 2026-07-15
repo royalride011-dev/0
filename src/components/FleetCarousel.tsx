@@ -560,35 +560,20 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
               {/* قسم الأسعار والشروط الثابت من التصميم الفاخر */}
               <div className="mt-6 pt-4 border-t border-zinc-900 space-y-4">
                 <div className="flex justify-between items-center text-xs">
-                  <span className="text-zinc-500">{language === 'en' ? 'Base Activation Rate' : 'تعرفة فتح العداد وحجز المركبة'}</span>
-                  <span className="font-bold text-white">
-                    {language === 'en' ? 'Custom Quote' : 'تسعير مخصص عند التواصل'}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-xs">
                   <span className="text-zinc-500">{language === 'en' ? 'Interstate Route Rate' : 'تعرفة المسافات الطويلة والمدن'}</span>
                   <span className="font-bold text-[#c5a880]">
                     {language === 'en' ? 'Tailored per Route' : 'أسعار مخصصة حسب الطلب'}
                   </span>
-                </div>
-                
-                {/* ملاحظة الضرائب والخدمات التلقائية */}
-                <div className="bg-zinc-900/50 border border-zinc-900 rounded p-3 text-[10px] text-zinc-400 flex items-start gap-2">
-                  <AlertCircle className="text-[#c5a880] w-3.5 h-3.5 mt-0.5 shrink-0" />
-                  <p>
-                    {language === 'en'
-                      ? 'Tax, border permits, bottled mineral water, and luxury chauffeur charges are fully included in all tailored plans.'
-                      : 'الضرائب، أذونات المرور الحدودية، المياه المعدنية المبردة، وتكاليف السائق المحترف مشمولة بالكامل عند تأكيد طلب الحجز.'}
-                  </p>
                 </div>
 
                 {/* أزرار الإجراءات الفاخرة */}
                 <div className="flex gap-3 pt-2">
                   <button 
                     onClick={() => onSelectVehicleAndInquire(currentVehicle.id)}
-                    className="flex-1 bg-white hover:bg-gray-200 text-black font-semibold text-xs py-3 rounded uppercase transition-colors cursor-pointer"
+                    className="flex-1 bg-transparent hover:bg-[#C5A85C]/5 border border-[#C5A85C]/30 hover:border-[#C5A85C] text-[#C5A85C] font-semibold text-xs py-3 rounded uppercase transition-all duration-300 cursor-pointer hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
                   >
-                    {language === 'en' ? `Book ${currentVehicle.name} Now` : `احجز ${currentVehicle.name} الآن`}
+                    <Crown className="w-4 h-4 text-[#C5A85C] shrink-0" />
+                    <span>{language === 'en' ? `Book ${currentVehicle.name} Now` : `احجز ${currentVehicle.name} الآن`}</span>
                   </button>
                   <button 
                     onClick={() => {

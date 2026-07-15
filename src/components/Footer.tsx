@@ -163,22 +163,6 @@ export default function Footer() {
             <a href="#" className="hover:text-champagne-gold-200">
               {language === 'en' ? 'Terms of Chauffeur Dispatch' : 'أحكام تسيير الرحلات والسائقين'}
             </a>
-            <span className="text-royal-navy-800">|</span>
-            {isAdmin ? (
-              <button 
-                onClick={logoutAdmin} 
-                className="hover:text-red-400 transition-colors cursor-pointer text-red-500/70 font-bold"
-              >
-                {language === 'en' ? 'Admin Logout' : 'خروج المشرف'}
-              </button>
-            ) : (
-              <button 
-                onClick={() => setIsLoginOpen(true)} 
-                className="hover:text-champagne-gold-200 transition-colors cursor-pointer font-bold text-[#C5A85C]"
-              >
-                {language === 'en' ? 'Admin' : 'لوحة التحكم'}
-              </button>
-            )}
           </div>
         </div>
 

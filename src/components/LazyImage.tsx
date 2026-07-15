@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 
 interface LazyImageProps {
+  id?: string;
   src: string;
   srcSet?: string;
   sizes?: string;
@@ -11,7 +12,7 @@ interface LazyImageProps {
   height?: number | string;
 }
 
-export function LazyImage({ src, srcSet, sizes, placeholder, alt, className, width, height }: LazyImageProps) {
+export function LazyImage({ id, src, srcSet, sizes, placeholder, alt, className, width, height }: LazyImageProps) {
   const [currentSrc, setCurrentSrc] = useState(placeholder || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
   const [isLoaded, setIsLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -54,6 +55,7 @@ export function LazyImage({ src, srcSet, sizes, placeholder, alt, className, wid
   return (
     <img
       ref={imgRef}
+      id={id}
       src={currentSrc}
       srcSet={currentSrc !== placeholder ? srcSet : undefined}
       sizes={currentSrc !== placeholder ? sizes : undefined}

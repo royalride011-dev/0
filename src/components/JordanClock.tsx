@@ -6,7 +6,7 @@ import { useLanguage } from '../LanguageContext';
 export default function JordanClock() {
   const { language, isRtl } = useLanguage();
   const [jordanTime, setJordanTime] = useState<Date>(new Date());
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const [weatherTemp, setWeatherTemp] = useState<number | null>(null);
   const [weatherCode, setWeatherCode] = useState<number>(0);
@@ -120,9 +120,9 @@ export default function JordanClock() {
                 id="jordan-clock-minimize-btn"
                 onClick={() => setIsMinimized(true)}
                 className="text-[#C5A85C]/70 hover:text-[#C5A85C] transition-colors cursor-pointer p-0.5 rounded hover:bg-stone-900"
-                title={language === 'ar' ? 'تصغير' : 'Minimize'}
+                title={language === 'ar' ? 'إغلاق' : 'Close'}
               >
-                <Minus className="w-3.5 h-3.5" />
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
 

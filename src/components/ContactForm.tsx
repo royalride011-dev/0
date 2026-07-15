@@ -33,7 +33,7 @@ export default function ContactForm({ selectedServiceId, selectedVehicleId, onCl
   const [notes, setNotes] = useState('');
   
   // Advanced Location States
-  const [locationMethod, setLocationMethod] = useState<'dropdown' | 'custom' | 'gps'>('dropdown');
+  const [locationMethod, setLocationMethod] = useState<'dropdown' | 'custom' | 'gps'>('custom');
   const [customPickup, setCustomPickup] = useState('');
   const [customDropoff, setCustomDropoff] = useState('');
   const [isLocating, setIsLocating] = useState(false);
@@ -362,64 +362,10 @@ Please confirm my reservation. Thank you!`;
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-12 max-w-3xl mx-auto w-full">
           
-          {/* Left Column: Premium Contact details and WhatsApp direct */}
-          <div className="w-full space-y-8 order-2">
-            <div className={isRtl ? 'text-right' : 'text-left'}>
-              <span className="text-xs font-mono uppercase tracking-[0.3em] text-champagne-gold-400">
-                {language === 'en' ? 'Direct Communication' : 'تواصل مباشر وفوري بخصوص الحجوزات'}
-              </span>
-              <h2 className="font-serif text-3.5xl sm:text-4xl md:text-5xl font-bold tracking-tight text-luxury-gradient mt-3 mb-6">
-                {language === 'en' ? (
-                  <>
-                    Connect With Our <br />
-                    <span className="text-gold-gradient italic">VIP Concierge</span>
-                  </>
-                ) : (
-                  <>
-                    تواصل فوراً مع <br />
-                    <span className="text-gold-gradient italic">الكونسيرج والتشريفات</span>
-                  </>
-                )}
-              </h2>
-              <div className={`w-16 h-[1.5px] bg-champagne-gold-500 mb-6 ${isRtl ? 'ml-auto' : ''}`} />
-              <p className="font-sans text-sm text-champagne-gold-100/70 leading-relaxed font-light">
-                {language === 'en'
-                  ? 'Our luxury transportation coordinators are available 24 hours a day, 7 days a week, including holidays, to assist with custom flight routing, regional border permissions, or multi-day tourism plans.'
-                  : 'منسقو النقل الفاخر وخدمتكم متاحون على مدار ٢٤ ساعة طواف الأسبوع بأكمله، ومستعدون للمساعدة في تسيير المعاملات وتتبع رحلات المطارات والتنسيق عبر المعابر الحدودية للأردن بريادة تامة.'}
-              </p>
-            </div>
-
-            {/* Quick Contacts List - Removed, using compact footer instead */}
-
-
-            {/* Amman Luxury Weather Advisory */}
-            <div className="mt-6">
-              <AmmanWeatherWidget />
-            </div>
-
-            {/* Past Inquiries Trigger (if logs exist) */}
-            {pastInquiries.length > 0 && (
-              <div className={`pt-4 ${isRtl ? 'text-right' : 'text-left'}`}>
-                <button
-                  onClick={() => setShowHistory(!showHistory)}
-                  className="inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-widest text-champagne-gold-400 hover:text-champagne-gold-100 transition-colors"
-                >
-                  <History className="w-4 h-4 mr-1.5" />
-                  <span>
-                    {showHistory 
-                      ? (language === 'en' ? 'Hide My Inquiries' : 'إخفاء سجل الحجوزات السابقة') 
-                      : (language === 'en' ? `Show My Inquiries (${pastInquiries.length})` : `معاينة سجل استفساراتي السابقة (${pastInquiries.length})`)}
-                  </span>
-                </button>
-              </div>
-            )}
-
-          </div>
-
           {/* Right Column: Dynamic Form / Success Card with gold crown boundaries */}
-          <div className="contact-form w-full bg-royal-navy-900/90 rounded-2xl relative overflow-hidden shadow-2xl p-6 sm:p-8 order-1">
+          <div className="contact-form w-full bg-royal-navy-900/90 rounded-2xl relative overflow-hidden shadow-2xl p-6 sm:p-8">
             <GoldCorners />
             
             <AnimatePresence mode="wait">

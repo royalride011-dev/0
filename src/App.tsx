@@ -117,6 +117,52 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Luxury Scroll Reveal & Interactive Feedback Engine
+  useEffect(() => {
+    // 1. Setup Intersection Observer for elements with '.reveal-on-scroll'
+    const scrollElements = document.querySelectorAll('.reveal-on-scroll');
+    
+    const elementObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          // Unobserve to maintain premium speed & performance
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.12,
+      rootMargin: "0px 0px -40px 0px"
+    });
+
+    scrollElements.forEach(el => elementObserver.observe(el));
+
+    // 2. Add interactive letter-spacing touch feedback for premium buttons
+    const premiumButtons = document.querySelectorAll('.premium-btn');
+    const onMouseEnter = (e: Event) => {
+      const target = e.currentTarget as HTMLElement;
+      target.style.letterSpacing = '0.15em';
+    };
+    const onMouseLeave = (e: Event) => {
+      const target = e.currentTarget as HTMLElement;
+      target.style.letterSpacing = '0.1em';
+    };
+
+    premiumButtons.forEach(btn => {
+      btn.addEventListener('mouseenter', onMouseEnter);
+      btn.addEventListener('mouseleave', onMouseLeave);
+    });
+
+    return () => {
+      elementObserver.disconnect();
+      premiumButtons.forEach(btn => {
+        btn.removeEventListener('mouseenter', onMouseEnter);
+        btn.removeEventListener('mouseleave', onMouseLeave);
+      });
+    };
+  }, [route]);
+
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
