@@ -178,11 +178,18 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('royalride_admin_logged_in');
+      if (saved === 'true') return true;
       if (saved === 'false') return false;
-      // Default to true for development, preview, and easy administrative use
-      return true;
+      
+      // Default to true for development and preview environments (localhost and Google Cloud Run)
+      // but false for production environments (like Vercel) so general visitors do not see edit tools.
+      const host = window.location.hostname;
+      if (host.includes('localhost') || host.includes('127.0.0.1') || host.includes('run.app')) {
+        return true;
+      }
+      return false;
     }
-    return true;
+    return false;
   });
 
   const loginAdmin = (email: string, pass: string): boolean => {
