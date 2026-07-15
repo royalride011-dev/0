@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, Info, CheckCircle, Clock, Shield, Compass } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../LanguageContext';
 import { LazyImage } from './LazyImage';
 import { 
@@ -199,13 +200,24 @@ export default function TourismCarousel() {
           {/* LEFT COLUMN: 500x500 Premium Image Box */}
           <div className="lg:col-span-5 flex items-center justify-center">
             <div className="relative w-full max-w-[500px] aspect-square rounded-2xl overflow-hidden border border-gold-500/20 bg-zinc-900/40 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_20px_rgba(197,168,92,0.05)] group transition-all duration-500 hover:border-gold-500/40">
-              <div onClick={nextDestination} className="w-full h-full cursor-pointer">
-                <LazyImage 
-                  id="fleet-style-tour-img" 
-                  src={activeDest.image} 
-                  alt={language === 'en' ? activeDest.name : activeDest.nameAr} 
-                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110" 
-                />
+              <div onClick={nextDestination} className="w-full h-full cursor-pointer overflow-hidden relative">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full h-full"
+                  >
+                    <LazyImage 
+                      id="fleet-style-tour-img" 
+                      src={activeDest.image} 
+                      alt={language === 'en' ? activeDest.name : activeDest.nameAr} 
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                    />
+                  </motion.div>
+                </AnimatePresence>
               </div>
               {/* Luxury gold gradient overlays & frames */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
@@ -239,45 +251,55 @@ export default function TourismCarousel() {
                 </span>
               </div>
               
-              <h3 id="fleet-style-tour-title" className="text-2xl font-black text-white uppercase tracking-wide">
-                {language === 'en' ? activeDest.name : activeDest.nameAr}
-              </h3>
-              <p id="fleet-style-tour-subtitle" className="text-zinc-500 text-xs font-medium mb-5">
-                {language === 'en' ? activeDest.subtitle : activeDest.subtitleAr}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <h3 id="fleet-style-tour-title" className="text-2xl font-black text-white uppercase tracking-wide">
+                    {language === 'en' ? activeDest.name : activeDest.nameAr}
+                  </h3>
+                  <p id="fleet-style-tour-subtitle" className="text-zinc-500 text-xs font-medium mb-5">
+                    {language === 'en' ? activeDest.subtitle : activeDest.subtitleAr}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
               
               {/* Inner Content Tabs for Maximum SEO Texts */}
               <div className="flex border-b border-zinc-900 gap-6 mb-4 text-[11px] font-bold uppercase tracking-wider">
                 <button 
                   onClick={() => switchSeoTab('story')} 
                   id="ftab-btn-story" 
-                  className={`pb-2 border-b-2 transition-all duration-200 cursor-pointer ${
-                    activeTab === 'story' 
-                      ? 'border-gold-500 text-gold-500' 
-                      : 'border-transparent text-zinc-500 hover:text-white'
-                  }`}
+                  className="pb-2 border-b-2 transition-all duration-200 cursor-pointer relative font-bold"
+                  style={{
+                    borderColor: activeTab === 'story' ? '#C5A85C' : 'transparent',
+                    color: activeTab === 'story' ? '#C5A85C' : '#71717a'
+                  }}
                 >
                   {language === 'en' ? 'The Journey' : 'تفاصيل الجولة'}
                 </button>
                 <button 
                   onClick={() => switchSeoTab('highlights')} 
                   id="ftab-btn-highlights" 
-                  className={`pb-2 border-b-2 transition-all duration-200 cursor-pointer ${
-                    activeTab === 'highlights' 
-                      ? 'border-gold-500 text-gold-500' 
-                      : 'border-transparent text-zinc-500 hover:text-white'
-                  }`}
+                  className="pb-2 border-b-2 transition-all duration-200 cursor-pointer relative font-bold"
+                  style={{
+                    borderColor: activeTab === 'highlights' ? '#C5A85C' : 'transparent',
+                    color: activeTab === 'highlights' ? '#C5A85C' : '#71717a'
+                  }}
                 >
                   {language === 'en' ? 'Highlights' : 'أبرز المزايا'}
                 </button>
                 <button 
                   onClick={() => switchSeoTab('legacy')} 
                   id="ftab-btn-legacy" 
-                  className={`pb-2 border-b-2 transition-all duration-200 cursor-pointer ${
-                    activeTab === 'legacy' 
-                      ? 'border-gold-500 text-gold-500' 
-                      : 'border-transparent text-zinc-500 hover:text-white'
-                  }`}
+                  className="pb-2 border-b-2 transition-all duration-200 cursor-pointer relative font-bold"
+                  style={{
+                    borderColor: activeTab === 'legacy' ? '#C5A85C' : 'transparent',
+                    color: activeTab === 'legacy' ? '#C5A85C' : '#71717a'
+                  }}
                 >
                   {language === 'en' ? 'Historical Legacy' : 'العمق التاريخي'}
                 </button>
@@ -285,26 +307,36 @@ export default function TourismCarousel() {
 
               {/* Text Box Content Area */}
               <div id="fleet-style-tab-content" className="text-zinc-400 text-xs leading-relaxed text-justify h-[160px] overflow-y-auto pr-2 custom-scrollbar">
-                {activeTab === 'story' && (
-                  <p className="fade-in duration-300">
-                    {language === 'en' ? activeDest.description : activeDest.descriptionAr}
-                  </p>
-                )}
-                {activeTab === 'highlights' && (
-                  <ul className="space-y-2.5 text-zinc-300 fade-in duration-300">
-                    {(language === 'en' ? activeDest.highlights : activeDest.highlightsAr).map((hl, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <CheckCircle className="w-3.5 h-3.5 text-gold-500 shrink-0 mt-0.5" />
-                        <span>{hl}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {activeTab === 'legacy' && (
-                  <p className="italic text-zinc-400 fade-in duration-300">
-                    {getHistoricalText()}
-                  </p>
-                )}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${activeIndex}-${activeTab}`}
+                    initial={{ opacity: 0, x: isRtl ? -12 : 12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: isRtl ? 12 : -12 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {activeTab === 'story' && (
+                      <p>
+                        {language === 'en' ? activeDest.description : activeDest.descriptionAr}
+                      </p>
+                    )}
+                    {activeTab === 'highlights' && (
+                      <ul className="space-y-2.5 text-zinc-300">
+                        {(language === 'en' ? activeDest.highlights : activeDest.highlightsAr).map((hl, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <CheckCircle className="w-3.5 h-3.5 text-gold-500 shrink-0 mt-0.5" />
+                            <span>{hl}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {activeTab === 'legacy' && (
+                      <p className="italic text-zinc-400">
+                        {getHistoricalText()}
+                      </p>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
 

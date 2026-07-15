@@ -239,20 +239,55 @@ export default function Header() {
           <motion.nav
             role="navigation"
             aria-label="Mobile Navigation"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`lg:hidden bg-royal-navy-950 border-b border-champagne-gold-500/20 menu ${mobileMenuOpen ? 'active' : ''}`}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            variants={{
+              hidden: { opacity: 0, height: 0 },
+              show: {
+                opacity: 1,
+                height: 'auto',
+                transition: {
+                  height: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+                  opacity: { duration: 0.25 },
+                  staggerChildren: 0.06,
+                  delayChildren: 0.08
+                }
+              },
+              exit: {
+                opacity: 0,
+                height: 0,
+                transition: {
+                  height: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                  opacity: { duration: 0.2 }
+                }
+              }
+            }}
+            className="lg:hidden bg-royal-navy-950 border-b border-champagne-gold-500/20 overflow-hidden"
             id="mobile-nav-drawer"
           >
             <div className="px-4 pt-2 pb-6 space-y-3">
-              <a href="#/" className="flex items-center space-x-2 text-champagne-gold-100 hover:text-champagne-gold-400 transition-colors py-2 border-b border-royal-navy-800/40" onClick={() => setMobileMenuOpen(false)}>
-                <Home className="w-4 h-4" />
-                <span>{language === 'en' ? 'Home' : 'الرئيسية'}</span>
-              </a>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: isRtl ? 15 : -15 },
+                  show: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 280, damping: 26 } }
+                }}
+              >
+                <a href="#/" className="flex items-center space-x-2 text-champagne-gold-100 hover:text-champagne-gold-400 transition-colors py-2 border-b border-royal-navy-800/40" onClick={() => setMobileMenuOpen(false)}>
+                  <Home className="w-4 h-4" />
+                  <span className={isRtl ? 'mr-2' : ''}>{language === 'en' ? 'Home' : 'الرئيسية'}</span>
+                </a>
+              </motion.div>
+
               {navItems.map((item) => (
-                <div key={item.name} className="space-y-1">
+                <motion.div
+                  key={item.name}
+                  variants={{
+                    hidden: { opacity: 0, x: isRtl ? 15 : -15 },
+                    show: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 280, damping: 26 } }
+                  }}
+                  className="space-y-1"
+                >
                   <a
                     href={item.href}
                     aria-label={item.ariaLabel}
@@ -268,21 +303,28 @@ export default function Header() {
                           key={sub.id}
                           href={`#/services?id=${sub.id}`}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="block text-xs text-champagne-gold-100/70 hover:text-champagne-gold-400 py-1.5"
+                          className="block text-xs text-champagne-gold-100/70 hover:text-champagne-gold-400 py-1.5 transition-colors"
                         >
                           ↳ {sub.name}
                         </a>
                       ))}
                     </div>
                   )}
-                </div>
+                </motion.div>
               ))}
-              <div className="pt-4 flex flex-col space-y-3">
+
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 15 },
+                  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 240, damping: 24 } }
+                }}
+                className="pt-4 flex flex-col space-y-3"
+              >
                 <a
                   href="tel:+962775328853"
                   className="flex items-center text-sm text-champagne-gold-300 font-mono"
                 >
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className="w-4 h-4 mr-2 rtl:ml-2 rtl:mr-0" />
                   +962 77 532 8853
                 </a>
                 <a
@@ -291,7 +333,7 @@ export default function Header() {
                   rel="noreferrer"
                   className="flex items-center text-sm text-champagne-gold-300 font-mono"
                 >
-                  <Instagram className="w-4 h-4 mr-2 text-champagne-gold-500" />
+                  <Instagram className="w-4 h-4 mr-2 rtl:ml-2 rtl:mr-0 text-champagne-gold-500" />
                   Instagram: @royalridejo
                 </a>
                 <a
@@ -307,12 +349,13 @@ export default function Header() {
                 <a
                   href="#/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center bg-champagne-gold-500 hover:bg-champagne-gold-400 text-royal-navy-950 font-sans text-xs uppercase tracking-widest font-bold py-3 rounded transition-all duration-300 relative overflow-hidden"
+                  className="flex items-center justify-center bg-champagne-gold-500 hover:bg-champagne-gold-400 text-royal-navy-950 font-sans text-xs uppercase tracking-widest font-bold py-3 rounded transition-all duration-300 relative overflow-hidden animate-pulse"
+                  style={{ animationDuration: '3s' }}
                 >
                   {language === 'en' ? 'Book VIP Carriage' : 'طلب حجز رحلة جديدة'}
                   <ShimmerHoverEffect />
                 </a>
-              </div>
+              </motion.div>
             </div>
           </motion.nav>
         )}
