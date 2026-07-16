@@ -214,6 +214,8 @@ export default function TourismCarousel() {
                       id="fleet-style-tour-img" 
                       src={activeDest.image} 
                       alt={language === 'en' ? activeDest.name : activeDest.nameAr} 
+                      width={500}
+                      height={500}
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                     />
                   </motion.div>

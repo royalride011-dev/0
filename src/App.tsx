@@ -10,6 +10,7 @@ import JordanClock from './components/JordanClock';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
+import LazySection from './components/LazySection';
 import { prefetchIdle } from './utils/prefetch';
 
 // Lazy load below-the-fold and sub-route components for lightning-fast loading (under 1 sec)
@@ -224,12 +225,30 @@ export default function App() {
                     onExploreFleetClicked={() => { window.location.hash = '#/fleet'; }}
                     onBookNowClicked={() => { window.location.hash = '#/contact'; }}
                   />
-                  <SovereignReviewsCarousel />
-                  <Services onSelectServiceAndInquire={handleSelectService} />
-                  <FleetCarousel onSelectVehicleAndInquire={handleSelectVehicle} />
-                  <TourismCarousel />
-                  <About />
-                  <Reviews />
+                  
+                  <LazySection minHeight="250px">
+                    <SovereignReviewsCarousel />
+                  </LazySection>
+                  
+                  <LazySection minHeight="450px">
+                    <Services onSelectServiceAndInquire={handleSelectService} />
+                  </LazySection>
+                  
+                  <LazySection minHeight="450px">
+                    <FleetCarousel onSelectVehicleAndInquire={handleSelectVehicle} />
+                  </LazySection>
+                  
+                  <LazySection minHeight="400px">
+                    <TourismCarousel />
+                  </LazySection>
+                  
+                  <LazySection minHeight="350px">
+                    <About />
+                  </LazySection>
+                  
+                  <LazySection minHeight="300px">
+                    <Reviews />
+                  </LazySection>
                 </>
               )}
 

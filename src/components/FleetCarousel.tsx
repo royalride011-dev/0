@@ -671,6 +671,8 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                         <LazyImage
                           src={getVehicleImage(v)}
                           alt={v.name}
+                          width={32}
+                          height={32}
                           className="w-8 h-8 rounded-full border border-[#C5A85C] object-cover ring-2 ring-[#0A0A0A]"
                         />
                       </div>
@@ -786,6 +788,8 @@ export default function FleetCarousel({ onSelectVehicleAndInquire }: FleetCarous
                             <LazyImage
                               src={getVehicleImage(veh)}
                               alt={veh.name}
+                              width={200}
+                              height={96}
                               className="w-full h-24 object-cover rounded border border-[#C5A85C]/20 mb-3 grayscale-[0.1] hover:grayscale-0 transition-all duration-500"
                             />
                             <h4 className="font-serif text-sm font-bold text-[#C5A85C] line-clamp-1">
