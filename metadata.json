@@ -1,6 +1,6 @@
 {
   "name": "Royal Ride Jordan",
   "description": "Premium VIP transportation and luxury chauffeur service in Amman, Jordan.",
-  "requestFramePermissions": ["microphone"],
+  "requestFramePermissions": ["microphone", "geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
